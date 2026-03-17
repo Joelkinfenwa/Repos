@@ -14,8 +14,7 @@ import React from 'react';
 import { Audio, Sequence, staticFile } from 'remotion';
 import { loadFont as loadDMSans } from '@remotion/google-fonts/DMSans';
 import { loadFont as loadSpaceMono } from '@remotion/google-fonts/SpaceMono';
-import { SCENES, COLORS } from './lib/design';
-import { VOICEOVER } from './lib/voiceover';
+import { SCENES, COLORS, DURATION_FRAMES } from './lib/design';
 import { Scene1Hook } from './components/Scene1Hook';
 import { Scene2Agitate } from './components/Scene2Agitate';
 import { Scene3Reframe } from './components/Scene3Reframe';
@@ -96,12 +95,10 @@ export const ExpressPathologyAd: React.FC = () => {
         <Scene7CTA />
       </Sequence>
 
-      {/* Voiceover audio — one track per scene */}
-      {VOICEOVER.map((vo, i) => (
-        <Sequence key={i} from={vo.startFrame} durationInFrames={vo.durationFrames}>
-          <Audio src={staticFile(vo.file)} />
-        </Sequence>
-      ))}
+      {/* Voiceover — single audio track for full duration */}
+      <Sequence from={0} durationInFrames={DURATION_FRAMES}>
+        <Audio src={staticFile('vo/voiceover.mp3')} />
+      </Sequence>
 
       {/* Grid texture overlay — always visible */}
       <GridOverlay />
