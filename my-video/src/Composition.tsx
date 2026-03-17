@@ -1,25 +1,27 @@
-// Express Pathology — Website Walkthrough Video
-// 1080x1920 | 30fps | 45 seconds | 9:16 vertical
+// Express Pathology — "The Tired Guy" Video Ad
+// 1080x1920 | 30fps | 30 seconds | 9:16 vertical
 //
 // SCENE TIMING:
-// 0:00 - 0:05  HOOK              — Big text reveal, "Something feels off"
-// 0:05 - 0:12  WEBSITE INTRO     — Mock browser with Express Pathology site
-// 0:12 - 0:22  PACKAGE SHOWCASE  — Male Hormonal Health Package details
-// 0:22 - 0:30  RESULTS PREVIEW   — Mock results report with doctor stamp
-// 0:30 - 0:38  HOW IT WORKS      — Three-step process cards
-// 0:38 - 0:45  CTA               — Price, branding, book now
+// 0:00 - 0:03  HOOK        — "You're tired. Every. Single. Day."
+// 0:03 - 0:07  AGITATE     — Sleep/eat/train kinetic text → "Still exhausted by 2pm."
+// 0:07 - 0:11  REFRAME     — "What if it's your blood?"
+// 0:11 - 0:18  SHOW SITE   — Phone mockup zooms into screenshots
+// 0:18 - 0:23  STATS       — Animated counters + biomarker cascade
+// 0:23 - 0:27  SOCIAL PROOF — Checkmark trust points + checkout
+// 0:27 - 0:30  CTA         — Price reveal, book now
 
 import React from 'react';
 import { Sequence } from 'remotion';
 import { loadFont as loadDMSans } from '@remotion/google-fonts/DMSans';
 import { loadFont as loadSpaceMono } from '@remotion/google-fonts/SpaceMono';
 import { SCENES, COLORS } from './lib/design';
-import { HookScene } from './components/HookScene';
-import { WebsiteIntroScene } from './components/WebsiteIntroScene';
-import { PackageShowcaseScene } from './components/PackageShowcaseScene';
-import { ResultsPreviewScene } from './components/ResultsPreviewScene';
-import { HowItWorksScene } from './components/HowItWorksScene';
-import { CTAScene } from './components/CTAScene';
+import { Scene1Hook } from './components/Scene1Hook';
+import { Scene2Agitate } from './components/Scene2Agitate';
+import { Scene3Reframe } from './components/Scene3Reframe';
+import { Scene4ShowSite } from './components/Scene4ShowSite';
+import { Scene5Stats } from './components/Scene5Stats';
+import { Scene6SocialProof } from './components/Scene6SocialProof';
+import { Scene7CTA } from './components/Scene7CTA';
 import { GridOverlay } from './components/GridOverlay';
 
 // Load fonts
@@ -37,52 +39,60 @@ export const ExpressPathologyAd: React.FC = () => {
         overflow: 'hidden',
       }}
     >
-      {/* Scene 1: HOOK — 0-5s */}
+      {/* Scene 1: HOOK — 0-3s */}
       <Sequence
         from={SCENES.hook.start}
         durationInFrames={SCENES.hook.end - SCENES.hook.start}
       >
-        <HookScene />
+        <Scene1Hook />
       </Sequence>
 
-      {/* Scene 2: WEBSITE INTRO — 5-12s */}
+      {/* Scene 2: AGITATE — 3-7s */}
       <Sequence
-        from={SCENES.websiteIntro.start}
-        durationInFrames={SCENES.websiteIntro.end - SCENES.websiteIntro.start}
+        from={SCENES.agitate.start}
+        durationInFrames={SCENES.agitate.end - SCENES.agitate.start}
       >
-        <WebsiteIntroScene />
+        <Scene2Agitate />
       </Sequence>
 
-      {/* Scene 3: PACKAGE SHOWCASE — 12-22s */}
+      {/* Scene 3: REFRAME — 7-11s */}
       <Sequence
-        from={SCENES.packageShowcase.start}
-        durationInFrames={SCENES.packageShowcase.end - SCENES.packageShowcase.start}
+        from={SCENES.reframe.start}
+        durationInFrames={SCENES.reframe.end - SCENES.reframe.start}
       >
-        <PackageShowcaseScene />
+        <Scene3Reframe />
       </Sequence>
 
-      {/* Scene 4: RESULTS PREVIEW — 22-30s */}
+      {/* Scene 4: SHOW THE SITE — 11-18s */}
       <Sequence
-        from={SCENES.resultsPreview.start}
-        durationInFrames={SCENES.resultsPreview.end - SCENES.resultsPreview.start}
+        from={SCENES.showSite.start}
+        durationInFrames={SCENES.showSite.end - SCENES.showSite.start}
       >
-        <ResultsPreviewScene />
+        <Scene4ShowSite />
       </Sequence>
 
-      {/* Scene 5: HOW IT WORKS — 30-38s */}
+      {/* Scene 5: STATS — 18-23s */}
       <Sequence
-        from={SCENES.howItWorks.start}
-        durationInFrames={SCENES.howItWorks.end - SCENES.howItWorks.start}
+        from={SCENES.stats.start}
+        durationInFrames={SCENES.stats.end - SCENES.stats.start}
       >
-        <HowItWorksScene />
+        <Scene5Stats />
       </Sequence>
 
-      {/* Scene 6: CTA — 38-45s */}
+      {/* Scene 6: SOCIAL PROOF — 23-27s */}
+      <Sequence
+        from={SCENES.socialProof.start}
+        durationInFrames={SCENES.socialProof.end - SCENES.socialProof.start}
+      >
+        <Scene6SocialProof />
+      </Sequence>
+
+      {/* Scene 7: CTA — 27-30s */}
       <Sequence
         from={SCENES.cta.start}
         durationInFrames={SCENES.cta.end - SCENES.cta.start}
       >
-        <CTAScene />
+        <Scene7CTA />
       </Sequence>
 
       {/* Grid texture overlay — always visible */}

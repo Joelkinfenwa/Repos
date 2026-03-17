@@ -1,82 +1,116 @@
-// Animation utilities — spring-based reveals
+// Animation utilities — spring-based reveals with specified spring config
 
 import { spring, interpolate } from 'remotion';
-import { FPS } from './design';
+import { FPS, SPRING_CONFIG } from './design';
 
-interface SpringRevealOpts {
+interface SpringOpts {
   frame: number;
   delay?: number;
-  durationInFrames?: number;
 }
 
-export function springReveal({ frame, delay = 0 }: SpringRevealOpts) {
-  const s = spring({
+/** Standard spring using the design system config */
+export function sp(frame: number, delay = 0) {
+  return spring({
     frame: frame - delay,
     fps: FPS,
-    config: { damping: 18, stiffness: 120, mass: 0.8 },
+    config: SPRING_CONFIG,
   });
+}
+
+/** Spring scale-in from center (for slamming text) */
+export function springSlam({ frame, delay = 0 }: SpringOpts) {
+  const s = sp(frame, delay);
   return {
     opacity: s,
-    transform: `translateY(${interpolate(s, [0, 1], [40, 0])}px) scale(${interpolate(s, [0, 1], [0.92, 1])})`,
+    transform: `scale(${interpolate(s, [0, 1], [1.8, 1])})`,
   };
 }
 
-export function springScale({ frame, delay = 0 }: SpringRevealOpts) {
-  const s = spring({
-    frame: frame - delay,
-    fps: FPS,
-    config: { damping: 14, stiffness: 100, mass: 1 },
-  });
+/** Spring scale-in (gentler) */
+export function springScale({ frame, delay = 0 }: SpringOpts) {
+  const s = sp(frame, delay);
   return {
     opacity: s,
     transform: `scale(${interpolate(s, [0, 1], [0.6, 1])})`,
   };
 }
 
-export function springSlideLeft({ frame, delay = 0 }: SpringRevealOpts) {
-  const s = spring({
-    frame: frame - delay,
-    fps: FPS,
-    config: { damping: 16, stiffness: 110, mass: 0.9 },
-  });
+/** Slide in from left */
+export function springSlideLeft({ frame, delay = 0 }: SpringOpts) {
+  const s = sp(frame, delay);
   return {
     opacity: s,
-    transform: `translateX(${interpolate(s, [0, 1], [80, 0])}px)`,
+    transform: `translateX(${interpolate(s, [0, 1], [-200, 0])}px)`,
   };
 }
 
-export function springSlideRight({ frame, delay = 0 }: SpringRevealOpts) {
-  const s = spring({
-    frame: frame - delay,
-    fps: FPS,
-    config: { damping: 16, stiffness: 110, mass: 0.9 },
-  });
+/** Slide in from right */
+export function springSlideRight({ frame, delay = 0 }: SpringOpts) {
+  const s = sp(frame, delay);
   return {
     opacity: s,
-    transform: `translateX(${interpolate(s, [0, 1], [-80, 0])}px)`,
+    transform: `translateX(${interpolate(s, [0, 1], [200, 0])}px)`,
   };
 }
 
-export function springSlideUp({ frame, delay = 0 }: SpringRevealOpts) {
-  const s = spring({
-    frame: frame - delay,
-    fps: FPS,
-    config: { damping: 14, stiffness: 100, mass: 0.9 },
-  });
+/** Slide up reveal */
+export function springSlideUp({ frame, delay = 0 }: SpringOpts) {
+  const s = sp(frame, delay);
   return {
     opacity: s,
-    transform: `translateY(${interpolate(s, [0, 1], [120, 0])}px)`,
+    transform: `translateY(${interpolate(s, [0, 1], [80, 0])}px)`,
   };
 }
 
+/** Bounce scale (for price reveal, CTA) */
+export function springBounce({ frame, delay = 0 }: SpringOpts) {
+  const s = spring({
+    frame: frame - delay,
+    fps: FPS,
+    config: { damping: 8, mass: 0.4, stiffness: 200 },
+  });
+  return {
+    opacity: s,
+    transform: `scale(${interpolate(s, [0, 1], [0.3, 1])})`,
+  };
+}
+
+/** Fade out over duration */
 export function fadeOut(frame: number, startFrame: number, duration: number) {
-  if (frame < startFrame) return 1;
-  if (frame > startFrame + duration) return 0;
-  return interpolate(frame, [startFrame, startFrame + duration], [1, 0]);
+  return interpolate(frame, [startFrame, startFrame + duration], [1, 0], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
 }
 
+/** Fade in over duration */
 export function fadeIn(frame: number, startFrame: number, duration: number) {
-  if (frame < startFrame) return 0;
-  if (frame > startFrame + duration) return 1;
-  return interpolate(frame, [startFrame, startFrame + duration], [0, 1]);
+  return interpolate(frame, [startFrame, startFrame + duration], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+}
+
+/** Camera shake effect — returns translateX/Y offsets */
+export function cameraShake(frame: number, startFrame: number, intensity = 8, decayFrames = 12) {
+  const elapsed = frame - startFrame;
+  if (elapsed < 0 || elapsed > decayFrames) return { x: 0, y: 0 };
+  const decay = 1 - elapsed / decayFrames;
+  const seed = elapsed * 7.3;
+  return {
+    x: Math.sin(seed * 2.1) * intensity * decay,
+    y: Math.cos(seed * 3.7) * intensity * decay,
+  };
+}
+
+/** Scene transition — slight zoom with opacity crossfade */
+export function sceneTransition(frame: number, totalFrames: number, fadeFrames = 8) {
+  const enterOpacity = fadeIn(frame, 0, fadeFrames);
+  const exitOpacity = fadeOut(frame, totalFrames - fadeFrames, fadeFrames);
+  const opacity = Math.min(enterOpacity, exitOpacity);
+  const scale = interpolate(frame, [0, fadeFrames], [1.05, 1.0], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  return { opacity, scale };
 }
