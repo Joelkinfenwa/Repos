@@ -45,6 +45,30 @@ export function springSlideLeft({ frame, delay = 0 }: SpringRevealOpts) {
   };
 }
 
+export function springSlideRight({ frame, delay = 0 }: SpringRevealOpts) {
+  const s = spring({
+    frame: frame - delay,
+    fps: FPS,
+    config: { damping: 16, stiffness: 110, mass: 0.9 },
+  });
+  return {
+    opacity: s,
+    transform: `translateX(${interpolate(s, [0, 1], [-80, 0])}px)`,
+  };
+}
+
+export function springSlideUp({ frame, delay = 0 }: SpringRevealOpts) {
+  const s = spring({
+    frame: frame - delay,
+    fps: FPS,
+    config: { damping: 14, stiffness: 100, mass: 0.9 },
+  });
+  return {
+    opacity: s,
+    transform: `translateY(${interpolate(s, [0, 1], [120, 0])}px)`,
+  };
+}
+
 export function fadeOut(frame: number, startFrame: number, duration: number) {
   if (frame < startFrame) return 1;
   if (frame > startFrame + duration) return 0;
