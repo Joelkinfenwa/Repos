@@ -1,13 +1,13 @@
-// Express Pathology — "The Tired Guy" Meta Ad
-// 1080x1920 | 30fps | 30 seconds | 9:16 vertical
+// Express Pathology — Website Walkthrough Video
+// 1080x1920 | 30fps | 45 seconds | 9:16 vertical
 //
-// AUDIO TIMING MARKERS (for music/SFX overlay):
-// 0:00 - 0:03  HOOK        — Impact hits on each word, bass drop
-// 0:03 - 0:08  AGITATE     — Low drone, building tension
-// 0:08 - 0:15  REFRAME     — Tonal shift at 0:11, mood lifts
-// 0:15 - 0:22  SOLUTION    — Confident beat, subtle pulse
-// 0:22 - 0:27  PROOF       — Trust-building pad
-// 0:27 - 0:30  CTA         — Final beat, clean resolution
+// SCENE TIMING:
+// 0:00 - 0:05  HOOK              — Big text reveal, "Something feels off"
+// 0:05 - 0:12  WEBSITE INTRO     — Mock browser with Express Pathology site
+// 0:12 - 0:22  PACKAGE SHOWCASE  — Male Hormonal Health Package details
+// 0:22 - 0:30  RESULTS PREVIEW   — Mock results report with doctor stamp
+// 0:30 - 0:38  HOW IT WORKS      — Three-step process cards
+// 0:38 - 0:45  CTA               — Price, branding, book now
 
 import React from 'react';
 import { Sequence } from 'remotion';
@@ -15,10 +15,10 @@ import { loadFont as loadDMSans } from '@remotion/google-fonts/DMSans';
 import { loadFont as loadSpaceMono } from '@remotion/google-fonts/SpaceMono';
 import { SCENES, COLORS } from './lib/design';
 import { HookScene } from './components/HookScene';
-import { AgitateScene } from './components/AgitateScene';
-import { ReframeScene } from './components/ReframeScene';
-import { SolutionScene } from './components/SolutionScene';
-import { ProofScene } from './components/ProofScene';
+import { WebsiteIntroScene } from './components/WebsiteIntroScene';
+import { PackageShowcaseScene } from './components/PackageShowcaseScene';
+import { ResultsPreviewScene } from './components/ResultsPreviewScene';
+import { HowItWorksScene } from './components/HowItWorksScene';
 import { CTAScene } from './components/CTAScene';
 import { GridOverlay } from './components/GridOverlay';
 
@@ -37,7 +37,7 @@ export const ExpressPathologyAd: React.FC = () => {
         overflow: 'hidden',
       }}
     >
-      {/* Scene 1: HOOK — 0-3s */}
+      {/* Scene 1: HOOK — 0-5s */}
       <Sequence
         from={SCENES.hook.start}
         durationInFrames={SCENES.hook.end - SCENES.hook.start}
@@ -45,39 +45,39 @@ export const ExpressPathologyAd: React.FC = () => {
         <HookScene />
       </Sequence>
 
-      {/* Scene 2: AGITATE — 3-8s */}
+      {/* Scene 2: WEBSITE INTRO — 5-12s */}
       <Sequence
-        from={SCENES.agitate.start}
-        durationInFrames={SCENES.agitate.end - SCENES.agitate.start}
+        from={SCENES.websiteIntro.start}
+        durationInFrames={SCENES.websiteIntro.end - SCENES.websiteIntro.start}
       >
-        <AgitateScene />
+        <WebsiteIntroScene />
       </Sequence>
 
-      {/* Scene 3: REFRAME — 8-15s */}
+      {/* Scene 3: PACKAGE SHOWCASE — 12-22s */}
       <Sequence
-        from={SCENES.reframe.start}
-        durationInFrames={SCENES.reframe.end - SCENES.reframe.start}
+        from={SCENES.packageShowcase.start}
+        durationInFrames={SCENES.packageShowcase.end - SCENES.packageShowcase.start}
       >
-        <ReframeScene />
+        <PackageShowcaseScene />
       </Sequence>
 
-      {/* Scene 4: SOLUTION — 15-22s */}
+      {/* Scene 4: RESULTS PREVIEW — 22-30s */}
       <Sequence
-        from={SCENES.solution.start}
-        durationInFrames={SCENES.solution.end - SCENES.solution.start}
+        from={SCENES.resultsPreview.start}
+        durationInFrames={SCENES.resultsPreview.end - SCENES.resultsPreview.start}
       >
-        <SolutionScene />
+        <ResultsPreviewScene />
       </Sequence>
 
-      {/* Scene 5: PROOF — 22-27s */}
+      {/* Scene 5: HOW IT WORKS — 30-38s */}
       <Sequence
-        from={SCENES.proof.start}
-        durationInFrames={SCENES.proof.end - SCENES.proof.start}
+        from={SCENES.howItWorks.start}
+        durationInFrames={SCENES.howItWorks.end - SCENES.howItWorks.start}
       >
-        <ProofScene />
+        <HowItWorksScene />
       </Sequence>
 
-      {/* Scene 6: CTA — 27-30s */}
+      {/* Scene 6: CTA — 38-45s */}
       <Sequence
         from={SCENES.cta.start}
         durationInFrames={SCENES.cta.end - SCENES.cta.start}

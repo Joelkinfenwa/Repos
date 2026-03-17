@@ -1,14 +1,13 @@
-// SCENE 6: CTA — 27-30s (frames 810-900, local 0-90)
-// Audio marker: Final beat, clean resolution, confidence
-// Close it hard. Price, no referral, book now.
+// SCENE 6: CTA — 38-45s (frames 1140-1350, local 0-210)
+// Big price, no referral, book now button, Express Pathology branding
 
 import React from 'react';
 import { useCurrentFrame, interpolate, spring } from 'remotion';
 import { COLORS, FONTS, FPS } from '../lib/design';
+import { NarrationCaption } from './NarrationCaption';
 
 export const CTAScene: React.FC = () => {
   const frame = useCurrentFrame();
-  // Total: 90 frames (3 seconds)
 
   // Price — big reveal
   const priceSpring = spring({
@@ -19,34 +18,44 @@ export const CTAScene: React.FC = () => {
 
   // "No referral needed."
   const noRefSpring = spring({
-    frame: frame - 18,
+    frame: frame - 25,
     fps: FPS,
     config: { damping: 14, stiffness: 120, mass: 0.8 },
   });
 
   // "Book in 2 minutes."
   const bookSpring = spring({
-    frame: frame - 30,
+    frame: frame - 40,
     fps: FPS,
     config: { damping: 14, stiffness: 120, mass: 0.8 },
   });
 
   // Logo / brand
   const logoSpring = spring({
-    frame: frame - 42,
+    frame: frame - 60,
     fps: FPS,
     config: { damping: 16, stiffness: 100, mass: 0.9 },
   });
 
   // URL
   const urlSpring = spring({
-    frame: frame - 52,
+    frame: frame - 75,
     fps: FPS,
     config: { damping: 16, stiffness: 100, mass: 0.9 },
   });
 
+  // Book Now button
+  const btnSpring = spring({
+    frame: frame - 90,
+    fps: FPS,
+    config: { damping: 14, stiffness: 100, mass: 0.9 },
+  });
+
   // Pulsing CTA glow
-  const pulse = Math.sin(frame * 0.15) * 0.3 + 0.7;
+  const pulse = Math.sin(frame * 0.12) * 0.3 + 0.7;
+
+  // Button pulse
+  const btnPulse = Math.sin(frame * 0.18) * 0.08 + 1;
 
   return (
     <div
@@ -59,6 +68,7 @@ export const CTAScene: React.FC = () => {
         justifyContent: 'center',
         backgroundColor: COLORS.bg,
         padding: '0 70px',
+        position: 'relative',
       }}
     >
       {/* Pulsing green glow behind price */}
@@ -68,8 +78,8 @@ export const CTAScene: React.FC = () => {
           width: 700,
           height: 700,
           borderRadius: '50%',
-          background: `radial-gradient(circle, ${COLORS.green}18 0%, transparent 60%)`,
-          top: '40%',
+          background: `radial-gradient(circle, ${COLORS.green}20 0%, transparent 60%)`,
+          top: '32%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
           opacity: pulse * priceSpring,
@@ -87,7 +97,7 @@ export const CTAScene: React.FC = () => {
           color: COLORS.green,
           lineHeight: 1,
           letterSpacing: '-0.03em',
-          marginBottom: 20,
+          marginBottom: 24,
           zIndex: 1,
         }}
       >
@@ -103,7 +113,7 @@ export const CTAScene: React.FC = () => {
           fontSize: 56,
           fontWeight: 800,
           color: COLORS.white,
-          marginBottom: 8,
+          marginBottom: 10,
           zIndex: 1,
         }}
       >
@@ -119,7 +129,7 @@ export const CTAScene: React.FC = () => {
           fontSize: 48,
           fontWeight: 500,
           color: COLORS.dimmedMid,
-          marginBottom: 120,
+          marginBottom: 80,
           zIndex: 1,
         }}
       >
@@ -136,6 +146,7 @@ export const CTAScene: React.FC = () => {
           alignItems: 'center',
           gap: 16,
           zIndex: 1,
+          marginBottom: 30,
         }}
       >
         {/* Logo mark — stylised cross/plus */}
@@ -173,17 +184,45 @@ export const CTAScene: React.FC = () => {
       <div
         style={{
           opacity: urlSpring,
-          position: 'absolute',
-          bottom: 180,
           fontFamily: FONTS.mono,
           fontSize: 30,
           color: COLORS.green,
           letterSpacing: '0.02em',
           zIndex: 1,
+          marginBottom: 40,
         }}
       >
         expresspathology.com.au
       </div>
+
+      {/* Book Now Button */}
+      <div
+        style={{
+          opacity: btnSpring,
+          transform: `scale(${interpolate(btnSpring, [0, 1], [0.7, 1]) * btnPulse})`,
+          backgroundColor: COLORS.green,
+          borderRadius: 16,
+          padding: '22px 72px',
+          fontFamily: FONTS.heading,
+          fontSize: 36,
+          fontWeight: 800,
+          color: COLORS.white,
+          zIndex: 1,
+          boxShadow: `0 0 ${interpolate(pulse, [0.4, 1], [10, 40])}px rgba(76, 175, 76, ${interpolate(pulse, [0.4, 1], [0.2, 0.5])})`,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+        }}
+      >
+        Book Now
+        <span style={{ fontSize: 32 }}>{'\u2192'}</span>
+      </div>
+
+      <NarrationCaption
+        text="Two forty-nine. No referral. Book online right now."
+        frame={frame}
+        startFrame={15}
+      />
     </div>
   );
 };
