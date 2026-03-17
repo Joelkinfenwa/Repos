@@ -11,10 +11,11 @@
 // 0:27 - 0:30  CTA         — Price reveal, book now
 
 import React from 'react';
-import { Sequence } from 'remotion';
+import { Audio, Sequence, staticFile } from 'remotion';
 import { loadFont as loadDMSans } from '@remotion/google-fonts/DMSans';
 import { loadFont as loadSpaceMono } from '@remotion/google-fonts/SpaceMono';
 import { SCENES, COLORS } from './lib/design';
+import { VOICEOVER } from './lib/voiceover';
 import { Scene1Hook } from './components/Scene1Hook';
 import { Scene2Agitate } from './components/Scene2Agitate';
 import { Scene3Reframe } from './components/Scene3Reframe';
@@ -94,6 +95,13 @@ export const ExpressPathologyAd: React.FC = () => {
       >
         <Scene7CTA />
       </Sequence>
+
+      {/* Voiceover audio — one track per scene */}
+      {VOICEOVER.map((vo, i) => (
+        <Sequence key={i} from={vo.startFrame} durationInFrames={vo.durationFrames}>
+          <Audio src={staticFile(vo.file)} />
+        </Sequence>
+      ))}
 
       {/* Grid texture overlay — always visible */}
       <GridOverlay />
