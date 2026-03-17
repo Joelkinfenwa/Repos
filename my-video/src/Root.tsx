@@ -1,16 +1,17 @@
-import { Composition } from "remotion";
-import { MyComposition } from "./Composition";
+import { Composition } from 'remotion';
+import { ExpressPathologyAd } from './Composition';
+import { WIDTH, HEIGHT, FPS, DURATION_FRAMES } from './lib/design';
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
       <Composition
-        id="MyComp"
-        component={MyComposition}
-        durationInFrames={60}
-        fps={30}
-        width={1280}
-        height={720}
+        id="ExpressPathologyAd"
+        component={ExpressPathologyAd}
+        durationInFrames={DURATION_FRAMES}
+        fps={FPS}
+        width={WIDTH}
+        height={HEIGHT}
       />
     </>
   );
