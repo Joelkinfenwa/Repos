@@ -1,11 +1,12 @@
 // SCENE 6: SOCIAL PROOF + TRUST — 23-27s (frames 0-120 local)
 // Checkmark animations for trust points
-// Quick flash of checkout screenshot
+// Quick flash of checkout page in phone mockup
 
 import React from 'react';
-import { useCurrentFrame, interpolate, spring, staticFile, Img } from 'remotion';
+import { useCurrentFrame, interpolate, spring } from 'remotion';
 import { COLORS, FONTS, FPS, SPRING_CONFIG } from '../lib/design';
 import { sp, sceneTransition } from '../lib/animations';
+import { MockCheckoutPage } from './MockCheckoutPage';
 
 const TRUST_POINTS = [
   { text: 'Doctor-reviewed results', delay: 5 },
@@ -14,7 +15,6 @@ const TRUST_POINTS = [
 ];
 
 const CheckmarkIcon: React.FC<{ progress: number }> = ({ progress }) => {
-  // Animated checkmark circle + tick
   const circleScale = interpolate(progress, [0, 0.6], [0, 1], {
     extrapolateRight: 'clamp',
   });
@@ -60,11 +60,11 @@ export const Scene6SocialProof: React.FC = () => {
 
   // Checkout phone mockup appears at frame 60
   const phoneEnter = spring({
-    frame: frame - 60,
+    frame: frame - 55,
     fps: FPS,
     config: SPRING_CONFIG,
   });
-  const phoneRotY = interpolate(frame, [60, 120], [-5, 5], {
+  const phoneRotY = interpolate(frame, [55, 120], [-5, 5], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
@@ -86,7 +86,7 @@ export const Scene6SocialProof: React.FC = () => {
       }}
     >
       {/* Trust points with checkmarks */}
-      <div style={{ zIndex: 1, width: '100%', maxWidth: 800, marginBottom: 60 }}>
+      <div style={{ zIndex: 1, width: '100%', maxWidth: 800, marginBottom: 50 }}>
         {TRUST_POINTS.map((point, i) => {
           const progress = sp(frame, point.delay);
           const slideX = interpolate(progress, [0, 1], [60, 0]);
@@ -120,7 +120,7 @@ export const Scene6SocialProof: React.FC = () => {
         })}
       </div>
 
-      {/* Checkout phone mockup */}
+      {/* Checkout phone mockup — rendered live */}
       <div
         style={{
           opacity: phoneEnter,
@@ -149,10 +149,18 @@ export const Scene6SocialProof: React.FC = () => {
               position: 'relative',
             }}
           >
-            <Img
-              src={staticFile('checkout.png')}
-              style={{ width: '100%', position: 'absolute', top: 0, left: 0 }}
-            />
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                transform: 'scale(0.758)', // 300/396 to fit mock page width
+                transformOrigin: 'top left',
+              }}
+            >
+              <MockCheckoutPage />
+            </div>
           </div>
         </div>
       </div>
