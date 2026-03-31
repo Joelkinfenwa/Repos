@@ -122,7 +122,7 @@ export const Scene6CTA: React.FC = () => {
             ...price,
           }}
         >
-          $249
+          $319
         </div>
 
         {/* URL */}
