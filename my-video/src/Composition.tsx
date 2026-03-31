@@ -1,40 +1,24 @@
-// Express Pathology — "The Tired Guy" Video Ad
-// 1080x1920 | 30fps | 30 seconds | 9:16 vertical
-//
-// SCENE TIMING:
-// 0:00 - 0:03  HOOK        — "You're tired. Every. Single. Day."
-// 0:03 - 0:07  AGITATE     — Sleep/eat/train kinetic text → "Still exhausted by 2pm."
-// 0:07 - 0:11  REFRAME     — "What if it's your blood?"
-// 0:11 - 0:18  SHOW SITE   — Phone mockup zooms into screenshots
-// 0:18 - 0:23  STATS       — Animated counters + biomarker cascade
-// 0:23 - 0:27  SOCIAL PROOF — Checkmark trust points + checkout
-// 0:27 - 0:30  CTA         — Price reveal, book now
+// Express Pathology — "Ultimate Performance Screen" Video Ad
+// 1080x1920 | 30fps | 28 seconds | 9:16 vertical
 
 import React from 'react';
-import { Audio, Sequence, staticFile } from 'remotion';
-import { loadFont as loadDMSans } from '@remotion/google-fonts/DMSans';
-import { loadFont as loadSpaceMono } from '@remotion/google-fonts/SpaceMono';
-import { SCENES, COLORS, DURATION_FRAMES } from './lib/design';
+import { Sequence } from 'remotion';
+import { SCENES, COLORS } from './lib/design';
 import { Scene1Hook } from './components/Scene1Hook';
-import { Scene2Agitate } from './components/Scene2Agitate';
-import { Scene3Reframe } from './components/Scene3Reframe';
-import { Scene4ShowSite } from './components/Scene4ShowSite';
-import { Scene5Stats } from './components/Scene5Stats';
-import { Scene6SocialProof } from './components/Scene6SocialProof';
-import { Scene7CTA } from './components/Scene7CTA';
-import { GridOverlay } from './components/GridOverlay';
+import { Scene2TheNumber } from './components/Scene2TheNumber';
+import { Scene3WhoItsFor } from './components/Scene3WhoItsFor';
+import { Scene4HowItWorks } from './components/Scene4HowItWorks';
+import { Scene5SocialProof } from './components/Scene5SocialProof';
+import { Scene6CTA } from './components/Scene6CTA';
 
-// Load fonts
-loadDMSans();
-loadSpaceMono();
-
-export const ExpressPathologyAd: React.FC = () => {
+export const UltimatePerformanceScreen: React.FC = () => {
   return (
     <div
       style={{
         width: '100%',
         height: '100%',
         backgroundColor: COLORS.bg,
+        fontFamily: 'Inter, Liberation Sans, sans-serif',
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -47,61 +31,45 @@ export const ExpressPathologyAd: React.FC = () => {
         <Scene1Hook />
       </Sequence>
 
-      {/* Scene 2: AGITATE — 3-7s */}
+      {/* Scene 2: THE NUMBER — 3-8s */}
       <Sequence
-        from={SCENES.agitate.start}
-        durationInFrames={SCENES.agitate.end - SCENES.agitate.start}
+        from={SCENES.theNumber.start}
+        durationInFrames={SCENES.theNumber.end - SCENES.theNumber.start}
       >
-        <Scene2Agitate />
+        <Scene2TheNumber />
       </Sequence>
 
-      {/* Scene 3: REFRAME — 7-11s */}
+      {/* Scene 3: WHO IT'S FOR — 8-13s */}
       <Sequence
-        from={SCENES.reframe.start}
-        durationInFrames={SCENES.reframe.end - SCENES.reframe.start}
+        from={SCENES.whoItsFor.start}
+        durationInFrames={SCENES.whoItsFor.end - SCENES.whoItsFor.start}
       >
-        <Scene3Reframe />
+        <Scene3WhoItsFor />
       </Sequence>
 
-      {/* Scene 4: SHOW THE SITE — 11-18s */}
+      {/* Scene 4: HOW IT WORKS — 13-18s */}
       <Sequence
-        from={SCENES.showSite.start}
-        durationInFrames={SCENES.showSite.end - SCENES.showSite.start}
+        from={SCENES.howItWorks.start}
+        durationInFrames={SCENES.howItWorks.end - SCENES.howItWorks.start}
       >
-        <Scene4ShowSite />
+        <Scene4HowItWorks />
       </Sequence>
 
-      {/* Scene 5: STATS — 18-23s */}
-      <Sequence
-        from={SCENES.stats.start}
-        durationInFrames={SCENES.stats.end - SCENES.stats.start}
-      >
-        <Scene5Stats />
-      </Sequence>
-
-      {/* Scene 6: SOCIAL PROOF — 23-27s */}
+      {/* Scene 5: SOCIAL PROOF — 18-22s */}
       <Sequence
         from={SCENES.socialProof.start}
         durationInFrames={SCENES.socialProof.end - SCENES.socialProof.start}
       >
-        <Scene6SocialProof />
+        <Scene5SocialProof />
       </Sequence>
 
-      {/* Scene 7: CTA — 27-30s */}
+      {/* Scene 6: CTA — 22-28s */}
       <Sequence
         from={SCENES.cta.start}
         durationInFrames={SCENES.cta.end - SCENES.cta.start}
       >
-        <Scene7CTA />
+        <Scene6CTA />
       </Sequence>
-
-      {/* Voiceover — single audio track for full duration */}
-      <Sequence from={0} durationInFrames={DURATION_FRAMES}>
-        <Audio src={staticFile('vo/voiceover.mp3')} />
-      </Sequence>
-
-      {/* Grid texture overlay — always visible */}
-      <GridOverlay />
     </div>
   );
 };

@@ -1,13 +1,13 @@
 import { Composition } from 'remotion';
-import { ExpressPathologyAd } from './Composition';
+import { UltimatePerformanceScreen } from './Composition';
 import { WIDTH, HEIGHT, FPS, DURATION_FRAMES } from './lib/design';
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
       <Composition
-        id="ExpressPathologyAd"
-        component={ExpressPathologyAd}
+        id="UltimatePerformanceScreen"
+        component={UltimatePerformanceScreen}
         durationInFrames={DURATION_FRAMES}
         fps={FPS}
         width={WIDTH}
