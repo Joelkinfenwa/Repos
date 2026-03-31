@@ -1,6 +1,6 @@
 // Scene 4 — HOW IT WORKS (13-18s | 150 frames)
-// 3-step flow with SVG stroke-dashoffset draw animation
-// Connecting lines draw between steps, stagger by 10 frames
+// 3-step flow: Order Online → Walk Into 2,000+ Centres → Results in 48hrs
+// SVG stroke draw animations, connecting lines
 
 import React from 'react';
 import { useCurrentFrame, interpolate } from 'remotion';
@@ -13,24 +13,23 @@ import {
   sceneTransition,
 } from '../lib/animations';
 
-// SVG Icons with draw animation support
 const CartIcon: React.FC<{ frame: number; delay: number }> = ({ frame, delay }) => {
   const draw = strokeDraw({ frame, delay, duration: 15, totalLength: 200 });
   return (
-    <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
       <path
-        d="M8 8h6l4 24h24l4-16H18"
-        stroke={COLORS.cyan}
-        strokeWidth="3"
+        d="M6 6h5l3 20h20l3-14H14"
+        stroke={COLORS.green}
+        strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
         fill="none"
         strokeDasharray={draw.strokeDasharray}
         strokeDashoffset={draw.strokeDashoffset}
       />
-      <circle cx="22" cy="40" r="3" stroke={COLORS.cyan} strokeWidth="2.5" fill="none"
+      <circle cx="18" cy="34" r="2.5" stroke={COLORS.green} strokeWidth="2" fill="none"
         strokeDasharray={draw.strokeDasharray} strokeDashoffset={draw.strokeDashoffset} />
-      <circle cx="38" cy="40" r="3" stroke={COLORS.cyan} strokeWidth="2.5" fill="none"
+      <circle cx="32" cy="34" r="2.5" stroke={COLORS.green} strokeWidth="2" fill="none"
         strokeDasharray={draw.strokeDasharray} strokeDashoffset={draw.strokeDashoffset} />
     </svg>
   );
@@ -39,16 +38,16 @@ const CartIcon: React.FC<{ frame: number; delay: number }> = ({ frame, delay }) 
 const MapPinIcon: React.FC<{ frame: number; delay: number }> = ({ frame, delay }) => {
   const draw = strokeDraw({ frame, delay, duration: 15, totalLength: 200 });
   return (
-    <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
       <path
-        d="M28 4C18.06 4 10 12.06 10 22c0 14 18 30 18 30s18-16 18-30C46 12.06 37.94 4 28 4z"
-        stroke={COLORS.cyan}
-        strokeWidth="3"
+        d="M24 4C16 4 10 10 10 18c0 12 14 26 14 26s14-14 14-26c0-8-6-14-14-14z"
+        stroke={COLORS.green}
+        strokeWidth="2.5"
         fill="none"
         strokeDasharray={draw.strokeDasharray}
         strokeDashoffset={draw.strokeDashoffset}
       />
-      <circle cx="28" cy="22" r="6" stroke={COLORS.cyan} strokeWidth="2.5" fill="none"
+      <circle cx="24" cy="18" r="5" stroke={COLORS.green} strokeWidth="2" fill="none"
         strokeDasharray={draw.strokeDasharray} strokeDashoffset={draw.strokeDashoffset} />
     </svg>
   );
@@ -57,11 +56,11 @@ const MapPinIcon: React.FC<{ frame: number; delay: number }> = ({ frame, delay }
 const ChartIcon: React.FC<{ frame: number; delay: number }> = ({ frame, delay }) => {
   const draw = strokeDraw({ frame, delay, duration: 15, totalLength: 200 });
   return (
-    <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
       <polyline
-        points="6,44 16,32 26,36 36,18 50,8"
-        stroke={COLORS.cyan}
-        strokeWidth="3"
+        points="6,38 14,28 22,32 30,16 42,8"
+        stroke={COLORS.green}
+        strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
         fill="none"
@@ -69,9 +68,9 @@ const ChartIcon: React.FC<{ frame: number; delay: number }> = ({ frame, delay })
         strokeDashoffset={draw.strokeDashoffset}
       />
       <polyline
-        points="40,8 50,8 50,18"
-        stroke={COLORS.cyan}
-        strokeWidth="3"
+        points="34,8 42,8 42,16"
+        stroke={COLORS.green}
+        strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
         fill="none"
@@ -83,9 +82,9 @@ const ChartIcon: React.FC<{ frame: number; delay: number }> = ({ frame, delay })
 };
 
 const STEPS = [
-  { icon: CartIcon, label: 'Order Online' },
-  { icon: MapPinIcon, label: 'Walk Into Any of\n2,000+ Centres' },
-  { icon: ChartIcon, label: 'Results Within\n24hrs' },
+  { icon: CartIcon, label: 'Order Online', sub: 'Takes 2 minutes' },
+  { icon: MapPinIcon, label: 'Walk Into Any of\n2,000+ Centres', sub: 'No referral needed' },
+  { icon: ChartIcon, label: 'Results in 48hrs', sub: 'Doctor-reviewed PDF' },
 ];
 
 export const Scene4HowItWorks: React.FC = () => {
@@ -93,10 +92,7 @@ export const Scene4HowItWorks: React.FC = () => {
   const totalFrames = 150;
   const { opacity } = sceneTransition(frame, totalFrames);
 
-  // Headline
   const headline = springSlideUp({ frame, delay: 3 });
-
-  // Exit fade
   const exitFade = fadeOut(frame, 130, 20);
 
   return (
@@ -129,7 +125,7 @@ export const Scene4HowItWorks: React.FC = () => {
           ...headline,
         }}
       >
-        How It <span style={{ color: COLORS.cyan }}>Works</span>
+        How It <span style={{ color: COLORS.green }}>Works</span>
       </div>
 
       {/* Steps */}
@@ -153,21 +149,20 @@ export const Scene4HowItWorks: React.FC = () => {
             staggerAmount: 10,
           });
 
-          // Connecting line between steps
-          const lineProgress = i < STEPS.length - 1
-            ? interpolate(
-                frame,
-                [stepDelay + 15, stepDelay + 30],
-                [0, 1],
-                { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
-              )
-            : 0;
+          const lineProgress =
+            i < STEPS.length - 1
+              ? interpolate(
+                  frame,
+                  [stepDelay + 15, stepDelay + 30],
+                  [0, 1],
+                  { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' },
+                )
+              : 0;
 
           const IconComponent = step.icon;
 
           return (
             <React.Fragment key={step.label}>
-              {/* Step */}
               <div
                 style={{
                   display: 'flex',
@@ -177,47 +172,56 @@ export const Scene4HowItWorks: React.FC = () => {
                   ...anim,
                 }}
               >
-                {/* Number circle + icon */}
                 <div
                   style={{
-                    width: 90,
-                    height: 90,
+                    width: 80,
+                    height: 80,
                     borderRadius: '50%',
-                    backgroundColor: 'rgba(34,211,238,0.1)',
-                    border: `2px solid ${COLORS.cyan}`,
+                    backgroundColor: 'rgba(16,185,129,0.1)',
+                    border: `2px solid ${COLORS.green}`,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     flexShrink: 0,
-                    boxShadow: SHADOWS.cyanGlow,
+                    boxShadow: SHADOWS.greenGlow,
                   }}
                 >
                   <IconComponent frame={frame} delay={stepDelay} />
                 </div>
-
-                {/* Label */}
-                <span
-                  style={{
-                    fontFamily: FONTS.heading,
-                    fontWeight: 600,
-                    fontSize: 36,
-                    color: COLORS.white,
-                    whiteSpace: 'pre-line',
-                    lineHeight: 1.25,
-                  }}
-                >
-                  {step.label}
-                </span>
+                <div>
+                  <div
+                    style={{
+                      fontFamily: FONTS.heading,
+                      fontWeight: 700,
+                      fontSize: 34,
+                      color: COLORS.white,
+                      whiteSpace: 'pre-line',
+                      lineHeight: 1.25,
+                    }}
+                  >
+                    {step.label}
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: FONTS.body,
+                      fontWeight: 400,
+                      fontSize: 26,
+                      color: COLORS.textSecondary,
+                      marginTop: 4,
+                    }}
+                  >
+                    {step.sub}
+                  </div>
+                </div>
               </div>
 
-              {/* Connecting line */}
               {i < STEPS.length - 1 && (
                 <div
                   style={{
                     width: 2,
-                    height: 50,
-                    marginLeft: 44,
-                    background: `linear-gradient(180deg, ${COLORS.cyan}, transparent)`,
+                    height: 40,
+                    marginLeft: 39,
+                    background: `linear-gradient(180deg, ${COLORS.green}, transparent)`,
                     opacity: lineProgress,
                     transformOrigin: 'top',
                     transform: `scaleY(${lineProgress})`,

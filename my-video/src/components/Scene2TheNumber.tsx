@@ -1,5 +1,6 @@
 // Scene 2 — THE NUMBER (3-8s | 150 frames)
-// Giant animated counter 0→40+, biomarker category pills stagger in
+// 30+ biomarkers counter, then 4 category cards matching landing page:
+// HORMONAL, THYROID, METABOLIC, BLOOD HEALTH
 
 import React from 'react';
 import { useCurrentFrame } from 'remotion';
@@ -10,18 +11,29 @@ import {
   staggerFadeUp,
   fadeOut,
   sceneTransition,
-  borderGlowCyan,
 } from '../lib/animations';
 
-const PILLS = [
-  'Hormones',
-  'Thyroid',
-  'Liver',
-  'Kidney',
-  'Iron',
-  'Cholesterol',
-  'Vitamins',
-  'Inflammation',
+const CATEGORIES = [
+  {
+    label: 'HORMONAL',
+    title: 'Full Hormone Panel',
+    detail: 'Testosterone, SHBG, IGF-1, Cortisol, E2',
+  },
+  {
+    label: 'THYROID',
+    title: 'TSH, Free T3 & T4',
+    detail: 'Complete thyroid function',
+  },
+  {
+    label: 'METABOLIC',
+    title: 'HbA1c & Glucose',
+    detail: 'Long-term blood sugar',
+  },
+  {
+    label: 'BLOOD HEALTH',
+    title: 'Full Blood Count',
+    detail: 'FBC + ESR + iron studies',
+  },
 ];
 
 export const Scene2TheNumber: React.FC = () => {
@@ -29,14 +41,14 @@ export const Scene2TheNumber: React.FC = () => {
   const totalFrames = 150;
   const { opacity } = sceneTransition(frame, totalFrames);
 
-  // Counter: 0 → 40 over first 45 frames
-  const count = Math.floor(countUp({ frame, delay: 5, from: 0, to: 40, duration: 45 }));
+  // Counter: 0 → 30 over first 40 frames
+  const count = Math.floor(
+    countUp({ frame, delay: 5, from: 0, to: 30, duration: 40 }),
+  );
+  const showPlus = frame > 45;
 
-  // "+" appears after counter lands
-  const showPlus = frame > 50;
-
-  // Subtitle reveal
-  const subtitle = springSlideUp({ frame, delay: 55 });
+  // Subtitle
+  const subtitle = springSlideUp({ frame, delay: 50 });
 
   // Exit fade
   const exitFade = fadeOut(frame, 130, 20);
@@ -61,18 +73,15 @@ export const Scene2TheNumber: React.FC = () => {
         style={{
           fontFamily: FONTS.heading,
           fontWeight: 800,
-          fontSize: 200,
+          fontSize: 180,
           color: COLORS.white,
           fontVariantNumeric: 'tabular-nums',
-          textShadow: SHADOWS.cyanGlowStrong,
+          textShadow: SHADOWS.greenGlowStrong,
           lineHeight: 1,
-          position: 'relative',
         }}
       >
         {count}
-        {showPlus && (
-          <span style={{ color: COLORS.cyan }}>+</span>
-        )}
+        {showPlus && <span style={{ color: COLORS.green }}>+</span>}
       </div>
 
       {/* Subtitle */}
@@ -80,54 +89,81 @@ export const Scene2TheNumber: React.FC = () => {
         style={{
           fontFamily: FONTS.heading,
           fontWeight: 600,
-          fontSize: 48,
+          fontSize: 40,
           color: COLORS.textSecondary,
-          marginTop: 16,
+          marginTop: 8,
+          marginBottom: 48,
           ...subtitle,
         }}
       >
-        Biomarkers. One Test.
+        biomarkers. One test. Complete clarity.
       </div>
 
-      {/* Category pills */}
+      {/* Category cards — 2x2 grid matching landing page */}
       <div
         style={{
           display: 'flex',
           flexWrap: 'wrap',
-          justifyContent: 'center',
-          gap: 12,
-          marginTop: 48,
+          gap: 16,
           paddingLeft: SAFE.left,
           paddingRight: SAFE.right,
-          maxWidth: '100%',
+          justifyContent: 'center',
         }}
       >
-        {PILLS.map((pill, i) => {
+        {CATEGORIES.map((cat, i) => {
           const anim = staggerFadeUp({
             frame,
-            delay: 65,
+            delay: 60,
             index: i,
-            staggerAmount: 4,
+            staggerAmount: 6,
           });
-          const glowAnim = borderGlowCyan({ frame, delay: 65 + i * 4 });
 
           return (
             <div
-              key={pill}
+              key={cat.label}
               style={{
-                fontFamily: FONTS.body,
-                fontWeight: 600,
-                fontSize: 28,
-                color: COLORS.white,
-                backgroundColor: 'rgba(34,211,238,0.08)',
-                border: '1.5px solid rgba(34,211,238,0.3)',
-                borderRadius: 40,
-                padding: '10px 24px',
+                width: 440,
+                backgroundColor: COLORS.cardBg,
+                border: `1px solid ${COLORS.cardBorder}`,
+                borderRadius: 12,
+                padding: '20px 24px',
                 ...anim,
-                ...glowAnim,
               }}
             >
-              {pill}
+              <div
+                style={{
+                  fontFamily: FONTS.body,
+                  fontWeight: 600,
+                  fontSize: 22,
+                  color: COLORS.green,
+                  letterSpacing: '0.08em',
+                  marginBottom: 6,
+                }}
+              >
+                {cat.label}
+              </div>
+              <div
+                style={{
+                  fontFamily: FONTS.heading,
+                  fontWeight: 800,
+                  fontSize: 32,
+                  color: COLORS.white,
+                  lineHeight: 1.2,
+                }}
+              >
+                {cat.title}
+              </div>
+              <div
+                style={{
+                  fontFamily: FONTS.body,
+                  fontWeight: 400,
+                  fontSize: 24,
+                  color: COLORS.textSecondary,
+                  marginTop: 4,
+                }}
+              >
+                {cat.detail}
+              </div>
             </div>
           );
         })}

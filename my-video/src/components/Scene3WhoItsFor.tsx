@@ -1,66 +1,46 @@
-// Scene 3 — WHO IT'S FOR (8-13s | 150 frames)
-// "Built For People Who Take Performance Seriously"
-// Three profile cards with SVG icons stagger from bottom
+// Scene 3 — TRUST SIGNALS (8-13s | 150 frames)
+// Matches the landing page checklist:
+// ✓ 30+ biomarkers tested
+// ✓ Doctor-reviewed PDF report
+// ✓ Results in 48 hours
+// ✓ No GP referral needed
+// ✓ NATA-accredited labs
+// Plus the 3 tick-mark trust points from the hero
 
 import React from 'react';
 import { useCurrentFrame } from 'remotion';
 import { COLORS, SAFE, FONTS, SHADOWS } from '../lib/design';
-import { springSlideUp, elasticSlideUp, fadeOut, sceneTransition } from '../lib/animations';
+import { springSlideUp, staggerFadeUp, fadeOut, sceneTransition } from '../lib/animations';
 
-// SVG Icons as inline components
-const DumbbellIcon: React.FC = () => (
-  <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-    <rect x="4" y="18" width="6" height="12" rx="2" fill={COLORS.cyan} />
-    <rect x="10" y="14" width="4" height="20" rx="1" fill={COLORS.cyan} opacity={0.7} />
-    <rect x="34" y="14" width="4" height="20" rx="1" fill={COLORS.cyan} opacity={0.7} />
-    <rect x="38" y="18" width="6" height="12" rx="2" fill={COLORS.cyan} />
-    <rect x="14" y="22" width="20" height="4" rx="1" fill={COLORS.cyan} opacity={0.5} />
-  </svg>
-);
+const CHECKS = [
+  '30+ biomarkers tested',
+  'Hormones, thyroid, metabolic & blood health',
+  'Doctor-reviewed PDF report',
+  'Results in 48 hours',
+  'Pathology form emailed instantly',
+  'No GP referral needed',
+];
 
-const BriefcaseIcon: React.FC = () => (
-  <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-    <rect x="6" y="16" width="36" height="24" rx="4" stroke={COLORS.cyan} strokeWidth="3" fill="none" />
-    <path d="M16 16V12a4 4 0 014-4h8a4 4 0 014 4v4" stroke={COLORS.cyan} strokeWidth="3" fill="none" />
-    <line x1="6" y1="28" x2="42" y2="28" stroke={COLORS.cyan} strokeWidth="2" opacity={0.5} />
-  </svg>
-);
-
-const HeartPulseIcon: React.FC = () => (
-  <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+const CheckIcon: React.FC = () => (
+  <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+    <circle cx="16" cy="16" r="14" fill="rgba(16,185,129,0.15)" />
     <path
-      d="M24 40s-14-8.5-14-19a9 9 0 0118 0 9 9 0 0118 0c0 10.5-14 19-14 19z"
-      fill="none"
-      stroke={COLORS.cyan}
-      strokeWidth="3"
-      opacity={0.4}
-    />
-    <polyline
-      points="10,26 18,26 21,18 24,34 27,22 30,26 38,26"
-      stroke={COLORS.cyan}
+      d="M10 16l4 4 8-8"
+      stroke="#10B981"
       strokeWidth="2.5"
-      fill="none"
       strokeLinecap="round"
       strokeLinejoin="round"
+      fill="none"
     />
   </svg>
 );
-
-const CARDS = [
-  { icon: <DumbbellIcon />, label: 'Athletes & Lifters' },
-  { icon: <BriefcaseIcon />, label: 'High Performers' },
-  { icon: <HeartPulseIcon />, label: 'Health Optimisers' },
-];
 
 export const Scene3WhoItsFor: React.FC = () => {
   const frame = useCurrentFrame();
   const totalFrames = 150;
   const { opacity } = sceneTransition(frame, totalFrames);
 
-  // Headline
   const headline = springSlideUp({ frame, delay: 5 });
-
-  // Exit fade
   const exitFade = fadeOut(frame, 130, 20);
 
   return (
@@ -94,58 +74,100 @@ export const Scene3WhoItsFor: React.FC = () => {
           ...headline,
         }}
       >
-        Built For People
-        <br />
-        Who Take Performance{' '}
-        <span style={{ color: COLORS.cyan }}>Seriously</span>
+        What&apos;s{' '}
+        <span style={{ color: COLORS.green }}>Included</span>
       </div>
 
-      {/* Profile cards */}
+      {/* Checklist */}
       <div
         style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: 24,
-          paddingLeft: SAFE.left,
-          paddingRight: SAFE.right,
+          gap: 20,
+          paddingLeft: SAFE.left + 20,
+          paddingRight: SAFE.right + 20,
           width: '100%',
         }}
       >
-        {CARDS.map((card, i) => {
-          const anim = elasticSlideUp({ frame, delay: 30 + i * 12 });
+        {CHECKS.map((item, i) => {
+          const anim = staggerFadeUp({
+            frame,
+            delay: 20,
+            index: i,
+            staggerAmount: 6,
+          });
 
           return (
             <div
-              key={card.label}
+              key={item}
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 20,
-                backgroundColor: COLORS.cardBg,
-                borderRadius: 16,
-                padding: '24px 28px',
-                borderLeft: `4px solid ${COLORS.purple}`,
-                border: `1px solid ${COLORS.cardBorder}`,
-                borderLeftWidth: 4,
-                borderLeftColor: COLORS.purple,
-                boxShadow: SHADOWS.cardShadow,
+                gap: 16,
                 ...anim,
               }}
             >
-              <div style={{ flexShrink: 0 }}>{card.icon}</div>
+              <div style={{ flexShrink: 0 }}>
+                <CheckIcon />
+              </div>
               <span
                 style={{
-                  fontFamily: FONTS.heading,
+                  fontFamily: FONTS.body,
                   fontWeight: 600,
                   fontSize: 36,
                   color: COLORS.white,
                 }}
               >
-                {card.label}
+                {item}
               </span>
             </div>
           );
         })}
+      </div>
+
+      {/* Bottom trust badges row */}
+      <div
+        style={{
+          display: 'flex',
+          gap: 16,
+          marginTop: 50,
+          paddingLeft: SAFE.left,
+          paddingRight: SAFE.right,
+        }}
+      >
+        {['NATA-accredited', 'Private & secure', 'Doctor-reviewed', 'Instant form'].map(
+          (badge, i) => {
+            const anim = staggerFadeUp({
+              frame,
+              delay: 65,
+              index: i,
+              staggerAmount: 5,
+            });
+            return (
+              <div
+                key={badge}
+                style={{
+                  backgroundColor: COLORS.cardBg,
+                  border: `1px solid ${COLORS.cardBorder}`,
+                  borderRadius: 8,
+                  padding: '10px 16px',
+                  ...anim,
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: FONTS.body,
+                    fontWeight: 600,
+                    fontSize: 22,
+                    color: COLORS.textSecondary,
+                  }}
+                >
+                  {badge}
+                </span>
+              </div>
+            );
+          },
+        )}
       </div>
     </div>
   );

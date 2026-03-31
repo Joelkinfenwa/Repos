@@ -198,10 +198,10 @@ export function elasticSlideUp({ frame, delay = 0 }: SpringOpts) {
   };
 }
 
-/** Pulsing cyan box-shadow glow */
-export function borderGlowCyan({ frame, delay = 0 }: SpringOpts) {
+/** Pulsing green box-shadow glow */
+export function borderGlowGreen({ frame, delay = 0 }: SpringOpts) {
   const t = frame - delay;
-  if (t < 0) return { boxShadow: '0 0 0px rgba(34,211,238,0)' };
+  if (t < 0) return { boxShadow: '0 0 0px rgba(16,185,129,0)' };
 
   const pulse = Math.sin(t * 0.2) * 0.5 + 0.5;
   const blur = 6 + pulse * 16;
@@ -209,7 +209,7 @@ export function borderGlowCyan({ frame, delay = 0 }: SpringOpts) {
   const alpha = 0.2 + pulse * 0.6;
 
   return {
-    boxShadow: `0 0 ${blur}px ${spread}px rgba(34,211,238,${alpha})`,
+    boxShadow: `0 0 ${blur}px ${spread}px rgba(16,185,129,${alpha})`,
   };
 }
 
