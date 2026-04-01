@@ -1,10 +1,11 @@
-// Scene 6: CTA — $319 price reveal, URL, final call to action
+// Scene 5: CTA (24-30s | 180 frames)
+// $319 price slam, orange button, final push
 import React from 'react';
 import { useCurrentFrame } from 'remotion';
 import { COLORS, FONTS, WIDTH } from '../lib/design';
 import { priceSlam, slideUp, fadeIn, gentleFloat } from '../lib/animations';
 
-export const Scene6CTA: React.FC = () => {
+export const Scene5CTA: React.FC = () => {
   const frame = useCurrentFrame();
 
   const priceAnim = priceSlam(frame, 10);
@@ -14,8 +15,6 @@ export const Scene6CTA: React.FC = () => {
   const noteAnim = slideUp(frame, 80, 30);
 
   const btnFloat = gentleFloat(frame, 3, 0.05);
-
-  // Pulsing glow behind price
   const glowPulse = 0.3 + Math.sin(frame * 0.08) * 0.15;
 
   return (
@@ -45,14 +44,7 @@ export const Scene6CTA: React.FC = () => {
           ...priceAnim,
         }}
       >
-        <div
-          style={{
-            fontFamily: FONTS.serif,
-            fontSize: 160,
-            fontWeight: 400,
-            color: COLORS.cream,
-          }}
-        >
+        <div style={{ fontFamily: FONTS.serif, fontSize: 160, fontWeight: 400, color: COLORS.cream }}>
           $319
         </div>
       </div>
@@ -79,7 +71,6 @@ export const Scene6CTA: React.FC = () => {
         >
           Ultimate Performance Screen
         </div>
-        {/* Small gold rule */}
         <div
           style={{
             width: 80,
@@ -154,15 +145,7 @@ export const Scene6CTA: React.FC = () => {
           ...urlAnim,
         }}
       >
-        <div
-          style={{
-            fontFamily: FONTS.sans,
-            fontSize: 28,
-            fontWeight: 300,
-            color: COLORS.cream50,
-            letterSpacing: 1,
-          }}
-        >
+        <div style={{ fontFamily: FONTS.sans, fontSize: 28, fontWeight: 300, color: COLORS.cream50 }}>
           expresspathology.com.au
         </div>
       </div>
@@ -177,14 +160,7 @@ export const Scene6CTA: React.FC = () => {
           ...noteAnim,
         }}
       >
-        <div
-          style={{
-            fontFamily: FONTS.sans,
-            fontSize: 22,
-            fontWeight: 300,
-            color: COLORS.cream30,
-          }}
-        >
+        <div style={{ fontFamily: FONTS.sans, fontSize: 22, fontWeight: 300, color: COLORS.cream30 }}>
           No GP required · No referral needed
         </div>
       </div>

@@ -1,6 +1,6 @@
 // Express Pathology — "DECODE YOURSELF" — Design Tokens
 // 1080x1920 vertical | 30fps | 30 seconds | 900 frames
-// Aesthetic: Luxury editorial — warm gold, serif type, minimal motion
+// Aesthetic: Luxury editorial + phone scroll showcase
 
 export const COLORS = {
   bg: '#080810',
@@ -17,10 +17,16 @@ export const COLORS = {
   rose: '#C4788A',
   roseGlow: 'rgba(196,120,138,0.3)',
   white: '#FFFFFF',
+  white90: 'rgba(255,255,255,0.9)',
   white60: 'rgba(255,255,255,0.6)',
   white40: 'rgba(255,255,255,0.4)',
   orange: '#E8854A',
   orangeGlow: 'rgba(232,133,74,0.4)',
+  emerald: '#10B981',
+  emeraldDim: 'rgba(16,185,129,0.15)',
+  phoneBg: '#FAFAF9',
+  phoneGray: '#6B7280',
+  phoneGrayLight: '#E5E7EB',
 } as const;
 
 export const FONTS = {
@@ -36,32 +42,14 @@ export const DURATION_FRAMES = FPS * DURATION_SECONDS; // 900
 
 export const SAFE = { top: 150, bottom: 170, left: 60, right: 60 } as const;
 
-// Elegant spring — smooth, refined
-export const SPRING_ELEGANT = {
-  mass: 1,
-  damping: 18,
-  stiffness: 80,
-} as const;
-
-// Firm spring — confident reveals
-export const SPRING_FIRM = {
-  mass: 0.9,
-  damping: 16,
-  stiffness: 140,
-} as const;
-
-// Heavy spring — big number / price reveals
-export const SPRING_HEAVY = {
-  mass: 1.4,
-  damping: 16,
-  stiffness: 90,
-} as const;
+export const SPRING_ELEGANT = { mass: 1, damping: 18, stiffness: 80 } as const;
+export const SPRING_FIRM = { mass: 0.9, damping: 16, stiffness: 140 } as const;
+export const SPRING_HEAVY = { mass: 1.4, damping: 16, stiffness: 90 } as const;
 
 export const SCENES = {
-  coldOpen:   { start: 0,   end: 120 },  // 0-4s
-  theData:    { start: 120, end: 300 },  // 4-10s
-  categories: { start: 300, end: 480 },  // 10-16s
-  process:    { start: 480, end: 660 },  // 16-22s
-  authority:  { start: 660, end: 780 },  // 22-26s
-  cta:        { start: 780, end: 900 },  // 26-30s
+  coldOpen:    { start: 0,   end: 120 },  // 0-4s   — title
+  phoneScroll: { start: 120, end: 420 },  // 4-14s  — phone scrolls landing page
+  expand:      { start: 420, end: 600 },  // 14-20s — stats expand from phone
+  authority:   { start: 600, end: 720 },  // 20-24s — social proof
+  cta:         { start: 720, end: 900 },  // 24-30s — price + CTA
 } as const;

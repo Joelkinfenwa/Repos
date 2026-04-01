@@ -1,4 +1,4 @@
-// Express Pathology — "DECODE YOURSELF" Campaign
+// Express Pathology — "DECODE YOURSELF" + Phone Scroll Campaign
 // 1080x1920 | 30fps | 30 seconds | 9:16 vertical
 
 import React from 'react';
@@ -7,11 +7,10 @@ import { SCENES, COLORS } from './lib/design';
 import { AnimatedBg } from './components/AnimatedBg';
 import { GlobalParticles } from './components/GlobalParticles';
 import { Scene1ColdOpen } from './components/Scene1ColdOpen';
-import { Scene2TheData } from './components/Scene2TheData';
-import { Scene3Categories } from './components/Scene3Categories';
-import { Scene4Process } from './components/Scene4Process';
-import { Scene5Authority } from './components/Scene5Authority';
-import { Scene6CTA } from './components/Scene6CTA';
+import { Scene2PhoneScroll } from './components/Scene2PhoneScroll';
+import { Scene3Expand } from './components/Scene3Expand';
+import { Scene4Authority } from './components/Scene4Authority';
+import { Scene5CTA } from './components/Scene5CTA';
 
 export const UltimatePerformanceScreen: React.FC = () => {
   return (
@@ -35,38 +34,31 @@ export const UltimatePerformanceScreen: React.FC = () => {
       </Sequence>
 
       <Sequence
-        from={SCENES.theData.start}
-        durationInFrames={SCENES.theData.end - SCENES.theData.start}
+        from={SCENES.phoneScroll.start}
+        durationInFrames={SCENES.phoneScroll.end - SCENES.phoneScroll.start}
       >
-        <Scene2TheData />
+        <Scene2PhoneScroll />
       </Sequence>
 
       <Sequence
-        from={SCENES.categories.start}
-        durationInFrames={SCENES.categories.end - SCENES.categories.start}
+        from={SCENES.expand.start}
+        durationInFrames={SCENES.expand.end - SCENES.expand.start}
       >
-        <Scene3Categories />
-      </Sequence>
-
-      <Sequence
-        from={SCENES.process.start}
-        durationInFrames={SCENES.process.end - SCENES.process.start}
-      >
-        <Scene4Process />
+        <Scene3Expand />
       </Sequence>
 
       <Sequence
         from={SCENES.authority.start}
         durationInFrames={SCENES.authority.end - SCENES.authority.start}
       >
-        <Scene5Authority />
+        <Scene4Authority />
       </Sequence>
 
       <Sequence
         from={SCENES.cta.start}
         durationInFrames={SCENES.cta.end - SCENES.cta.start}
       >
-        <Scene6CTA />
+        <Scene5CTA />
       </Sequence>
 
       <GlobalParticles />
