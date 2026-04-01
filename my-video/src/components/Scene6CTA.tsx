@@ -1,20 +1,30 @@
 // Scene 6 — CTA (22-28s | 180 frames)
-// Matches the product card from landing page:
 // #1 Best seller badge, $319 (was $389, Save $70)
-// Green "Confirm & Pay" button
+// Camera shake on price slam, glow explosion, pulsing green CTA button
+// Particles, scanlines, cinematic depth
 
 import React from 'react';
-import { useCurrentFrame } from 'remotion';
+import { useCurrentFrame, interpolate } from 'remotion';
 import { COLORS, SAFE, FONTS, SHADOWS, GRADIENTS } from '../lib/design';
 import {
-  springSlam,
+  springSlamHard,
   springSlideUp,
   springBounce,
   staggerFadeUp,
   pulseGlow,
   breathe,
+  cameraShake,
+  particleFloat,
   sceneTransition,
 } from '../lib/animations';
+
+const PARTICLES = Array.from({ length: 16 }, (_, i) => ({
+  id: i,
+  x: 30 + ((i * 89) % 1020),
+  y: 50 + ((i * 137) % 1820),
+  size: 2 + (i % 4),
+  opacity: 0.05 + (i % 5) * 0.025,
+}));
 
 export const Scene6CTA: React.FC = () => {
   const frame = useCurrentFrame();
@@ -27,20 +37,31 @@ export const Scene6CTA: React.FC = () => {
   // Product name
   const productName = springSlideUp({ frame, delay: 15 });
 
-  // Price slam
-  const price = springSlam({ frame, delay: 30 });
+  // Price slam — hard slam with camera shake
+  const price = springSlamHard({ frame, delay: 30 });
+  const priceShake = cameraShake(frame, 33, 15, 14);
+
+  // Price glow explosion
+  const priceImpactT = frame - 30;
+  const priceGlow =
+    priceImpactT > 0
+      ? interpolate(priceImpactT, [0, 8, 40], [0, 1, 0.5], {
+          extrapolateLeft: 'clamp',
+          extrapolateRight: 'clamp',
+        })
+      : 0;
 
   // Old price + save badge
-  const savings = staggerFadeUp({ frame, delay: 45, index: 0, staggerAmount: 0 });
+  const savings = staggerFadeUp({ frame, delay: 48, index: 0, staggerAmount: 0 });
 
   // URL
-  const url = staggerFadeUp({ frame, delay: 55, index: 0, staggerAmount: 0 });
+  const url = staggerFadeUp({ frame, delay: 58, index: 0, staggerAmount: 0 });
 
   // CTA button
-  const cta = springBounce({ frame, delay: 65 });
+  const cta = springBounce({ frame, delay: 68 });
 
   // CTA pulsing glow
-  const ctaGlow = pulseGlow({ frame, delay: 70 });
+  const ctaGlow = pulseGlow({ frame, delay: 73 });
 
   // Background breathe
   const bgBreathe = breathe({ frame });
@@ -58,6 +79,7 @@ export const Scene6CTA: React.FC = () => {
         position: 'relative',
         overflow: 'hidden',
         opacity,
+        transform: `translate(${priceShake.x}px, ${priceShake.y}px)`,
       }}
     >
       {/* Green glow behind content */}
@@ -82,6 +104,41 @@ export const Scene6CTA: React.FC = () => {
           height: '100%',
           background: GRADIENTS.darkVignette,
           pointerEvents: 'none',
+        }}
+      />
+
+      {/* Floating particles */}
+      {PARTICLES.map((p) => {
+        const pAnim = particleFloat({ frame, index: p.id });
+        return (
+          <div
+            key={p.id}
+            style={{
+              position: 'absolute',
+              left: p.x,
+              top: p.y,
+              width: p.size,
+              height: p.size,
+              borderRadius: '50%',
+              backgroundColor: COLORS.green,
+              opacity: p.opacity,
+              transform: pAnim.transform,
+              pointerEvents: 'none',
+              zIndex: 1,
+            }}
+          />
+        );
+      })}
+
+      {/* Scanline overlay */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background:
+            'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px)',
+          pointerEvents: 'none',
+          zIndex: 10,
         }}
       />
 
@@ -137,20 +194,35 @@ export const Scene6CTA: React.FC = () => {
           Performance Screen
         </div>
 
-        {/* Price */}
-        <div
-          style={{
-            fontFamily: FONTS.heading,
-            fontWeight: 800,
-            fontSize: 120,
-            color: COLORS.green,
-            textShadow: SHADOWS.greenGlowStrong,
-            lineHeight: 1,
-            marginBottom: 8,
-            ...price,
-          }}
-        >
-          $319
+        {/* Price with glow explosion */}
+        <div style={{ position: 'relative', marginBottom: 8 }}>
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              width: '400%',
+              height: '400%',
+              transform: 'translate(-50%, -50%)',
+              background: `radial-gradient(ellipse at center, rgba(16,185,129,${priceGlow * 0.7}) 0%, rgba(16,185,129,${priceGlow * 0.3}) 35%, transparent 65%)`,
+              pointerEvents: 'none',
+            }}
+          />
+          <div
+            style={{
+              fontFamily: FONTS.heading,
+              fontWeight: 800,
+              fontSize: 130,
+              color: COLORS.green,
+              textShadow: `${SHADOWS.greenGlowStrong}, 0 0 ${40 + priceGlow * 80}px rgba(16,185,129,${0.3 + priceGlow * 0.5})`,
+              lineHeight: 1,
+              position: 'relative',
+              zIndex: 1,
+              ...price,
+            }}
+          >
+            $319
+          </div>
         </div>
 
         {/* Was $389 / Save $70 */}
@@ -203,7 +275,7 @@ export const Scene6CTA: React.FC = () => {
           expresspathology.com.au
         </div>
 
-        {/* CTA Button — green to match site */}
+        {/* CTA Button */}
         <div style={{ ...cta }}>
           <div
             style={{
@@ -223,33 +295,6 @@ export const Scene6CTA: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* Floating particles */}
-      {Array.from({ length: 12 }).map((_, i) => {
-        const x = (i * 97 + 31) % 100;
-        const startY = 100 + ((i * 47) % 60);
-        const drift = Math.sin(frame * 0.03 + i) * 20;
-        const floatY = startY - ((frame * 0.5 + i * 3) % 120);
-        const particleOpacity = 0.12 + Math.sin(frame * 0.08 + i * 2) * 0.08;
-
-        return (
-          <div
-            key={i}
-            style={{
-              position: 'absolute',
-              left: `${x}%`,
-              top: `${floatY}%`,
-              width: 4 + (i % 3) * 2,
-              height: 4 + (i % 3) * 2,
-              borderRadius: '50%',
-              backgroundColor: COLORS.green,
-              opacity: particleOpacity,
-              transform: `translateX(${drift}px)`,
-              pointerEvents: 'none',
-            }}
-          />
-        );
-      })}
     </div>
   );
 };
