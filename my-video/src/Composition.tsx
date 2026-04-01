@@ -1,5 +1,5 @@
-// Express Pathology — "YOU HAVE NO IDEA" Campaign
-// 1080x1920 | 30fps | 35 seconds | 9:16 vertical
+// Express Pathology — "DECODE YOURSELF" Campaign
+// 1080x1920 | 30fps | 30 seconds | 9:16 vertical
 
 import React from 'react';
 import { Sequence } from 'remotion';
@@ -7,12 +7,11 @@ import { SCENES, COLORS } from './lib/design';
 import { AnimatedBg } from './components/AnimatedBg';
 import { GlobalParticles } from './components/GlobalParticles';
 import { Scene1ColdOpen } from './components/Scene1ColdOpen';
-import { Scene2Problem } from './components/Scene2Problem';
-import { Scene3Revelation } from './components/Scene3Revelation';
-import { Scene4Shift } from './components/Scene4Shift';
-import { Scene5HowItWorks } from './components/Scene5HowItWorks';
-import { Scene6SocialProof } from './components/Scene6SocialProof';
-import { Scene7CTA } from './components/Scene7CTA';
+import { Scene2TheData } from './components/Scene2TheData';
+import { Scene3Categories } from './components/Scene3Categories';
+import { Scene4Process } from './components/Scene4Process';
+import { Scene5Authority } from './components/Scene5Authority';
+import { Scene6CTA } from './components/Scene6CTA';
 
 export const UltimatePerformanceScreen: React.FC = () => {
   return (
@@ -26,10 +25,8 @@ export const UltimatePerformanceScreen: React.FC = () => {
         overflow: 'hidden',
       }}
     >
-      {/* Animated background gradient — full duration */}
       <AnimatedBg />
 
-      {/* Scene 1: COLD OPEN — 0-3s */}
       <Sequence
         from={SCENES.coldOpen.start}
         durationInFrames={SCENES.coldOpen.end - SCENES.coldOpen.start}
@@ -37,55 +34,41 @@ export const UltimatePerformanceScreen: React.FC = () => {
         <Scene1ColdOpen />
       </Sequence>
 
-      {/* Scene 2: PROBLEM — 3-8s */}
       <Sequence
-        from={SCENES.problem.start}
-        durationInFrames={SCENES.problem.end - SCENES.problem.start}
+        from={SCENES.theData.start}
+        durationInFrames={SCENES.theData.end - SCENES.theData.start}
       >
-        <Scene2Problem />
+        <Scene2TheData />
       </Sequence>
 
-      {/* Scene 3: REVELATION — 8-13s */}
       <Sequence
-        from={SCENES.revelation.start}
-        durationInFrames={SCENES.revelation.end - SCENES.revelation.start}
+        from={SCENES.categories.start}
+        durationInFrames={SCENES.categories.end - SCENES.categories.start}
       >
-        <Scene3Revelation />
+        <Scene3Categories />
       </Sequence>
 
-      {/* Scene 4: THE SHIFT — 13-18s */}
       <Sequence
-        from={SCENES.shift.start}
-        durationInFrames={SCENES.shift.end - SCENES.shift.start}
+        from={SCENES.process.start}
+        durationInFrames={SCENES.process.end - SCENES.process.start}
       >
-        <Scene4Shift />
+        <Scene4Process />
       </Sequence>
 
-      {/* Scene 5: HOW IT WORKS — 18-23s */}
       <Sequence
-        from={SCENES.howItWorks.start}
-        durationInFrames={SCENES.howItWorks.end - SCENES.howItWorks.start}
+        from={SCENES.authority.start}
+        durationInFrames={SCENES.authority.end - SCENES.authority.start}
       >
-        <Scene5HowItWorks />
+        <Scene5Authority />
       </Sequence>
 
-      {/* Scene 6: SOCIAL PROOF — 23-26s */}
-      <Sequence
-        from={SCENES.socialProof.start}
-        durationInFrames={SCENES.socialProof.end - SCENES.socialProof.start}
-      >
-        <Scene6SocialProof />
-      </Sequence>
-
-      {/* Scene 7: CTA — 26-35s */}
       <Sequence
         from={SCENES.cta.start}
         durationInFrames={SCENES.cta.end - SCENES.cta.start}
       >
-        <Scene7CTA />
+        <Scene6CTA />
       </Sequence>
 
-      {/* Ambient particles — full duration, on top */}
       <GlobalParticles />
     </div>
   );
