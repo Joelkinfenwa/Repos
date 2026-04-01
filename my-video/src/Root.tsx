@@ -1,3 +1,4 @@
+import React from 'react';
 import { Composition } from 'remotion';
 import { UltimatePerformanceScreen } from './Composition';
 import { WIDTH, HEIGHT, FPS, DURATION_FRAMES } from './lib/design';

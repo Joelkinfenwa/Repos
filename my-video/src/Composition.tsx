@@ -1,15 +1,18 @@
-// Express Pathology — "Ultimate Performance Screen" Video Ad
-// 1080x1920 | 30fps | 28 seconds | 9:16 vertical
+// Express Pathology — "YOU HAVE NO IDEA" Campaign
+// 1080x1920 | 30fps | 35 seconds | 9:16 vertical
 
 import React from 'react';
 import { Sequence } from 'remotion';
 import { SCENES, COLORS } from './lib/design';
-import { Scene1Hook } from './components/Scene1Hook';
-import { Scene2TheNumber } from './components/Scene2TheNumber';
-import { Scene3WhoItsFor } from './components/Scene3WhoItsFor';
-import { Scene4HowItWorks } from './components/Scene4HowItWorks';
-import { Scene5SocialProof } from './components/Scene5SocialProof';
-import { Scene6CTA } from './components/Scene6CTA';
+import { AnimatedBg } from './components/AnimatedBg';
+import { GlobalParticles } from './components/GlobalParticles';
+import { Scene1ColdOpen } from './components/Scene1ColdOpen';
+import { Scene2Problem } from './components/Scene2Problem';
+import { Scene3Revelation } from './components/Scene3Revelation';
+import { Scene4Shift } from './components/Scene4Shift';
+import { Scene5HowItWorks } from './components/Scene5HowItWorks';
+import { Scene6SocialProof } from './components/Scene6SocialProof';
+import { Scene7CTA } from './components/Scene7CTA';
 
 export const UltimatePerformanceScreen: React.FC = () => {
   return (
@@ -23,53 +26,67 @@ export const UltimatePerformanceScreen: React.FC = () => {
         overflow: 'hidden',
       }}
     >
-      {/* Scene 1: HOOK — 0-3s */}
+      {/* Animated background gradient — full duration */}
+      <AnimatedBg />
+
+      {/* Scene 1: COLD OPEN — 0-3s */}
       <Sequence
-        from={SCENES.hook.start}
-        durationInFrames={SCENES.hook.end - SCENES.hook.start}
+        from={SCENES.coldOpen.start}
+        durationInFrames={SCENES.coldOpen.end - SCENES.coldOpen.start}
       >
-        <Scene1Hook />
+        <Scene1ColdOpen />
       </Sequence>
 
-      {/* Scene 2: THE NUMBER — 3-8s */}
+      {/* Scene 2: PROBLEM — 3-8s */}
       <Sequence
-        from={SCENES.theNumber.start}
-        durationInFrames={SCENES.theNumber.end - SCENES.theNumber.start}
+        from={SCENES.problem.start}
+        durationInFrames={SCENES.problem.end - SCENES.problem.start}
       >
-        <Scene2TheNumber />
+        <Scene2Problem />
       </Sequence>
 
-      {/* Scene 3: WHO IT'S FOR — 8-13s */}
+      {/* Scene 3: REVELATION — 8-13s */}
       <Sequence
-        from={SCENES.whoItsFor.start}
-        durationInFrames={SCENES.whoItsFor.end - SCENES.whoItsFor.start}
+        from={SCENES.revelation.start}
+        durationInFrames={SCENES.revelation.end - SCENES.revelation.start}
       >
-        <Scene3WhoItsFor />
+        <Scene3Revelation />
       </Sequence>
 
-      {/* Scene 4: HOW IT WORKS — 13-18s */}
+      {/* Scene 4: THE SHIFT — 13-18s */}
+      <Sequence
+        from={SCENES.shift.start}
+        durationInFrames={SCENES.shift.end - SCENES.shift.start}
+      >
+        <Scene4Shift />
+      </Sequence>
+
+      {/* Scene 5: HOW IT WORKS — 18-23s */}
       <Sequence
         from={SCENES.howItWorks.start}
         durationInFrames={SCENES.howItWorks.end - SCENES.howItWorks.start}
       >
-        <Scene4HowItWorks />
+        <Scene5HowItWorks />
       </Sequence>
 
-      {/* Scene 5: SOCIAL PROOF — 18-22s */}
+      {/* Scene 6: SOCIAL PROOF — 23-26s */}
       <Sequence
         from={SCENES.socialProof.start}
         durationInFrames={SCENES.socialProof.end - SCENES.socialProof.start}
       >
-        <Scene5SocialProof />
+        <Scene6SocialProof />
       </Sequence>
 
-      {/* Scene 6: CTA — 22-28s */}
+      {/* Scene 7: CTA — 26-35s */}
       <Sequence
         from={SCENES.cta.start}
         durationInFrames={SCENES.cta.end - SCENES.cta.start}
       >
-        <Scene6CTA />
+        <Scene7CTA />
       </Sequence>
+
+      {/* Ambient particles — full duration, on top */}
+      <GlobalParticles />
     </div>
   );
 };
