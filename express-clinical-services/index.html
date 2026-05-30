@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Express Clinical Services — Blood collection infrastructure for healthcare companies</title>
+<meta name="description" content="Express Clinical Services provides mobile and clinic-based blood collection infrastructure for Australian healthcare companies — nurse network, patient coordination, specimen logistics and quality control, without building your own operations." />
+<meta name="theme-color" content="#1B2420" />
+<meta property="og:title" content="Express Clinical Services — Blood collection infrastructure for modern healthcare companies" />
+<meta property="og:description" content="Reliable mobile and clinic-based pathology collection, managed for clinics, telehealth and health-tech companies across Australia." />
+<meta property="og:type" content="website" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          canvas:   '#F7F7F2',  // warm off-white
+          paper:    '#FFFFFF',
+          ink:      '#1B2420',  // warm charcoal
+          ink2:     '#313B36',
+          muted:    '#5A6661',  // muted body text
+          brand:    '#2E6B52',  // muted clinical green
+          brandDeep:'#1E4A38',
+          brandSoft:'#E9F1EC',
+          slateblue:'#38607A',  // sparing secondary
+          dark:     '#15201B',  // deep charcoal-green band
+          line:     '#E6E6DD',
+          danger:   '#B4453B',
+        },
+        fontFamily: {
+          display: ['Lexend', 'system-ui', 'sans-serif'],
+          sans: ['"Source Sans 3"', 'system-ui', 'sans-serif'],
+        },
+        boxShadow: {
+          soft: '0 1px 2px rgba(27,36,32,.04), 0 10px 30px -16px rgba(27,36,32,.18)',
+          lift: '0 18px 44px -22px rgba(27,36,32,.32)',
+        },
+        borderRadius: { xl2: '1.1rem' },
+      }
+    }
+  }
+</script>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Source Sans 3', system-ui, sans-serif; }
+  h1,h2,h3,h4,.font-display { font-family: 'Lexend', system-ui, sans-serif; letter-spacing: -0.01em; }
+
+  .reveal { opacity:0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity:1; transform:none; }
+  .reveal[data-d="1"]{ transition-delay:.07s } .reveal[data-d="2"]{ transition-delay:.14s }
+  .reveal[data-d="3"]{ transition-delay:.21s } .reveal[data-d="4"]{ transition-delay:.28s }
+  .reveal[data-d="5"]{ transition-delay:.35s }
+
+  /* photo-ready frame */
+  .photo {
+    background:
+      radial-gradient(120% 120% at 80% 0%, rgba(46,107,82,.10), transparent 55%),
+      linear-gradient(160deg, #EEF2EC, #E4EBE3);
+  }
+  .dotgrid {
+    background-image: radial-gradient(rgba(27,36,32,.10) 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+  a, button, summary { -webkit-tap-highlight-color: transparent; }
+  details > summary { list-style:none; cursor:pointer; }
+  details > summary::-webkit-details-marker { display:none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior:auto !important; }
+    .reveal { opacity:1 !important; transform:none !important; }
+  }
+</style>
+</head>
+
+<body class="bg-canvas text-ink antialiased selection:bg-brand/20">
+
+<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:z-[100] focus:top-3 focus:left-3 focus:bg-ink focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">Skip to content</a>
+
+<!-- ============ NAV ============ -->
+<header class="sticky top-0 z-50 bg-canvas/85 backdrop-blur border-b border-line">
+  <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4" aria-label="Primary">
+    <a href="#top" class="flex items-center gap-2.5 shrink-0" aria-label="Express Clinical Services home">
+      <span class="grid place-items-center h-9 w-9 rounded-lg bg-brand text-white">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l2 5 4-10 2 5h6"/></svg>
+      </span>
+      <span class="leading-none">
+        <span class="block font-display font-semibold text-[1.02rem] tracking-tight">Express Clinical Services</span>
+        <span class="block text-[11px] text-muted -mt-0.5">Collection infrastructure</span>
+      </span>
+    </a>
+
+    <div class="hidden lg:flex items-center gap-1 text-sm font-medium text-muted">
+      <a href="#who" class="px-3 py-2 rounded-lg hover:bg-ink/[.04] hover:text-ink transition">Who we help</a>
+      <a href="#solution" class="px-3 py-2 rounded-lg hover:bg-ink/[.04] hover:text-ink transition">What we do</a>
+      <a href="#how" class="px-3 py-2 rounded-lg hover:bg-ink/[.04] hover:text-ink transition">How it works</a>
+      <a href="#models" class="px-3 py-2 rounded-lg hover:bg-ink/[.04] hover:text-ink transition">Service models</a>
+      <a href="#why" class="px-3 py-2 rounded-lg hover:bg-ink/[.04] hover:text-ink transition">Why Express</a>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <a href="#contact" class="inline-flex items-center gap-1.5 rounded-lg bg-brand text-white text-sm font-semibold px-4 py-2.5 hover:bg-brandDeep transition focus:outline-none focus:ring-4 focus:ring-brand/25">
+        Book a partner call
+      </a>
+      <button id="menuBtn" class="lg:hidden grid place-items-center h-10 w-10 rounded-lg border border-line bg-paper" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </nav>
+  <div id="mobileMenu" class="lg:hidden hidden border-t border-line bg-paper px-4 py-2 text-ink font-medium">
+    <a href="#who" class="block px-2 py-3 rounded-lg hover:bg-ink/5">Who we help</a>
+    <a href="#solution" class="block px-2 py-3 rounded-lg hover:bg-ink/5">What we do</a>
+    <a href="#how" class="block px-2 py-3 rounded-lg hover:bg-ink/5">How it works</a>
+    <a href="#models" class="block px-2 py-3 rounded-lg hover:bg-ink/5">Service models</a>
+    <a href="#why" class="block px-2 py-3 rounded-lg hover:bg-ink/5">Why Express</a>
+    <a href="#contact" class="block text-center my-2 px-4 py-3 rounded-lg bg-brand text-white">Book a partner call</a>
+  </div>
+</header>
+
+<main id="main">
+<a id="top"></a>
+
+<!-- ============ HERO ============ -->
+<section class="relative overflow-hidden">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-16 lg:pt-24 pb-16 lg:pb-20">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div>
+        <div class="reveal inline-flex items-center gap-2 rounded-full border border-line bg-paper px-3.5 py-1.5 text-xs font-semibold text-brand">
+          <span class="h-2 w-2 rounded-full bg-brand"></span>
+          Australian healthcare collection network
+        </div>
+        <h1 class="reveal mt-6 font-display font-semibold text-4xl sm:text-5xl lg:text-[3.4rem] leading-[1.06] text-ink">
+          Blood collection infrastructure for modern healthcare companies.
+        </h1>
+        <p class="reveal mt-6 text-lg text-muted max-w-xl leading-relaxed">
+          We help clinics, telehealth brands and health-tech companies deliver reliable mobile and clinic-based pathology collections — without building their own nurse network.
+        </p>
+        <div class="reveal mt-8 flex flex-col sm:flex-row gap-3">
+          <a href="#contact" class="inline-flex items-center justify-center gap-2 rounded-lg bg-brand text-white font-semibold px-6 py-3.5 shadow-soft hover:bg-brandDeep transition focus:outline-none focus:ring-4 focus:ring-brand/25">
+            Book a partner call
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="#how" class="inline-flex items-center justify-center gap-2 rounded-lg border border-line bg-paper text-ink font-semibold px-6 py-3.5 hover:border-brand/40 transition">
+            See how it works
+          </a>
+        </div>
+      </div>
+
+      <!-- Hero visual: photo-ready frame + calm coverage panel -->
+      <div class="reveal" data-d="2">
+        <div class="relative">
+          <div class="photo rounded-xl2 border border-line shadow-soft overflow-hidden aspect-[4/3] grid place-items-center text-center">
+            <div class="text-muted">
+              <svg class="mx-auto" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2E6B52" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3.2"/><path d="M8 5l1.2-2h5.6L16 5"/></svg>
+              <p class="mt-3 text-sm font-medium">Nurse &amp; collection photography</p>
+              <p class="text-xs text-muted/80">Replace with real imagery before launch</p>
+            </div>
+          </div>
+          <div class="absolute -bottom-6 -left-2 sm:left-6 w-[78%] sm:w-[62%] rounded-xl bg-paper border border-line shadow-lift p-4">
+            <p class="text-xs font-semibold text-muted uppercase tracking-wide">Coverage</p>
+            <div class="mt-2 flex items-center gap-2 flex-wrap text-[13px] font-semibold text-ink">
+              <span class="rounded-md bg-brandSoft text-brandDeep px-2 py-1">Sydney</span>
+              <span class="rounded-md bg-brandSoft text-brandDeep px-2 py-1">Melbourne</span>
+              <span class="rounded-md bg-brandSoft text-brandDeep px-2 py-1">Brisbane</span>
+              <span class="rounded-md bg-brandSoft text-brandDeep px-2 py-1">Perth</span>
+              <span class="rounded-md bg-brandSoft text-brandDeep px-2 py-1">+ metro</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trust bar -->
+  <div class="border-y border-line bg-paper">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-5 grid grid-cols-2 md:grid-cols-5 gap-y-3 gap-x-6 text-sm">
+      <div class="flex items-center gap-2.5 text-ink/80"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2E6B52" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Mobile nurse collections</div>
+      <div class="flex items-center gap-2.5 text-ink/80"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2E6B52" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Clinic collection options</div>
+      <div class="flex items-center gap-2.5 text-ink/80"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2E6B52" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Patient scheduling support</div>
+      <div class="flex items-center gap-2.5 text-ink/80"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2E6B52" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Pathology logistics</div>
+      <div class="flex items-center gap-2.5 text-ink/80"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2E6B52" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Australia-wide metro coverage</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 1 — WHO WE HELP ============ -->
+<section id="who" class="py-20 lg:py-28">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl">
+      <span class="reveal text-xs font-bold uppercase tracking-[.16em] text-brand">Who we help</span>
+      <h2 class="reveal mt-3 font-display font-semibold text-3xl sm:text-4xl text-ink">Built for healthcare companies that need collections done properly.</h2>
+    </div>
+
+    <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <article class="reveal rounded-xl2 bg-paper border border-line p-6 shadow-soft hover:border-brand/40 transition">
+        <span class="grid place-items-center h-11 w-11 rounded-lg bg-brandSoft text-brandDeep"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg></span>
+        <h3 class="mt-4 font-display font-semibold text-lg">Telehealth companies</h3>
+        <p class="mt-2 text-[15px] text-muted">Turn an online consult into a completed collection — without hiring nurses or running logistics.</p>
+      </article>
+      <article class="reveal" data-d="1"><div class="rounded-xl2 bg-paper border border-line p-6 shadow-soft hover:border-brand/40 transition h-full">
+        <span class="grid place-items-center h-11 w-11 rounded-lg bg-brandSoft text-brandDeep"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></span>
+        <h3 class="mt-4 font-display font-semibold text-lg">Men's health &amp; hormone clinics</h3>
+        <p class="mt-2 text-[15px] text-muted">Recurring TRT and hormone panels collected reliably, on schedule, wherever your patients are.</p>
+      </div></article>
+      <article class="reveal" data-d="2"><div class="rounded-xl2 bg-paper border border-line p-6 shadow-soft hover:border-brand/40 transition h-full">
+        <span class="grid place-items-center h-11 w-11 rounded-lg bg-brandSoft text-brandDeep"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4"/><circle cx="12" cy="12" r="3"/></svg></span>
+        <h3 class="mt-4 font-display font-semibold text-lg">Longevity &amp; preventative health</h3>
+        <p class="mt-2 text-[15px] text-muted">Membership and baseline testing programs delivered with a consistent patient experience.</p>
+      </div></article>
+      <article class="reveal"><div class="rounded-xl2 bg-paper border border-line p-6 shadow-soft hover:border-brand/40 transition h-full">
+        <span class="grid place-items-center h-11 w-11 rounded-lg bg-brandSoft text-brandDeep"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M7.8 7.8 16.2 16.2M6 8.5v3a4 4 0 0 0 4 4h0M18 15.5v-3a4 4 0 0 0-4-4h0"/></svg></span>
+        <h3 class="mt-4 font-display font-semibold text-lg">Genetics &amp; specialist testing</h3>
+        <p class="mt-2 text-[15px] text-muted">Specimen collection handled to your protocol and routed to the right pathology provider.</p>
+      </div></article>
+      <article class="reveal" data-d="1"><div class="rounded-xl2 bg-paper border border-line p-6 shadow-soft hover:border-brand/40 transition h-full">
+        <span class="grid place-items-center h-11 w-11 rounded-lg bg-brandSoft text-brandDeep"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V8l7-4 7 4v13"/><path d="M9 21v-5h6v5"/></svg></span>
+        <h3 class="mt-4 font-display font-semibold text-lg">Corporate health programs</h3>
+        <p class="mt-2 text-[15px] text-muted">Onsite and group testing across workplaces, coordinated as a single program.</p>
+      </div></article>
+      <article class="reveal" data-d="2"><div class="rounded-xl2 bg-paper border border-line p-6 shadow-soft hover:border-brand/40 transition h-full">
+        <span class="grid place-items-center h-11 w-11 rounded-lg bg-brandSoft text-brandDeep"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2v6L6 16a2 2 0 0 0 2 3h8a2 2 0 0 0 2-3l-4-8V2M8 2h8M7 14h10"/></svg></span>
+        <h3 class="mt-4 font-display font-semibold text-lg">Pathology &amp; diagnostic partners</h3>
+        <p class="mt-2 text-[15px] text-muted">Extend collection capacity into new areas and overflow demand without adding headcount.</p>
+      </div></article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 2 — THE PROBLEM ============ -->
+<section class="py-20 lg:py-28 bg-dark text-white/90">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-12">
+    <div class="lg:col-span-5">
+      <span class="reveal text-xs font-bold uppercase tracking-[.16em] text-brand">The problem</span>
+      <h2 class="reveal mt-3 font-display font-semibold text-3xl sm:text-4xl text-white">Patient demand is growing. Clinical operations are the bottleneck.</h2>
+      <p class="reveal mt-5 text-white/70 text-lg leading-relaxed">Most health companies can sell the consultation, prescribe the plan or order the test. The hard part is getting samples collected reliably, at scale, with a patient experience that protects the brand.</p>
+    </div>
+    <div class="lg:col-span-7 grid sm:grid-cols-2 gap-x-8 gap-y-5 self-center">
+      <div class="reveal flex items-start gap-3"><svg class="mt-0.5 shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7FB79C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg> <span class="text-white/80">Nurse recruitment is slow and ongoing</span></div>
+      <div class="reveal" data-d="1"><div class="flex items-start gap-3"><svg class="mt-0.5 shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7FB79C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg> <span class="text-white/80">Scheduling across patients and staff is messy</span></div></div>
+      <div class="reveal" data-d="1"><div class="flex items-start gap-3"><svg class="mt-0.5 shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7FB79C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg> <span class="text-white/80">Patient no-shows create friction and cost</span></div></div>
+      <div class="reveal" data-d="2"><div class="flex items-start gap-3"><svg class="mt-0.5 shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7FB79C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg> <span class="text-white/80">Regional and outer-metro coverage is hard</span></div></div>
+      <div class="reveal" data-d="2"><div class="flex items-start gap-3"><svg class="mt-0.5 shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7FB79C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg> <span class="text-white/80">Collection quality directly affects results</span></div></div>
+      <div class="reveal" data-d="3"><div class="flex items-start gap-3"><svg class="mt-0.5 shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7FB79C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg> <span class="text-white/80">Internal teams get pulled into logistics</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 3 — THE SOLUTION ============ -->
+<section id="solution" class="py-20 lg:py-28">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl">
+      <span class="reveal text-xs font-bold uppercase tracking-[.16em] text-brand">The solution</span>
+      <h2 class="reveal mt-3 font-display font-semibold text-3xl sm:text-4xl text-ink">Your collection layer, handled.</h2>
+      <p class="reveal mt-4 text-muted text-lg">Express gives healthcare companies a reliable operating layer for blood collection — from patient coordination through to nurse allocation and sample handoff.</p>
+    </div>
+
+    <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="reveal rounded-xl2 bg-paper border border-line p-6 shadow-soft">
+        <div class="flex items-center gap-3"><span class="grid place-items-center h-10 w-10 rounded-lg bg-brand text-white"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-5 6-5s6 1.7 6 5"/><circle cx="18" cy="9" r="2"/><path d="M16 20c0-2.5 1-3.5 4-3.5"/></svg></span><h3 class="font-display font-semibold text-lg">Nurse network</h3></div>
+        <p class="mt-3 text-[15px] text-muted">Qualified collection staff across key metro areas, managed under our operations.</p>
+      </div>
+      <div class="reveal" data-d="1"><div class="rounded-xl2 bg-paper border border-line p-6 shadow-soft h-full">
+        <div class="flex items-center gap-3"><span class="grid place-items-center h-10 w-10 rounded-lg bg-brand text-white"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></span><h3 class="font-display font-semibold text-lg">Patient coordination</h3></div>
+        <p class="mt-3 text-[15px] text-muted">Clear communication and appointment management that keeps patients informed.</p>
+      </div></div>
+      <div class="reveal" data-d="2"><div class="rounded-xl2 bg-paper border border-line p-6 shadow-soft h-full">
+        <div class="flex items-center gap-3"><span class="grid place-items-center h-10 w-10 rounded-lg bg-brand text-white"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></svg></span><h3 class="font-display font-semibold text-lg">Collection execution</h3></div>
+        <p class="mt-3 text-[15px] text-muted">Home, office, clinic and corporate collection options to suit each patient.</p>
+      </div></div>
+      <div class="reveal"><div class="rounded-xl2 bg-paper border border-line p-6 shadow-soft h-full">
+        <div class="flex items-center gap-3"><span class="grid place-items-center h-10 w-10 rounded-lg bg-brand text-white"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 17h14M5 17a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h9l5 5v5a2 2 0 0 1-2 2M9 17v3M15 17v3"/></svg></span><h3 class="font-display font-semibold text-lg">Specimen logistics</h3></div>
+        <p class="mt-3 text-[15px] text-muted">Samples handled according to your partner pathology provider's requirements.</p>
+      </div></div>
+      <div class="reveal" data-d="1"><div class="rounded-xl2 bg-paper border border-line p-6 shadow-soft h-full">
+        <div class="flex items-center gap-3"><span class="grid place-items-center h-10 w-10 rounded-lg bg-brand text-white"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 7.8 8 11 4.6-3.2 8-6 8-11V5l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg></span><h3 class="font-display font-semibold text-lg">Quality control</h3></div>
+        <p class="mt-3 text-[15px] text-muted">SOPs, documentation, sample photos and clear escalation handling.</p>
+      </div></div>
+      <div class="reveal" data-d="2"><div class="rounded-xl2 bg-paper border border-line p-6 shadow-soft h-full">
+        <div class="flex items-center gap-3"><span class="grid place-items-center h-10 w-10 rounded-lg bg-brand text-white"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9"/><path d="M3 4v5h5"/><path d="m9 12 2 2 4-4"/></svg></span><h3 class="font-display font-semibold text-lg">Scalable workflows</h3></div>
+        <p class="mt-3 text-[15px] text-muted">Built to support recurring monthly volume as your program grows.</p>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 4 — HOW IT WORKS ============ -->
+<section id="how" class="py-20 lg:py-28 bg-paper border-y border-line">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl">
+      <span class="reveal text-xs font-bold uppercase tracking-[.16em] text-brand">How it works</span>
+      <h2 class="reveal mt-3 font-display font-semibold text-3xl sm:text-4xl text-ink">A simple, reliable flow</h2>
+    </div>
+
+    <!-- workflow diagram -->
+    <ol class="mt-14 grid md:grid-cols-5 gap-6 relative">
+      <div class="hidden md:block absolute top-6 left-[10%] right-[10%] h-px bg-line" aria-hidden="true"></div>
+      <li class="reveal relative"><span class="grid place-items-center h-12 w-12 rounded-full bg-brand text-white font-display font-semibold shadow-soft relative z-10">1</span><h3 class="mt-4 font-display font-semibold">Referral received</h3><p class="mt-1.5 text-sm text-muted">Partner sends a referral or booking request.</p></li>
+      <li class="reveal relative" data-d="1"><span class="grid place-items-center h-12 w-12 rounded-full bg-brand text-white font-display font-semibold shadow-soft relative z-10">2</span><h3 class="mt-4 font-display font-semibold">We coordinate</h3><p class="mt-1.5 text-sm text-muted">Express arranges the patient and the collection.</p></li>
+      <li class="reveal relative" data-d="2"><span class="grid place-items-center h-12 w-12 rounded-full bg-brand text-white font-display font-semibold shadow-soft relative z-10">3</span><h3 class="mt-4 font-display font-semibold">Collection completed</h3><p class="mt-1.5 text-sm text-muted">A qualified nurse completes the collection.</p></li>
+      <li class="reveal relative" data-d="3"><span class="grid place-items-center h-12 w-12 rounded-full bg-brand text-white font-display font-semibold shadow-soft relative z-10">4</span><h3 class="mt-4 font-display font-semibold">Sample delivered</h3><p class="mt-1.5 text-sm text-muted">Sample reaches your required pathology provider.</p></li>
+      <li class="reveal relative" data-d="4"><span class="grid place-items-center h-12 w-12 rounded-full bg-brand text-white font-display font-semibold shadow-soft relative z-10">5</span><h3 class="mt-4 font-display font-semibold">Results returned</h3><p class="mt-1.5 text-sm text-muted">Partner receives results through their normal pathway.</p></li>
+    </ol>
+
+    <div class="reveal mt-12 rounded-xl2 bg-brandSoft border border-brand/15 p-6 sm:p-7 flex items-start gap-4">
+      <svg class="mt-0.5 shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1E4A38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 7.8 8 11 4.6-3.2 8-6 8-11V5l-8-3Z"/></svg>
+      <p class="text-[15px] text-brandDeep"><strong class="font-semibold">We don't need to own the patient relationship.</strong> Express can operate as a white-label or partner-facing clinical services layer — your brand stays front and centre throughout.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 5 — SERVICE MODELS ============ -->
+<section id="models" class="py-20 lg:py-28">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl">
+      <span class="reveal text-xs font-bold uppercase tracking-[.16em] text-brand">Service models</span>
+      <h2 class="reveal mt-3 font-display font-semibold text-3xl sm:text-4xl text-ink">Three ways to collect</h2>
+      <p class="reveal mt-4 text-muted text-lg">Mix and match across your patient base — we'll map the simplest model for each.</p>
+    </div>
+
+    <div class="mt-12 grid lg:grid-cols-3 gap-5">
+      <article class="reveal rounded-xl2 bg-paper border border-line p-7 shadow-soft">
+        <span class="grid place-items-center h-12 w-12 rounded-lg bg-dark text-white"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></svg></span>
+        <h3 class="mt-5 font-display font-semibold text-xl">Mobile collections</h3>
+        <p class="mt-2 text-[15px] text-muted">A nurse attends the patient's home, workplace or chosen location — ideal for convenience and coverage.</p>
+      </article>
+      <article class="reveal" data-d="1"><div class="rounded-xl2 bg-paper border border-line p-7 shadow-soft h-full">
+        <span class="grid place-items-center h-12 w-12 rounded-lg bg-dark text-white"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v14M9 21v-5h6v5M3 21h18M9 9h.01M15 9h.01"/></svg></span>
+        <h3 class="mt-5 font-display font-semibold text-xl">Clinic collection pathway</h3>
+        <p class="mt-2 text-[15px] text-muted">The patient attends a partner collection location where that's the most suitable option.</p>
+      </div></article>
+      <article class="reveal" data-d="2"><div class="rounded-xl2 bg-paper border border-line p-7 shadow-soft h-full">
+        <span class="grid place-items-center h-12 w-12 rounded-lg bg-dark text-white"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V8l7-4 7 4v13"/><path d="M9 12h.01M9 16h.01M15 12h.01M15 16h.01"/></svg></span>
+        <h3 class="mt-5 font-display font-semibold text-xl">Corporate / onsite collections</h3>
+        <p class="mt-2 text-[15px] text-muted">Nurses deployed onsite for workplace or group testing programs, run as a coordinated event.</p>
+      </div></article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 6 — WHY EXPRESS ============ -->
+<section id="why" class="py-20 lg:py-28 bg-paper border-y border-line">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-12 items-start">
+    <div class="lg:col-span-4 lg:sticky lg:top-24">
+      <span class="reveal text-xs font-bold uppercase tracking-[.16em] text-brand">Why partners choose Express</span>
+      <h2 class="reveal mt-3 font-display font-semibold text-3xl sm:text-4xl text-ink">Built for reliability, not hype.</h2>
+      <p class="reveal mt-4 text-muted text-lg">A clinical operations partner you can put in front of your patients with confidence.</p>
+    </div>
+    <div class="lg:col-span-8 grid sm:grid-cols-2 gap-x-8 gap-y-5">
+      <div class="reveal flex items-start gap-3"><svg class="mt-0.5 shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E6B52" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="text-ink/85"><strong class="font-semibold text-ink">Operationally proven</strong> collection delivery</span></div>
+      <div class="reveal" data-d="1"><div class="flex items-start gap-3"><svg class="mt-0.5 shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E6B52" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="text-ink/85"><strong class="font-semibold text-ink">Australian healthcare</strong> experience</span></div></div>
+      <div class="reveal" data-d="1"><div class="flex items-start gap-3"><svg class="mt-0.5 shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E6B52" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="text-ink/85"><strong class="font-semibold text-ink">Flexible partner workflows</strong></span></div></div>
+      <div class="reveal" data-d="2"><div class="flex items-start gap-3"><svg class="mt-0.5 shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E6B52" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="text-ink/85"><strong class="font-semibold text-ink">Fast rollout</strong> for new programs</span></div></div>
+      <div class="reveal" data-d="2"><div class="flex items-start gap-3"><svg class="mt-0.5 shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E6B52" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="text-ink/85"><strong class="font-semibold text-ink">Scalable metro coverage</strong></span></div></div>
+      <div class="reveal" data-d="3"><div class="flex items-start gap-3"><svg class="mt-0.5 shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E6B52" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="text-ink/85"><strong class="font-semibold text-ink">Patient-first communication</strong></span></div></div>
+      <div class="reveal" data-d="3"><div class="flex items-start gap-3"><svg class="mt-0.5 shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E6B52" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="text-ink/85"><strong class="font-semibold text-ink">B2B reporting &amp; escalation</strong></span></div></div>
+      <div class="reveal" data-d="4"><div class="flex items-start gap-3"><svg class="mt-0.5 shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E6B52" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span class="text-ink/85"><strong class="font-semibold text-ink">No internal nurse operations</strong> to build</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 7 — USE CASES ============ -->
+<section class="py-20 lg:py-28">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl">
+      <span class="reveal text-xs font-bold uppercase tracking-[.16em] text-brand">Use cases</span>
+      <h2 class="reveal mt-3 font-display font-semibold text-3xl sm:text-4xl text-ink">Where partners use Express</h2>
+    </div>
+    <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="reveal flex items-center gap-3 rounded-xl bg-paper border border-line px-5 py-4"><span class="h-2 w-2 rounded-full bg-brand shrink-0"></span><span class="text-[15px] font-medium">TRT / hormone clinic blood testing</span></div>
+      <div class="reveal" data-d="1"><div class="flex items-center gap-3 rounded-xl bg-paper border border-line px-5 py-4 h-full"><span class="h-2 w-2 rounded-full bg-brand shrink-0"></span><span class="text-[15px] font-medium">Preventative health membership testing</span></div></div>
+      <div class="reveal" data-d="2"><div class="flex items-center gap-3 rounded-xl bg-paper border border-line px-5 py-4 h-full"><span class="h-2 w-2 rounded-full bg-brand shrink-0"></span><span class="text-[15px] font-medium">Pre-treatment pathology</span></div></div>
+      <div class="reveal"><div class="flex items-center gap-3 rounded-xl bg-paper border border-line px-5 py-4 h-full"><span class="h-2 w-2 rounded-full bg-brand shrink-0"></span><span class="text-[15px] font-medium">Genetic test sample collection</span></div></div>
+      <div class="reveal" data-d="1"><div class="flex items-center gap-3 rounded-xl bg-paper border border-line px-5 py-4 h-full"><span class="h-2 w-2 rounded-full bg-brand shrink-0"></span><span class="text-[15px] font-medium">Corporate employee testing</span></div></div>
+      <div class="reveal" data-d="2"><div class="flex items-center gap-3 rounded-xl bg-paper border border-line px-5 py-4 h-full"><span class="h-2 w-2 rounded-full bg-brand shrink-0"></span><span class="text-[15px] font-medium">Practitioner-referred pathology</span></div></div>
+      <div class="reveal"><div class="flex items-center gap-3 rounded-xl bg-paper border border-line px-5 py-4 h-full"><span class="h-2 w-2 rounded-full bg-brand shrink-0"></span><span class="text-[15px] font-medium">Subscription health programs</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 8 — PARTNER EXPERIENCE ============ -->
+<section class="py-20 lg:py-28 bg-paper border-y border-line">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+    <div class="reveal order-2 lg:order-1">
+      <div class="photo dotgrid rounded-xl2 border border-line shadow-soft overflow-hidden aspect-[5/4] grid place-items-center text-center">
+        <div class="text-muted">
+          <svg class="mx-auto" width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#2E6B52" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
+          <p class="mt-3 text-sm font-medium">Calm, professional collection experience</p>
+          <p class="text-xs text-muted/80">Replace with real imagery before launch</p>
+        </div>
+      </div>
+    </div>
+    <div class="order-1 lg:order-2">
+      <span class="reveal text-xs font-bold uppercase tracking-[.16em] text-brand">Partner experience</span>
+      <h2 class="reveal mt-3 font-display font-semibold text-3xl sm:text-4xl text-ink">Protect your patient experience.</h2>
+      <p class="reveal mt-5 text-muted text-lg leading-relaxed">Your patients should not feel like they have been handed off to a logistics company. Our role is to make the collection process feel calm, professional and easy — while your brand remains front and centre.</p>
+      <div class="reveal mt-7 flex flex-wrap gap-x-8 gap-y-3 text-[15px]">
+        <span class="flex items-center gap-2 text-ink/85"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2E6B52" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> White-label friendly</span>
+        <span class="flex items-center gap-2 text-ink/85"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2E6B52" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Consistent communication</span>
+        <span class="flex items-center gap-2 text-ink/85"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2E6B52" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Your brand stays central</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 9 — CTA + FORM ============ -->
+<section id="contact" class="py-20 lg:py-28 bg-dark text-white">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 lg:gap-16">
+    <div>
+      <span class="reveal text-xs font-bold uppercase tracking-[.16em] text-brand">Get started</span>
+      <h2 class="reveal mt-3 font-display font-semibold text-3xl sm:text-4xl text-white">Need reliable blood collection at scale?</h2>
+      <p class="reveal mt-5 text-white/70 text-lg leading-relaxed max-w-md">Tell us what volume you're expecting, where your patients are located, and what workflow you need. We'll map the simplest collection model.</p>
+
+      <div class="reveal mt-8 space-y-4">
+        <a href="tel:1300000000" class="flex items-center gap-3 rounded-xl border border-white/15 bg-white/[.04] px-4 py-3.5 hover:bg-white/[.08] transition">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7FB79C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+          <span><span class="block text-xs text-white/55">Book a partner call</span><span class="font-semibold">1300 000 000</span></span>
+        </a>
+        <a href="mailto:partners@expressclinical.com.au" class="flex items-center gap-3 rounded-xl border border-white/15 bg-white/[.04] px-4 py-3.5 hover:bg-white/[.08] transition">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7FB79C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+          <span><span class="block text-xs text-white/55">Email us</span><span class="font-semibold break-all">partners@expressclinical.com.au</span></span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Partner inquiry form -->
+    <div class="reveal" data-d="1">
+      <form id="leadForm" novalidate class="rounded-xl2 bg-paper text-ink p-6 sm:p-8 shadow-lift">
+        <div id="formSuccess" class="hidden text-center py-10" role="status" aria-live="polite">
+          <span class="mx-auto grid place-items-center h-16 w-16 rounded-full bg-brandSoft text-brand"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+          <h3 class="mt-5 font-display font-semibold text-2xl">Thanks — we've received your enquiry.</h3>
+          <p class="mt-2 text-muted">A partnerships lead will be in touch shortly to map the simplest collection model for your volume and locations.</p>
+        </div>
+
+        <div id="formBody">
+          <h3 class="font-display font-semibold text-xl">Partner enquiry</h3>
+          <p class="text-sm text-muted mt-1">Fields marked <span class="text-danger">*</span> are required.</p>
+
+          <div class="mt-6 grid sm:grid-cols-2 gap-4">
+            <div>
+              <label for="company" class="block text-sm font-semibold mb-1.5">Company name <span class="text-danger">*</span></label>
+              <input id="company" name="company" type="text" autocomplete="organization" required class="w-full rounded-lg border border-line bg-canvas px-4 py-3 text-[15px] focus:outline-none focus:ring-4 focus:ring-brand/15 focus:border-brand transition" placeholder="Your company" />
+              <p class="err hidden mt-1 text-xs text-danger">Please enter your company name.</p>
+            </div>
+            <div>
+              <label for="name" class="block text-sm font-semibold mb-1.5">Contact name <span class="text-danger">*</span></label>
+              <input id="name" name="name" type="text" autocomplete="name" required class="w-full rounded-lg border border-line bg-canvas px-4 py-3 text-[15px] focus:outline-none focus:ring-4 focus:ring-brand/15 focus:border-brand transition" placeholder="Full name" />
+              <p class="err hidden mt-1 text-xs text-danger">Please enter your name.</p>
+            </div>
+            <div>
+              <label for="email" class="block text-sm font-semibold mb-1.5">Email <span class="text-danger">*</span></label>
+              <input id="email" name="email" type="email" autocomplete="email" required class="w-full rounded-lg border border-line bg-canvas px-4 py-3 text-[15px] focus:outline-none focus:ring-4 focus:ring-brand/15 focus:border-brand transition" placeholder="you@company.com.au" />
+              <p class="err hidden mt-1 text-xs text-danger">Please enter a valid email address.</p>
+            </div>
+            <div>
+              <label for="phone" class="block text-sm font-semibold mb-1.5">Phone</label>
+              <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" class="w-full rounded-lg border border-line bg-canvas px-4 py-3 text-[15px] focus:outline-none focus:ring-4 focus:ring-brand/15 focus:border-brand transition" placeholder="04xx xxx xxx" />
+            </div>
+            <div>
+              <label for="orgtype" class="block text-sm font-semibold mb-1.5">Type of organisation <span class="text-danger">*</span></label>
+              <select id="orgtype" name="orgtype" required class="w-full rounded-lg border border-line bg-canvas px-4 py-3 text-[15px] focus:outline-none focus:ring-4 focus:ring-brand/15 focus:border-brand transition">
+                <option value="" selected disabled>Select organisation type</option>
+                <option>Telehealth company</option>
+                <option>Men's health / hormone clinic</option>
+                <option>Longevity / preventative health</option>
+                <option>Genetics / specialist testing</option>
+                <option>Corporate health program</option>
+                <option>Pathology / diagnostic partner</option>
+                <option>Specialist clinic</option>
+                <option>Digital health startup</option>
+                <option>Other</option>
+              </select>
+              <p class="err hidden mt-1 text-xs text-danger">Please select an organisation type.</p>
+            </div>
+            <div>
+              <label for="volume" class="block text-sm font-semibold mb-1.5">Estimated monthly volume</label>
+              <select id="volume" name="volume" class="w-full rounded-lg border border-line bg-canvas px-4 py-3 text-[15px] focus:outline-none focus:ring-4 focus:ring-brand/15 focus:border-brand transition">
+                <option value="" selected disabled>Select a range</option>
+                <option>1–50 collections</option>
+                <option>51–250 collections</option>
+                <option>251–1,000 collections</option>
+                <option>1,000+ collections</option>
+                <option>Not sure yet</option>
+              </select>
+            </div>
+
+            <fieldset class="sm:col-span-2">
+              <legend class="block text-sm font-semibold mb-2">States / locations required</legend>
+              <div class="flex flex-wrap gap-2" role="group" aria-label="States required">
+                <label class="chip"><input type="checkbox" name="states" value="NSW" class="sr-only peer"><span>NSW</span></label>
+                <label class="chip"><input type="checkbox" name="states" value="VIC" class="sr-only peer"><span>VIC</span></label>
+                <label class="chip"><input type="checkbox" name="states" value="QLD" class="sr-only peer"><span>QLD</span></label>
+                <label class="chip"><input type="checkbox" name="states" value="WA" class="sr-only peer"><span>WA</span></label>
+                <label class="chip"><input type="checkbox" name="states" value="SA" class="sr-only peer"><span>SA</span></label>
+                <label class="chip"><input type="checkbox" name="states" value="TAS" class="sr-only peer"><span>TAS</span></label>
+                <label class="chip"><input type="checkbox" name="states" value="ACT" class="sr-only peer"><span>ACT</span></label>
+                <label class="chip"><input type="checkbox" name="states" value="NT" class="sr-only peer"><span>NT</span></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="sm:col-span-2">
+              <legend class="block text-sm font-semibold mb-2">Collection type needed</legend>
+              <div class="flex flex-wrap gap-2" role="group" aria-label="Collection type">
+                <label class="chip"><input type="checkbox" name="collection" value="Mobile" class="sr-only peer"><span>Mobile</span></label>
+                <label class="chip"><input type="checkbox" name="collection" value="Clinic" class="sr-only peer"><span>Clinic</span></label>
+                <label class="chip"><input type="checkbox" name="collection" value="Corporate / onsite" class="sr-only peer"><span>Corporate / onsite</span></label>
+                <label class="chip"><input type="checkbox" name="collection" value="Not sure" class="sr-only peer"><span>Not sure yet</span></label>
+              </div>
+            </fieldset>
+
+            <div class="sm:col-span-2">
+              <label for="notes" class="block text-sm font-semibold mb-1.5">Notes / workflow requirements</label>
+              <textarea id="notes" name="notes" rows="3" class="w-full rounded-lg border border-line bg-canvas px-4 py-3 text-[15px] focus:outline-none focus:ring-4 focus:ring-brand/15 focus:border-brand transition" placeholder="Pathology provider, referral flow, timelines, anything else that helps us scope it."></textarea>
+            </div>
+          </div>
+
+          <button type="submit" id="submitBtn" class="mt-6 w-full inline-flex items-center justify-center gap-2 rounded-lg bg-brand text-white font-semibold px-6 py-3.5 hover:bg-brandDeep transition focus:outline-none focus:ring-4 focus:ring-brand/25">
+            <span class="btn-label">Book a partner call</span>
+            <svg class="btn-spin hidden animate-spin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M21 12a9 9 0 1 1-6.2-8.5" stroke-linecap="round"/></svg>
+          </button>
+          <p class="mt-3 text-center text-xs text-muted">No obligation — we'll respond with the simplest collection model for your needs.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="bg-canvas border-t border-line pt-14 pb-10">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid md:grid-cols-4 gap-10">
+      <div>
+        <div class="flex items-center gap-2.5">
+          <span class="grid place-items-center h-9 w-9 rounded-lg bg-brand text-white"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l2 5 4-10 2 5h6"/></svg></span>
+          <span class="font-display font-semibold">Express Clinical Services</span>
+        </div>
+        <p class="mt-4 text-sm text-muted max-w-xs">Mobile and clinic-based blood collection infrastructure for Australian healthcare companies.</p>
+      </div>
+      <div>
+        <p class="font-display font-semibold text-sm">Company</p>
+        <ul class="mt-3 space-y-2 text-sm text-muted">
+          <li><a href="#who" class="hover:text-ink transition">Who we help</a></li>
+          <li><a href="#solution" class="hover:text-ink transition">What we do</a></li>
+          <li><a href="#how" class="hover:text-ink transition">How it works</a></li>
+          <li><a href="#models" class="hover:text-ink transition">Service models</a></li>
+          <li><a href="#why" class="hover:text-ink transition">Why Express</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="font-display font-semibold text-sm">Capabilities</p>
+        <ul class="mt-3 space-y-2 text-sm text-muted">
+          <li>Mobile nurse collections</li>
+          <li>Clinic collection pathway</li>
+          <li>Corporate / onsite programs</li>
+          <li>Specimen logistics</li>
+          <li>Quality control &amp; SOPs</li>
+        </ul>
+      </div>
+      <div>
+        <p class="font-display font-semibold text-sm">Contact</p>
+        <ul class="mt-3 space-y-2 text-sm text-muted">
+          <li><a href="tel:1300000000" class="hover:text-ink transition">1300 000 000</a></li>
+          <li><a href="mailto:partners@expressclinical.com.au" class="hover:text-ink transition break-all">partners@expressclinical.com.au</a></li>
+          <li class="pt-2"><a href="#contact" class="inline-flex items-center gap-1.5 rounded-lg bg-brand text-white font-semibold px-4 py-2.5 hover:bg-brandDeep transition">Book a partner call</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-12 pt-6 border-t border-line flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted">
+      <p>© <span id="year">2026</span> Express Clinical Services. The B2B arm of Express Pathology / Express Health.</p>
+      <div class="flex items-center gap-5">
+        <a href="#" class="hover:text-ink transition">Privacy</a>
+        <a href="#" class="hover:text-ink transition">Terms</a>
+      </div>
+    </div>
+    <p class="mt-6 text-[11px] text-muted/70 leading-relaxed">Contact details and any statistics shown are placeholders for demonstration and should be confirmed before publishing. Collection services are delivered in line with partner pathology provider requirements.</p>
+  </div>
+</footer>
+
+<style>
+  .chip span { display:inline-block; cursor:pointer; border:1px solid #E6E6DD; background:#fff; border-radius:9999px; padding:.5rem .9rem; font-size:14px; font-weight:600; color:#313B36; transition:all .15s ease; }
+  .chip span:hover { border-color:#2E6B52; }
+  .chip input:focus-visible + span { outline:3px solid rgba(46,107,82,.25); outline-offset:2px; }
+  .chip input:checked + span { background:#2E6B52; border-color:#2E6B52; color:#fff; }
+</style>
+
+<script>
+(function () {
+  'use strict';
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Mobile menu
+  var menuBtn = document.getElementById('menuBtn');
+  var mobileMenu = document.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', function () {
+    var open = mobileMenu.classList.toggle('hidden') === false;
+    menuBtn.setAttribute('aria-expanded', String(open));
+  });
+  mobileMenu.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () { mobileMenu.classList.add('hidden'); menuBtn.setAttribute('aria-expanded','false'); });
+  });
+
+  // Reveal on scroll
+  var revealEls = document.querySelectorAll('.reveal');
+  if (reduce || !('IntersectionObserver' in window)) {
+    revealEls.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(function (el) { io.observe(el); });
+  }
+
+  // Form validation
+  var form = document.getElementById('leadForm');
+  function showError(input, show) {
+    var wrap = input.closest('div');
+    var err = wrap ? wrap.querySelector('.err') : null;
+    if (err) err.classList.toggle('hidden', !show);
+    input.classList.toggle('border-danger', show);
+    input.classList.toggle('border-line', !show);
+  }
+  function validEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+  ['company','name','email','orgtype'].forEach(function (id) {
+    var el = document.getElementById(id);
+    el.addEventListener('blur', function () {
+      var bad = id === 'email' ? !validEmail(el.value) : !el.value.trim();
+      showError(el, bad);
+    });
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var company = document.getElementById('company');
+    var name = document.getElementById('name');
+    var email = document.getElementById('email');
+    var orgtype = document.getElementById('orgtype');
+
+    var errs = [];
+    if (!company.value.trim()) { showError(company, true); errs.push(company); }
+    if (!name.value.trim()) { showError(name, true); errs.push(name); }
+    if (!validEmail(email.value)) { showError(email, true); errs.push(email); }
+    if (!orgtype.value) { showError(orgtype, true); errs.push(orgtype); }
+    if (errs.length) { errs[0].focus(); return; }
+
+    var btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.querySelector('.btn-label').textContent = 'Sending…';
+    btn.querySelector('.btn-spin').classList.remove('hidden');
+
+    setTimeout(function () {
+      document.getElementById('formBody').classList.add('hidden');
+      var ok = document.getElementById('formSuccess');
+      ok.classList.remove('hidden');
+      ok.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+    }, 1000);
+  });
+})();
+</script>
+</body>
+</html>
