@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Express Pathology — Australia's Mobile Pathology & Nursing Network</title>
+<meta name="description" content="Express Pathology is Australia's nationwide mobile pathology collection and clinical nursing network. We partner with aged care, GP clinics, NDIS providers, insurers, corporate health and clinical trials to deliver credentialed nurses to the door — every state and territory." />
+<meta name="theme-color" content="#0F172A" />
+
+<!-- Open Graph -->
+<meta property="og:title" content="Express Pathology — Australia's Mobile Pathology & Nursing Network" />
+<meta property="og:description" content="Credentialed mobile nurses & pathology collection, nationwide. Built for aged care, GP, NDIS, insurance, corporate health and clinical trials." />
+<meta property="og:type" content="website" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ink:    '#0F172A',  // primary navy
+          ink2:   '#1E293B',
+          slate3: '#334155',
+          accent: '#0369A1',  // CTA blue
+          accent2:'#0EA5E9',  // sky
+          teal:   '#0D9488',  // medical teal
+          mint:   '#10B981',  // verified / live
+          paper:  '#F8FAFC',
+          line:   '#E2E8F0',
+        },
+        fontFamily: {
+          display: ['Figtree', 'system-ui', 'sans-serif'],
+          sans: ['"Noto Sans"', 'system-ui', 'sans-serif'],
+        },
+        boxShadow: {
+          card: '0 1px 2px rgba(15,23,42,.04), 0 12px 32px -12px rgba(15,23,42,.18)',
+          glow: '0 20px 60px -20px rgba(3,105,161,.45)',
+        },
+        borderRadius: { xl2: '1.25rem' },
+      }
+    }
+  }
+</script>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Noto Sans', system-ui, sans-serif; }
+  h1,h2,h3,h4,.font-display { font-family: 'Figtree', system-ui, sans-serif; }
+
+  /* Animated gradient mesh background */
+  .mesh {
+    background:
+      radial-gradient(60% 60% at 15% 20%, rgba(14,165,233,.28) 0%, transparent 60%),
+      radial-gradient(55% 55% at 85% 15%, rgba(13,148,136,.30) 0%, transparent 55%),
+      radial-gradient(70% 70% at 75% 85%, rgba(3,105,161,.32) 0%, transparent 60%),
+      radial-gradient(60% 60% at 25% 90%, rgba(16,185,129,.18) 0%, transparent 60%),
+      #0F172A;
+    background-size: 200% 200%;
+    animation: meshShift 18s ease-in-out infinite;
+  }
+  @keyframes meshShift {
+    0%,100% { background-position: 0% 0%, 100% 0%, 100% 100%, 0% 100%; }
+    50%     { background-position: 20% 10%, 80% 20%, 70% 80%, 20% 90%; }
+  }
+
+  .grid-overlay {
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+    -webkit-mask-image: radial-gradient(70% 70% at 50% 40%, #000 40%, transparent 100%);
+            mask-image: radial-gradient(70% 70% at 50% 40%, #000 40%, transparent 100%);
+  }
+
+  .glass { background: rgba(255,255,255,.08); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,.16); }
+  .glass-light { background: rgba(255,255,255,.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+
+  .text-gradient { background: linear-gradient(100deg,#0EA5E9,#5EEAD4 55%,#67E8F9); -webkit-background-clip:text; background-clip:text; color:transparent; }
+
+  /* Reveal on scroll */
+  .reveal { opacity:0; transform: translateY(26px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity:1; transform:none; }
+  .reveal[data-d="1"]{ transition-delay:.08s } .reveal[data-d="2"]{ transition-delay:.16s }
+  .reveal[data-d="3"]{ transition-delay:.24s } .reveal[data-d="4"]{ transition-delay:.32s }
+  .reveal[data-d="5"]{ transition-delay:.40s } .reveal[data-d="6"]{ transition-delay:.48s }
+
+  /* Network node pulse */
+  @keyframes pulse { 0%{ r:4; opacity:1 } 70%{ r:16; opacity:0 } 100%{ r:16; opacity:0 } }
+  .node-pulse { animation: pulse 2.6s ease-out infinite; transform-box: fill-box; transform-origin:center; }
+  @keyframes dash { to { stroke-dashoffset: -1000; } }
+  .net-line { stroke-dasharray: 6 10; animation: dash 24s linear infinite; }
+
+  .marquee { animation: marquee 28s linear infinite; }
+  @keyframes marquee { from{ transform:translateX(0)} to{ transform:translateX(-50%)} }
+
+  details > summary { list-style:none; cursor:pointer; }
+  details > summary::-webkit-details-marker { display:none; }
+  details[open] .faq-icon { transform: rotate(45deg); }
+
+  a, button, summary { -webkit-tap-highlight-color: transparent; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior:auto !important; }
+    .reveal { opacity:1 !important; transform:none !important; }
+  }
+</style>
+</head>
+
+<body class="bg-paper text-ink antialiased selection:bg-accent2/30">
+
+<!-- ============== SKIP LINK ============== -->
+<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:z-[100] focus:top-3 focus:left-3 focus:bg-ink focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">Skip to content</a>
+
+<!-- ============== NAV ============== -->
+<header id="nav" class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
+  <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Primary">
+    <div id="navbar" class="mt-3 flex items-center justify-between gap-4 rounded-2xl px-4 sm:px-5 py-3 transition-all duration-300">
+      <!-- Logo -->
+      <a href="#top" class="flex items-center gap-2.5 shrink-0" aria-label="Express Pathology home">
+        <span class="grid place-items-center h-9 w-9 rounded-xl bg-gradient-to-br from-accent2 to-teal text-white shadow-glow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v6a4 4 0 0 0 4 4 4 4 0 0 1 4 4v8"/><path d="M12 2v6a4 4 0 0 1-4 4 4 4 0 0 0-4 4v8"/><path d="M6 16h12"/></svg>
+        </span>
+        <span class="font-display font-extrabold text-[1.05rem] tracking-tight leading-none">Express<span class="text-accent2">Pathology</span></span>
+      </a>
+
+      <!-- Desktop links -->
+      <div class="hidden lg:flex items-center gap-1 text-sm font-medium text-slate3" id="navlinks">
+        <a href="#who" class="px-3 py-2 rounded-lg hover:bg-ink/[.05] hover:text-ink transition">Who we serve</a>
+        <a href="#services" class="px-3 py-2 rounded-lg hover:bg-ink/[.05] hover:text-ink transition">Services</a>
+        <a href="#coverage" class="px-3 py-2 rounded-lg hover:bg-ink/[.05] hover:text-ink transition">Coverage</a>
+        <a href="#how" class="px-3 py-2 rounded-lg hover:bg-ink/[.05] hover:text-ink transition">How it works</a>
+        <a href="#why" class="px-3 py-2 rounded-lg hover:bg-ink/[.05] hover:text-ink transition">Why us</a>
+        <a href="#faq" class="px-3 py-2 rounded-lg hover:bg-ink/[.05] hover:text-ink transition">FAQ</a>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <a href="tel:1300000000" class="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-ink/80 hover:text-ink px-3 py-2 transition">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+          1300 000 000
+        </a>
+        <a href="#contact" class="inline-flex items-center gap-1.5 rounded-xl bg-ink text-white text-sm font-semibold px-4 py-2.5 shadow-card hover:bg-ink2 transition focus:outline-none focus:ring-4 focus:ring-accent/30">
+          Partner with us
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <button id="menuBtn" class="lg:hidden grid place-items-center h-10 w-10 rounded-xl border border-line bg-white/70" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobileMenu" class="lg:hidden hidden mt-2 rounded-2xl glass-light border border-line shadow-card p-2 text-ink font-medium">
+      <a href="#who" class="block px-4 py-3 rounded-xl hover:bg-ink/5">Who we serve</a>
+      <a href="#services" class="block px-4 py-3 rounded-xl hover:bg-ink/5">Services</a>
+      <a href="#coverage" class="block px-4 py-3 rounded-xl hover:bg-ink/5">Coverage</a>
+      <a href="#how" class="block px-4 py-3 rounded-xl hover:bg-ink/5">How it works</a>
+      <a href="#why" class="block px-4 py-3 rounded-xl hover:bg-ink/5">Why us</a>
+      <a href="#faq" class="block px-4 py-3 rounded-xl hover:bg-ink/5">FAQ</a>
+      <a href="#contact" class="block text-center mt-1 px-4 py-3 rounded-xl bg-ink text-white">Partner with us</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+<a id="top"></a>
+
+<!-- ============== HERO ============== -->
+<section class="relative mesh text-white overflow-hidden">
+  <div class="absolute inset-0 grid-overlay pointer-events-none" aria-hidden="true"></div>
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-32 pb-20 lg:pt-44 lg:pb-28">
+    <div class="grid lg:grid-cols-12 gap-12 items-center">
+      <!-- Copy -->
+      <div class="lg:col-span-7">
+        <div class="reveal inline-flex items-center gap-2 rounded-full glass px-3.5 py-1.5 text-xs font-semibold tracking-wide">
+          <span class="relative flex h-2 w-2"><span class="absolute inline-flex h-full w-full rounded-full bg-mint opacity-75 animate-ping"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-mint"></span></span>
+          Live network · Every state &amp; territory
+        </div>
+
+        <h1 class="reveal mt-6 font-display font-black tracking-tight text-4xl sm:text-5xl lg:text-[3.65rem] leading-[1.04]">
+          Australia's mobile <span class="text-gradient">pathology &amp; nursing</span> network — at your clients' door.
+        </h1>
+
+        <p class="reveal mt-6 max-w-xl text-base sm:text-lg text-white/80 leading-relaxed">
+          Express Pathology deploys fully credentialed nurses and collectors for in-home and on-site specimen collection, clinical visits and assessments — nationwide, with SLA-backed turnaround and a single point of contact for your organisation.
+        </p>
+
+        <div class="reveal mt-8 flex flex-col sm:flex-row gap-3">
+          <a href="#contact" class="group inline-flex items-center justify-center gap-2 rounded-xl bg-white text-ink font-semibold px-6 py-4 shadow-glow hover:-translate-y-0.5 transition focus:outline-none focus:ring-4 focus:ring-white/40">
+            Request a partnership call
+            <svg class="group-hover:translate-x-0.5 transition" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="#coverage" class="inline-flex items-center justify-center gap-2 rounded-xl glass text-white font-semibold px-6 py-4 hover:bg-white/15 transition focus:outline-none focus:ring-4 focus:ring-white/30">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            See our coverage
+          </a>
+        </div>
+
+        <!-- Trust row -->
+        <div class="reveal mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-white/70">
+          <div class="flex items-center gap-2"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5EEAD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg> AHPRA-registered nurses</div>
+          <div class="flex items-center gap-2"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5EEAD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 7.8 8 11 4.6-3.2 8-6 8-11V5l-8-3Z"/></svg> NATA / ISO 15189 aligned</div>
+          <div class="flex items-center gap-2"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5EEAD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> NDIS registered provider</div>
+        </div>
+      </div>
+
+      <!-- Floating stat card -->
+      <div class="lg:col-span-5">
+        <div class="reveal" data-d="2">
+          <div class="glass rounded-3xl p-6 sm:p-7 shadow-glow">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-semibold text-white/70">Network at a glance</p>
+              <span class="text-[11px] font-semibold rounded-full bg-mint/20 text-mint px-2.5 py-1">Updated daily</span>
+            </div>
+            <div class="mt-5 grid grid-cols-2 gap-4">
+              <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+                <div class="font-display font-black text-3xl" data-count="520" data-suffix="+">0</div>
+                <p class="mt-1 text-xs text-white/65">Credentialed nurses &amp; collectors</p>
+              </div>
+              <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+                <div class="font-display font-black text-3xl" data-count="2800" data-suffix="+">0</div>
+                <p class="mt-1 text-xs text-white/65">Postcodes serviced</p>
+              </div>
+              <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+                <div class="font-display font-black text-3xl" data-count="24" data-prefix="&lt;" data-suffix="h">0</div>
+                <p class="mt-1 text-xs text-white/65">Avg. metro turnaround</p>
+              </div>
+              <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+                <div class="font-display font-black text-3xl" data-count="99" data-suffix="%">0</div>
+                <p class="mt-1 text-xs text-white/65">On-time collection SLA</p>
+              </div>
+            </div>
+            <div class="mt-5 flex items-center gap-3 rounded-2xl bg-gradient-to-r from-teal/30 to-accent2/20 border border-white/10 p-4">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5EEAD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              <p class="text-sm text-white/85">Same-day &amp; after-hours collections available on managed contracts.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- wave divider -->
+  <div class="relative -mb-1" aria-hidden="true">
+    <svg viewBox="0 0 1440 80" class="w-full h-[60px] sm:h-[80px]" preserveAspectRatio="none"><path d="M0,40 C360,90 1080,-10 1440,40 L1440,80 L0,80 Z" fill="#F8FAFC"/></svg>
+  </div>
+</section>
+
+<!-- ============== LOGO / TRUST MARQUEE ============== -->
+<section class="bg-paper py-10 border-b border-line">
+  <p class="text-center text-xs font-semibold uppercase tracking-[.18em] text-slate3/70">Trusted across the care continuum</p>
+  <div class="mt-6 overflow-hidden [mask-image:linear-gradient(to_right,transparent,#000_12%,#000_88%,transparent)]">
+    <div class="flex gap-12 whitespace-nowrap marquee w-max text-slate3/60 font-display font-bold text-lg">
+      <span>Aged Care Networks</span><span>•</span><span>General Practice</span><span>•</span><span>NDIS Providers</span><span>•</span><span>Life &amp; Income Insurers</span><span>•</span><span>Corporate Health</span><span>•</span><span>Clinical Trials / CROs</span><span>•</span><span>Telehealth</span><span>•</span><span>Hospital-in-the-Home</span><span>•</span>
+      <span>Aged Care Networks</span><span>•</span><span>General Practice</span><span>•</span><span>NDIS Providers</span><span>•</span><span>Life &amp; Income Insurers</span><span>•</span><span>Corporate Health</span><span>•</span><span>Clinical Trials / CROs</span><span>•</span><span>Telehealth</span><span>•</span><span>Hospital-in-the-Home</span><span>•</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============== WHO WE SERVE ============== -->
+<section id="who" class="py-20 lg:py-28">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl">
+      <span class="reveal inline-block text-xs font-bold uppercase tracking-[.18em] text-accent">Who we serve</span>
+      <h2 class="reveal mt-3 font-display font-extrabold text-3xl sm:text-4xl tracking-tight">One mobile clinical workforce. Built for B2B.</h2>
+      <p class="reveal mt-4 text-slate3 text-lg">Whoever your patients or members are, we bring the clinic to them. Choose your sector to see how we plug into your operation.</p>
+    </div>
+
+    <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <!-- card -->
+      <article class="reveal group rounded-2xl bg-white border border-line p-6 shadow-card hover:-translate-y-1 hover:border-accent/40 transition">
+        <div class="grid place-items-center h-12 w-12 rounded-xl bg-accent/10 text-accent group-hover:bg-accent group-hover:text-white transition"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M6 21V8l6-4 6 4v13"/><path d="M10 12h4M10 16h4"/></svg></div>
+        <h3 class="mt-5 font-display font-bold text-lg">Aged Care &amp; Retirement</h3>
+        <p class="mt-2 text-sm text-slate3">On-site rounds for residential facilities and retirement living — routine bloods, INR, wound care and assessments without resident transfers.</p>
+      </article>
+
+      <article class="reveal" data-d="1"><div class="group rounded-2xl bg-white border border-line p-6 shadow-card hover:-translate-y-1 hover:border-accent/40 transition h-full">
+        <div class="grid place-items-center h-12 w-12 rounded-xl bg-teal/10 text-teal group-hover:bg-teal group-hover:text-white transition"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/><circle cx="12" cy="12" r="4"/></svg></div>
+        <h3 class="mt-5 font-display font-bold text-lg">GP Clinics &amp; Specialists</h3>
+        <p class="mt-2 text-sm text-slate3">Extend your practice with home-collection overflow, housebound patients and after-hours capacity — results back to your LIS/PMS.</p>
+      </div></article>
+
+      <article class="reveal" data-d="2"><div class="group rounded-2xl bg-white border border-line p-6 shadow-card hover:-translate-y-1 hover:border-accent/40 transition h-full">
+        <div class="grid place-items-center h-12 w-12 rounded-xl bg-mint/10 text-mint group-hover:bg-mint group-hover:text-white transition"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 11h-6M19 8v6"/></svg></div>
+        <h3 class="mt-5 font-display font-bold text-lg">NDIS &amp; Disability Support</h3>
+        <p class="mt-2 text-sm text-slate3">Registered provider delivering in-home nursing, health checks and continuity of care for participants — flexible, dignified, reliable.</p>
+      </div></article>
+
+      <article class="reveal"><div class="group rounded-2xl bg-white border border-line p-6 shadow-card hover:-translate-y-1 hover:border-accent/40 transition h-full">
+        <div class="grid place-items-center h-12 w-12 rounded-xl bg-accent2/10 text-accent2 group-hover:bg-accent2 group-hover:text-white transition"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9 12 3l9 6v11a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/></svg></div>
+        <h3 class="mt-5 font-display font-bold text-lg">Insurance &amp; IME</h3>
+        <p class="mt-2 text-sm text-slate3">Life &amp; income protection medicals, paramedical exams and independent assessments at the applicant's home or workplace — fast national turnaround.</p>
+      </div></article>
+
+      <article class="reveal" data-d="1"><div class="group rounded-2xl bg-white border border-line p-6 shadow-card hover:-translate-y-1 hover:border-accent/40 transition h-full">
+        <div class="grid place-items-center h-12 w-12 rounded-xl bg-accent/10 text-accent group-hover:bg-accent group-hover:text-white transition"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v5"/></svg></div>
+        <h3 class="mt-5 font-display font-bold text-lg">Corporate &amp; Workplace Health</h3>
+        <p class="mt-2 text-sm text-slate3">Pre-employment medicals, on-site screening, flu &amp; vaccination programs and drug &amp; alcohol testing — scaled across multiple sites.</p>
+      </div></article>
+
+      <article class="reveal" data-d="2"><div class="group rounded-2xl bg-white border border-line p-6 shadow-card hover:-translate-y-1 hover:border-accent/40 transition h-full">
+        <div class="grid place-items-center h-12 w-12 rounded-xl bg-teal/10 text-teal group-hover:bg-teal group-hover:text-white transition"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2v6l-4 8a2 2 0 0 0 2 3h8a2 2 0 0 0 2-3l-4-8V2"/><path d="M8 2h8"/></svg></div>
+        <h3 class="mt-5 font-display font-bold text-lg">Clinical Trials &amp; CROs</h3>
+        <p class="mt-2 text-sm text-slate3">Decentralised trial visits, protocol-driven sample collection and processing with full chain-of-custody and GCP-aware nurses.</p>
+      </div></article>
+    </div>
+  </div>
+</section>
+
+<!-- ============== SERVICES ============== -->
+<section id="services" class="py-20 lg:py-28 bg-ink text-white relative overflow-hidden">
+  <div class="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-teal/20 blur-3xl" aria-hidden="true"></div>
+  <div class="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-accent/20 blur-3xl" aria-hidden="true"></div>
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="lg:flex lg:items-end lg:justify-between gap-10">
+      <div class="max-w-2xl">
+        <span class="reveal inline-block text-xs font-bold uppercase tracking-[.18em] text-accent2">Capabilities</span>
+        <h2 class="reveal mt-3 font-display font-extrabold text-3xl sm:text-4xl tracking-tight">A full mobile clinical toolkit</h2>
+        <p class="reveal mt-4 text-white/70 text-lg">From a single blood draw to a managed, multi-site program — delivered by the same credentialed workforce.</p>
+      </div>
+      <a href="#contact" class="reveal hidden lg:inline-flex shrink-0 items-center gap-2 rounded-xl glass px-5 py-3 font-semibold hover:bg-white/15 transition">Discuss your requirement <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+
+    <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="reveal rounded-2xl glass p-5"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5EEAD4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2s5 5.5 5 9a5 5 0 0 1-10 0c0-3.5 5-9 5-9Z"/></svg><h3 class="mt-4 font-display font-bold">Mobile blood collection</h3><p class="mt-1.5 text-sm text-white/65">Phlebotomy at home, on-site or in-facility, by qualified collectors.</p></div>
+      <div class="reveal" data-d="1"><div class="rounded-2xl glass p-5 h-full"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5EEAD4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg><h3 class="mt-4 font-display font-bold">Specimen logistics</h3><p class="mt-1.5 text-sm text-white/65">Temperature-controlled transport &amp; chain-of-custody to your lab.</p></div></div>
+      <div class="reveal" data-d="2"><div class="rounded-2xl glass p-5 h-full"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5EEAD4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.2 3-5.5A5.5 5.5 0 0 0 12 4.5 5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/></svg><h3 class="mt-4 font-display font-bold">In-home nursing</h3><p class="mt-1.5 text-sm text-white/65">Wound care, injections, observations, catheter &amp; complex care.</p></div></div>
+      <div class="reveal" data-d="3"><div class="rounded-2xl glass p-5 h-full"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5EEAD4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12h6M9 16h6M9 8h6M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/></svg><h3 class="mt-4 font-display font-bold">Health assessments</h3><p class="mt-1.5 text-sm text-white/65">Insurance medicals, pre-employment &amp; functional assessments.</p></div></div>
+      <div class="reveal"><div class="rounded-2xl glass p-5 h-full"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5EEAD4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 2 4 4-14 14H4v-4Z"/><path d="m14.5 5.5 4 4"/></svg><h3 class="mt-4 font-display font-bold">Vaccination programs</h3><p class="mt-1.5 text-sm text-white/65">Workplace flu &amp; immunisation clinics, single or multi-site.</p></div></div>
+      <div class="reveal" data-d="1"><div class="rounded-2xl glass p-5 h-full"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5EEAD4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg><h3 class="mt-4 font-display font-bold">ECG &amp; observations</h3><p class="mt-1.5 text-sm text-white/65">Point-of-care diagnostics and vitals captured digitally on-site.</p></div></div>
+      <div class="reveal" data-d="2"><div class="rounded-2xl glass p-5 h-full"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5EEAD4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2v6l-4 8a2 2 0 0 0 2 3h8a2 2 0 0 0 2-3l-4-8V2M8 2h8"/></svg><h3 class="mt-4 font-display font-bold">Drug &amp; alcohol testing</h3><p class="mt-1.5 text-sm text-white/65">AS/NZS-aligned workplace testing, pre-employment &amp; random.</p></div></div>
+      <div class="reveal" data-d="3"><div class="rounded-2xl glass p-5 h-full"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5EEAD4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg><h3 class="mt-4 font-display font-bold">Managed programs</h3><p class="mt-1.5 text-sm text-white/65">End-to-end coordination, rostering &amp; reporting under one SLA.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== COVERAGE / NETWORK ============== -->
+<section id="coverage" class="py-20 lg:py-28">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-14 items-center">
+    <div>
+      <span class="reveal inline-block text-xs font-bold uppercase tracking-[.18em] text-accent">National coverage</span>
+      <h2 class="reveal mt-3 font-display font-extrabold text-3xl sm:text-4xl tracking-tight">A connected network across every state &amp; territory</h2>
+      <p class="reveal mt-4 text-slate3 text-lg">Metro, regional and remote. Our distributed workforce means consistent service standards whether your clients are in a CBD tower or a rural town — coordinated centrally, delivered locally.</p>
+
+      <dl class="reveal mt-8 grid grid-cols-2 sm:grid-cols-3 gap-y-6 gap-x-4">
+        <div><dt class="font-display font-black text-3xl text-ink">8</dt><dd class="text-sm text-slate3">States &amp; territories</dd></div>
+        <div><dt class="font-display font-black text-3xl text-ink"><span data-count="2800" data-suffix="+">0</span></dt><dd class="text-sm text-slate3">Postcodes serviced</dd></div>
+        <div><dt class="font-display font-black text-3xl text-ink"><span data-count="520" data-suffix="+">0</span></dt><dd class="text-sm text-slate3">Mobile clinicians</dd></div>
+        <div><dt class="font-display font-black text-3xl text-ink">7</dt><dd class="text-sm text-slate3">Days a week</dd></div>
+        <div><dt class="font-display font-black text-3xl text-ink"><span data-count="50">0</span>k+</dt><dd class="text-sm text-slate3">Annual collections</dd></div>
+        <div><dt class="font-display font-black text-3xl text-ink"><span data-count="99" data-suffix="%">0</span></dt><dd class="text-sm text-slate3">On-time SLA</dd></div>
+      </dl>
+
+      <a href="#contact" class="reveal mt-9 inline-flex items-center gap-2 rounded-xl bg-accent text-white font-semibold px-6 py-3.5 shadow-card hover:bg-ink transition focus:outline-none focus:ring-4 focus:ring-accent/30">Check coverage for your sites <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+
+    <!-- Abstract network graphic -->
+    <div class="reveal" data-d="2">
+      <div class="relative rounded-3xl bg-ink p-6 shadow-card overflow-hidden">
+        <div class="absolute inset-0 grid-overlay opacity-60" aria-hidden="true"></div>
+        <svg viewBox="0 0 420 380" class="relative w-full h-auto" role="img" aria-label="Map of Express Pathology's clinician network connecting Australian capital cities">
+          <defs>
+            <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#0EA5E9"/><stop offset="1" stop-color="#0D9488"/>
+            </linearGradient>
+          </defs>
+          <!-- connection lines -->
+          <g stroke="url(#lg)" stroke-width="1.4" fill="none" opacity=".55">
+            <path class="net-line" d="M300 110 L250 250"/>
+            <path class="net-line" d="M250 250 L300 300"/>
+            <path class="net-line" d="M300 300 L150 320"/>
+            <path class="net-line" d="M250 250 L120 200"/>
+            <path class="net-line" d="M120 200 L300 110"/>
+            <path class="net-line" d="M120 200 L150 320"/>
+            <path class="net-line" d="M300 110 L250 250"/>
+          </g>
+          <!-- city nodes -->
+          <g font-family="Figtree, sans-serif" font-size="11" fill="#CBD5E1">
+            <!-- Darwin -->
+            <g><circle cx="195" cy="45" r="14" fill="#0EA5E9" opacity=".15"/><circle class="node-pulse" cx="195" cy="45" r="4" fill="#5EEAD4"/><circle cx="195" cy="45" r="4" fill="#5EEAD4"/><text x="195" y="30" text-anchor="middle">Darwin</text></g>
+            <!-- Brisbane -->
+            <g><circle cx="300" cy="110" r="14" fill="#0EA5E9" opacity=".15"/><circle class="node-pulse" cx="300" cy="110" r="4" fill="#5EEAD4" style="animation-delay:.4s"/><circle cx="300" cy="110" r="4" fill="#5EEAD4"/><text x="318" y="113" text-anchor="start">Brisbane</text></g>
+            <!-- Perth -->
+            <g><circle cx="120" cy="200" r="14" fill="#0EA5E9" opacity=".15"/><circle class="node-pulse" cx="120" cy="200" r="4" fill="#5EEAD4" style="animation-delay:.8s"/><circle cx="120" cy="200" r="4" fill="#5EEAD4"/><text x="102" y="203" text-anchor="end">Perth</text></g>
+            <!-- Adelaide -->
+            <g><circle cx="225" cy="255" r="14" fill="#0EA5E9" opacity=".15"/><circle class="node-pulse" cx="225" cy="255" r="4" fill="#5EEAD4" style="animation-delay:1.1s"/><circle cx="225" cy="255" r="4" fill="#5EEAD4"/><text x="207" y="258" text-anchor="end">Adelaide</text></g>
+            <!-- Sydney -->
+            <g><circle cx="305" cy="295" r="16" fill="#0EA5E9" opacity=".18"/><circle class="node-pulse" cx="305" cy="295" r="5" fill="#10B981" style="animation-delay:.2s"/><circle cx="305" cy="295" r="5" fill="#10B981"/><text x="323" y="298" text-anchor="start">Sydney</text></g>
+            <!-- Canberra -->
+            <g><circle cx="278" cy="318" r="11" fill="#0EA5E9" opacity=".15"/><circle class="node-pulse" cx="278" cy="318" r="3.5" fill="#5EEAD4" style="animation-delay:1.5s"/><circle cx="278" cy="318" r="3.5" fill="#5EEAD4"/><text x="270" y="338" text-anchor="middle">Canberra</text></g>
+            <!-- Melbourne -->
+            <g><circle cx="250" cy="335" r="14" fill="#0EA5E9" opacity=".15"/><circle class="node-pulse" cx="250" cy="335" r="4" fill="#5EEAD4" style="animation-delay:.6s"/><circle cx="250" cy="335" r="4" fill="#5EEAD4"/><text x="232" y="352" text-anchor="end">Melbourne</text></g>
+            <!-- Hobart -->
+            <g><circle cx="258" cy="368" r="10" fill="#0EA5E9" opacity=".15"/><circle class="node-pulse" cx="258" cy="368" r="3.5" fill="#5EEAD4" style="animation-delay:1.3s"/><circle cx="258" cy="368" r="3.5" fill="#5EEAD4"/><text x="276" y="371" text-anchor="start">Hobart</text></g>
+          </g>
+        </svg>
+        <div class="relative mt-2 flex items-center justify-between text-xs text-white/60 px-1">
+          <span class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-mint"></span> Capital city hubs</span>
+          <span>+ regional &amp; remote coverage</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== HOW IT WORKS ============== -->
+<section id="how" class="py-20 lg:py-28 bg-white border-y border-line">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl">
+      <span class="reveal inline-block text-xs font-bold uppercase tracking-[.18em] text-accent">How it works</span>
+      <h2 class="reveal mt-3 font-display font-extrabold text-3xl sm:text-4xl tracking-tight">From request to result — without the friction</h2>
+      <p class="reveal mt-4 text-slate3 text-lg">A single integration and one account manager. You send the request, we handle the rest.</p>
+    </div>
+
+    <div class="mt-14 grid md:grid-cols-4 gap-6 relative">
+      <div class="hidden md:block absolute top-7 left-[12%] right-[12%] h-px bg-gradient-to-r from-accent2/0 via-accent2/50 to-teal/0" aria-hidden="true"></div>
+      <div class="reveal relative"><div class="grid place-items-center h-14 w-14 rounded-2xl bg-ink text-white font-display font-black text-xl shadow-card">1</div><h3 class="mt-5 font-display font-bold text-lg">Send the request</h3><p class="mt-2 text-sm text-slate3">Book via portal, API, email or phone. Single patient or a bulk roster — your call.</p></div>
+      <div class="reveal relative" data-d="1"><div class="grid place-items-center h-14 w-14 rounded-2xl bg-accent text-white font-display font-black text-xl shadow-card">2</div><h3 class="mt-5 font-display font-bold text-lg">We match &amp; dispatch</h3><p class="mt-2 text-sm text-slate3">The nearest credentialed clinician is matched by location, skill and SLA window.</p></div>
+      <div class="reveal relative" data-d="2"><div class="grid place-items-center h-14 w-14 rounded-2xl bg-teal text-white font-display font-black text-xl shadow-card">3</div><h3 class="mt-5 font-display font-bold text-lg">Collect on-site</h3><p class="mt-2 text-sm text-slate3">Professional, on-time attendance with digital consent, ID and chain-of-custody.</p></div>
+      <div class="reveal relative" data-d="3"><div class="grid place-items-center h-14 w-14 rounded-2xl bg-mint text-white font-display font-black text-xl shadow-card">4</div><h3 class="mt-5 font-display font-bold text-lg">Results &amp; reporting</h3><p class="mt-2 text-sm text-slate3">Samples delivered to your lab; live status and reporting back to your systems.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== WHY US ============== -->
+<section id="why" class="py-20 lg:py-28">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-14 items-start">
+    <div class="lg:sticky lg:top-28">
+      <span class="reveal inline-block text-xs font-bold uppercase tracking-[.18em] text-accent">Why Express Pathology</span>
+      <h2 class="reveal mt-3 font-display font-extrabold text-3xl sm:text-4xl tracking-tight">Built for organisations that can't afford a missed collection</h2>
+      <p class="reveal mt-4 text-slate3 text-lg">We're a clinical partner, not a gig marketplace. Every clinician is employed or contracted under our governance, credentialing and quality framework.</p>
+      <div class="reveal mt-8 rounded-2xl bg-gradient-to-br from-ink to-ink2 text-white p-6 shadow-card">
+        <p class="text-sm text-white/70">Dedicated to your account</p>
+        <p class="mt-2 font-display font-bold text-xl">One account manager. One SLA. One invoice.</p>
+        <p class="mt-2 text-sm text-white/70">No chasing multiple vendors across regions — we operate as a single national partner.</p>
+      </div>
+    </div>
+
+    <div class="grid sm:grid-cols-2 gap-4">
+      <div class="reveal rounded-2xl bg-white border border-line p-6 shadow-card"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0369A1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg><h3 class="mt-4 font-display font-bold">Fully credentialed</h3><p class="mt-2 text-sm text-slate3">AHPRA registration, police checks, immunisation, indemnity &amp; ongoing competency.</p></div>
+      <div class="reveal" data-d="1"><div class="rounded-2xl bg-white border border-line p-6 shadow-card h-full"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0369A1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><h3 class="mt-4 font-display font-bold">SLA-backed turnaround</h3><p class="mt-2 text-sm text-slate3">Contracted response windows with same-day and after-hours options.</p></div></div>
+      <div class="reveal" data-d="1"><div class="rounded-2xl bg-white border border-line p-6 shadow-card h-full"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0369A1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 17V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10M2 17h20M9 21h6"/></svg><h3 class="mt-4 font-display font-bold">Systems that integrate</h3><p class="mt-2 text-sm text-slate3">API, HL7/LIS and portal options so results flow into your existing workflow.</p></div></div>
+      <div class="reveal"><div class="rounded-2xl bg-white border border-line p-6 shadow-card h-full"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0369A1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg><h3 class="mt-4 font-display font-bold">Scales with volume</h3><p class="mt-2 text-sm text-slate3">From a handful of visits to thousands per month — capacity that grows with you.</p></div></div>
+      <div class="reveal"><div class="rounded-2xl bg-white border border-line p-6 shadow-card h-full"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0369A1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg><h3 class="mt-4 font-display font-bold">Quality &amp; compliance</h3><p class="mt-2 text-sm text-slate3">Documented QA, incident management and audit-ready chain-of-custody.</p></div></div>
+      <div class="reveal" data-d="1"><div class="rounded-2xl bg-white border border-line p-6 shadow-card h-full"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0369A1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20Z"/></svg><h3 class="mt-4 font-display font-bold">Truly national</h3><p class="mt-2 text-sm text-slate3">Consistent service in metro, regional and remote locations nationwide.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== STAT BAND ============== -->
+<section class="bg-ink text-white py-16 relative overflow-hidden">
+  <div class="absolute inset-0 grid-overlay opacity-40" aria-hidden="true"></div>
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+    <div class="reveal"><div class="font-display font-black text-4xl sm:text-5xl text-gradient" data-count="520" data-suffix="+">0</div><p class="mt-2 text-sm text-white/65">Mobile clinicians nationwide</p></div>
+    <div class="reveal" data-d="1"><div class="font-display font-black text-4xl sm:text-5xl text-gradient" data-count="2800" data-suffix="+">0</div><p class="mt-2 text-sm text-white/65">Postcodes serviced</p></div>
+    <div class="reveal" data-d="2"><div class="font-display font-black text-4xl sm:text-5xl text-gradient" data-count="50">0</div><p class="mt-2 text-sm text-white/65">Thousand+ collections / year</p></div>
+    <div class="reveal" data-d="3"><div class="font-display font-black text-4xl sm:text-5xl text-gradient" data-count="99" data-suffix="%">0</div><p class="mt-2 text-sm text-white/65">On-time collection SLA</p></div>
+  </div>
+</section>
+
+<!-- ============== TESTIMONIAL ============== -->
+<section class="py-20 lg:py-28">
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+    <svg class="reveal mx-auto" width="44" height="44" viewBox="0 0 24 24" fill="#0EA5E9" opacity=".35" aria-hidden="true"><path d="M9.5 6C6 6 4 8.5 4 12v6h6v-6H7c0-2 1-3.5 2.5-4Zm10 0c-3.5 0-5.5 2.5-5.5 6v6h6v-6h-3c0-2 1-3.5 2.5-4Z"/></svg>
+    <blockquote class="reveal mt-6 font-display font-bold text-2xl sm:text-3xl tracking-tight leading-snug text-ink">"Switching to Express Pathology consolidated five regional vendors into one partner. Our missed-collection rate dropped to near zero and reporting finally lands in our system automatically."</blockquote>
+    <figcaption class="reveal mt-6 text-slate3"><span class="font-semibold text-ink">Operations Director</span> · National Aged Care Group <span class="block text-xs mt-1 text-slate3/60">Representative example — client references available on request.</span></figcaption>
+  </div>
+</section>
+
+<!-- ============== COMPLIANCE STRIP ============== -->
+<section class="pb-8">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="reveal rounded-2xl bg-paper border border-line p-6 sm:p-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="flex items-center gap-3"><span class="grid place-items-center h-11 w-11 rounded-xl bg-mint/10 text-mint shrink-0"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span><div><p class="font-semibold text-sm text-ink">AHPRA-registered</p><p class="text-xs text-slate3">Verified clinical workforce</p></div></div>
+      <div class="flex items-center gap-3"><span class="grid place-items-center h-11 w-11 rounded-xl bg-accent/10 text-accent shrink-0"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 7.8 8 11 4.6-3.2 8-6 8-11V5l-8-3Z"/></svg></span><div><p class="font-semibold text-sm text-ink">NATA / ISO 15189</p><p class="text-xs text-slate3">Lab-aligned processes</p></div></div>
+      <div class="flex items-center gap-3"><span class="grid place-items-center h-11 w-11 rounded-xl bg-teal/10 text-teal shrink-0"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span><div><p class="font-semibold text-sm text-ink">NDIS registered</p><p class="text-xs text-slate3">Approved provider</p></div></div>
+      <div class="flex items-center gap-3"><span class="grid place-items-center h-11 w-11 rounded-xl bg-accent2/10 text-accent2 shrink-0"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><div><p class="font-semibold text-sm text-ink">Privacy &amp; indemnity</p><p class="text-xs text-slate3">Insured &amp; APP compliant</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== LEAD FORM / CONTACT ============== -->
+<section id="contact" class="py-20 lg:py-28 mesh text-white relative overflow-hidden">
+  <div class="absolute inset-0 grid-overlay pointer-events-none" aria-hidden="true"></div>
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
+    <div>
+      <span class="reveal inline-block text-xs font-bold uppercase tracking-[.18em] text-mint">Become a partner</span>
+      <h2 class="reveal mt-3 font-display font-black text-3xl sm:text-4xl tracking-tight">Let's scope your mobile collection program</h2>
+      <p class="reveal mt-4 text-white/80 text-lg max-w-md">Tell us about your organisation and we'll come back within one business day with coverage confirmation and indicative pricing.</p>
+
+      <ul class="reveal mt-8 space-y-3 text-white/85">
+        <li class="flex items-center gap-3"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5EEAD4" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Response within 1 business day</li>
+        <li class="flex items-center gap-3"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5EEAD4" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Dedicated account manager from day one</li>
+        <li class="flex items-center gap-3"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5EEAD4" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> No obligation, no lock-in to quote</li>
+      </ul>
+
+      <div class="reveal mt-10 flex flex-col sm:flex-row gap-4 text-sm">
+        <a href="tel:1300000000" class="flex items-center gap-3 glass rounded-xl px-4 py-3 hover:bg-white/15 transition"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5EEAD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg><span><span class="block text-white/60 text-xs">Call our partnerships team</span><span class="font-semibold">1300 000 000</span></span></a>
+        <a href="mailto:partnerships@expresspathology.com.au" class="flex items-center gap-3 glass rounded-xl px-4 py-3 hover:bg-white/15 transition"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5EEAD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg><span><span class="block text-white/60 text-xs">Email us</span><span class="font-semibold">partnerships@expresspathology.com.au</span></span></a>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="reveal" data-d="1">
+      <form id="leadForm" novalidate class="rounded-3xl bg-white text-ink p-6 sm:p-8 shadow-glow">
+        <div id="formSuccess" class="hidden text-center py-10" role="status" aria-live="polite">
+          <span class="mx-auto grid place-items-center h-16 w-16 rounded-full bg-mint/15 text-mint"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+          <h3 class="mt-5 font-display font-bold text-2xl">Thanks — we've got it.</h3>
+          <p class="mt-2 text-slate3">Our partnerships team will be in touch within one business day. For anything urgent, call <a class="text-accent font-semibold" href="tel:1300000000">1300 000 000</a>.</p>
+        </div>
+
+        <div id="formBody">
+          <h3 class="font-display font-bold text-xl">Request a partnership call</h3>
+          <p class="text-sm text-slate3 mt-1">Fields marked <span class="text-destructive">*</span> are required.</p>
+
+          <div class="mt-6 grid sm:grid-cols-2 gap-4">
+            <div class="sm:col-span-2">
+              <label for="name" class="block text-sm font-semibold mb-1.5">Full name <span class="text-destructive">*</span></label>
+              <input id="name" name="name" type="text" autocomplete="name" required class="w-full rounded-xl border border-line bg-paper px-4 py-3 text-[15px] focus:outline-none focus:ring-4 focus:ring-accent/20 focus:border-accent transition" placeholder="Jane Smith" />
+              <p class="err hidden mt-1 text-xs text-destructive">Please enter your name.</p>
+            </div>
+            <div>
+              <label for="org" class="block text-sm font-semibold mb-1.5">Organisation <span class="text-destructive">*</span></label>
+              <input id="org" name="org" type="text" autocomplete="organization" required class="w-full rounded-xl border border-line bg-paper px-4 py-3 text-[15px] focus:outline-none focus:ring-4 focus:ring-accent/20 focus:border-accent transition" placeholder="Company / facility name" />
+              <p class="err hidden mt-1 text-xs text-destructive">Please enter your organisation.</p>
+            </div>
+            <div>
+              <label for="role" class="block text-sm font-semibold mb-1.5">Your role</label>
+              <input id="role" name="role" type="text" autocomplete="organization-title" class="w-full rounded-xl border border-line bg-paper px-4 py-3 text-[15px] focus:outline-none focus:ring-4 focus:ring-accent/20 focus:border-accent transition" placeholder="e.g. Operations Manager" />
+            </div>
+            <div>
+              <label for="email" class="block text-sm font-semibold mb-1.5">Work email <span class="text-destructive">*</span></label>
+              <input id="email" name="email" type="email" autocomplete="email" required class="w-full rounded-xl border border-line bg-paper px-4 py-3 text-[15px] focus:outline-none focus:ring-4 focus:ring-accent/20 focus:border-accent transition" placeholder="jane@organisation.com.au" />
+              <p class="err hidden mt-1 text-xs text-destructive">Please enter a valid email address.</p>
+            </div>
+            <div>
+              <label for="phone" class="block text-sm font-semibold mb-1.5">Phone</label>
+              <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" class="w-full rounded-xl border border-line bg-paper px-4 py-3 text-[15px] focus:outline-none focus:ring-4 focus:ring-accent/20 focus:border-accent transition" placeholder="04xx xxx xxx" />
+            </div>
+            <div>
+              <label for="sector" class="block text-sm font-semibold mb-1.5">Sector <span class="text-destructive">*</span></label>
+              <select id="sector" name="sector" required class="w-full rounded-xl border border-line bg-paper px-4 py-3 text-[15px] focus:outline-none focus:ring-4 focus:ring-accent/20 focus:border-accent transition">
+                <option value="" selected disabled>Select your sector</option>
+                <option>Aged Care &amp; Retirement</option>
+                <option>GP Clinic / Specialist</option>
+                <option>NDIS / Disability Support</option>
+                <option>Insurance / IME</option>
+                <option>Corporate / Workplace Health</option>
+                <option>Clinical Trial / CRO</option>
+                <option>Telehealth / Digital Health</option>
+                <option>Hospital-in-the-Home</option>
+                <option>Pathology Lab</option>
+                <option>Other</option>
+              </select>
+              <p class="err hidden mt-1 text-xs text-destructive">Please select a sector.</p>
+            </div>
+            <div>
+              <label for="volume" class="block text-sm font-semibold mb-1.5">Est. monthly volume</label>
+              <select id="volume" name="volume" class="w-full rounded-xl border border-line bg-paper px-4 py-3 text-[15px] focus:outline-none focus:ring-4 focus:ring-accent/20 focus:border-accent transition">
+                <option value="" selected disabled>Select a range</option>
+                <option>1–50 visits</option>
+                <option>51–250 visits</option>
+                <option>251–1,000 visits</option>
+                <option>1,000+ visits</option>
+                <option>Not sure yet</option>
+              </select>
+            </div>
+            <div class="sm:col-span-2">
+              <label for="message" class="block text-sm font-semibold mb-1.5">What do you need?</label>
+              <textarea id="message" name="message" rows="3" class="w-full rounded-xl border border-line bg-paper px-4 py-3 text-[15px] focus:outline-none focus:ring-4 focus:ring-accent/20 focus:border-accent transition" placeholder="Locations, services, timelines — anything that helps us scope it."></textarea>
+            </div>
+            <div class="sm:col-span-2 flex items-start gap-3">
+              <input id="consent" name="consent" type="checkbox" required class="mt-1 h-4 w-4 rounded border-line text-accent focus:ring-accent" />
+              <label for="consent" class="text-xs text-slate3">I agree to be contacted about my enquiry and accept the <a href="#" class="text-accent underline">Privacy Policy</a>. <span class="text-destructive">*</span></label>
+            </div>
+            <p id="consentErr" class="err hidden sm:col-span-2 -mt-2 text-xs text-destructive">Please accept the privacy terms to continue.</p>
+          </div>
+
+          <button type="submit" id="submitBtn" class="mt-6 w-full inline-flex items-center justify-center gap-2 rounded-xl bg-ink text-white font-semibold px-6 py-4 shadow-card hover:bg-accent transition focus:outline-none focus:ring-4 focus:ring-accent/30">
+            <span class="btn-label">Request my partnership call</span>
+            <svg class="btn-spin hidden animate-spin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M21 12a9 9 0 1 1-6.2-8.5" stroke-linecap="round"/></svg>
+          </button>
+          <p class="mt-3 text-center text-xs text-slate3">No obligation · Coverage &amp; indicative pricing within 1 business day</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FAQ ============== -->
+<section id="faq" class="py-20 lg:py-28 bg-white">
+  <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-xl mx-auto">
+      <span class="reveal inline-block text-xs font-bold uppercase tracking-[.18em] text-accent">FAQ</span>
+      <h2 class="reveal mt-3 font-display font-extrabold text-3xl sm:text-4xl tracking-tight">Questions partners ask</h2>
+    </div>
+
+    <div class="mt-10 space-y-3">
+      <details class="reveal group rounded-2xl border border-line bg-paper p-5">
+        <summary class="flex items-center justify-between gap-4 font-display font-semibold text-lg"><span>Which areas do you actually cover?</span><span class="faq-icon grid place-items-center h-7 w-7 rounded-full bg-ink text-white transition-transform shrink-0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+        <p class="mt-3 text-slate3">Every state and territory — metro, regional and many remote locations. Send us your site list and we'll confirm coverage and SLAs for each postcode.</p>
+      </details>
+      <details class="reveal group rounded-2xl border border-line bg-paper p-5">
+        <summary class="flex items-center justify-between gap-4 font-display font-semibold text-lg"><span>Can results flow into our existing systems?</span><span class="faq-icon grid place-items-center h-7 w-7 rounded-full bg-ink text-white transition-transform shrink-0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+        <p class="mt-3 text-slate3">Yes. We support API, HL7/LIS integration and a partner portal so status updates and results land in your PMS, LIS or case-management system.</p>
+      </details>
+      <details class="reveal group rounded-2xl border border-line bg-paper p-5">
+        <summary class="flex items-center justify-between gap-4 font-display font-semibold text-lg"><span>How are your clinicians credentialed?</span><span class="faq-icon grid place-items-center h-7 w-7 rounded-full bg-ink text-white transition-transform shrink-0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+        <p class="mt-3 text-slate3">All clinicians hold current AHPRA registration where applicable, national police checks, immunisation records, professional indemnity and complete our competency and induction program.</p>
+      </details>
+      <details class="reveal group rounded-2xl border border-line bg-paper p-5">
+        <summary class="flex items-center justify-between gap-4 font-display font-semibold text-lg"><span>What volumes can you handle?</span><span class="faq-icon grid place-items-center h-7 w-7 rounded-full bg-ink text-white transition-transform shrink-0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+        <p class="mt-3 text-slate3">Anything from a handful of ad-hoc visits to managed programs of thousands of collections per month, with rostering and reporting handled by your account team.</p>
+      </details>
+      <details class="reveal group rounded-2xl border border-line bg-paper p-5">
+        <summary class="flex items-center justify-between gap-4 font-display font-semibold text-lg"><span>How quickly can we start?</span><span class="faq-icon grid place-items-center h-7 w-7 rounded-full bg-ink text-white transition-transform shrink-0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+        <p class="mt-3 text-slate3">After a short scoping call we can typically onboard standard programs within days. Complex, multi-site contracts follow an agreed implementation plan.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FINAL CTA ============== -->
+<section class="py-16">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="reveal rounded-3xl bg-ink text-white p-10 sm:p-14 text-center relative overflow-hidden shadow-card">
+      <div class="absolute -top-20 -left-20 h-72 w-72 rounded-full bg-accent/30 blur-3xl" aria-hidden="true"></div>
+      <div class="absolute -bottom-20 -right-20 h-72 w-72 rounded-full bg-teal/30 blur-3xl" aria-hidden="true"></div>
+      <div class="relative">
+        <h2 class="font-display font-black text-3xl sm:text-4xl tracking-tight max-w-2xl mx-auto">Bring the clinic to your clients — nationwide.</h2>
+        <p class="mt-4 text-white/75 max-w-xl mx-auto">Join the organisations that trust Express Pathology for reliable, credentialed mobile collection and nursing.</p>
+        <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+          <a href="#contact" class="inline-flex items-center justify-center gap-2 rounded-xl bg-white text-ink font-semibold px-7 py-4 shadow-glow hover:-translate-y-0.5 transition">Request a partnership call</a>
+          <a href="tel:1300000000" class="inline-flex items-center justify-center gap-2 rounded-xl glass font-semibold px-7 py-4 hover:bg-white/15 transition">Call 1300 000 000</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============== FOOTER ============== -->
+<footer class="bg-ink text-white/70 pt-16 pb-10">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid md:grid-cols-4 gap-10">
+      <div class="md:col-span-1">
+        <a href="#top" class="flex items-center gap-2.5">
+          <span class="grid place-items-center h-9 w-9 rounded-xl bg-gradient-to-br from-accent2 to-teal text-white"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v6a4 4 0 0 0 4 4 4 4 0 0 1 4 4v8"/><path d="M12 2v6a4 4 0 0 1-4 4 4 4 0 0 0-4 4v8"/><path d="M6 16h12"/></svg></span>
+          <span class="font-display font-extrabold text-white text-lg">Express<span class="text-accent2">Pathology</span></span>
+        </a>
+        <p class="mt-4 text-sm">Australia's mobile pathology &amp; clinical nursing network. Credentialed clinicians, nationwide coverage, SLA-backed service.</p>
+      </div>
+      <div>
+        <p class="font-semibold text-white text-sm">Sectors</p>
+        <ul class="mt-3 space-y-2 text-sm">
+          <li><a href="#who" class="hover:text-white transition">Aged Care</a></li>
+          <li><a href="#who" class="hover:text-white transition">GP &amp; Specialists</a></li>
+          <li><a href="#who" class="hover:text-white transition">NDIS Providers</a></li>
+          <li><a href="#who" class="hover:text-white transition">Insurance / IME</a></li>
+          <li><a href="#who" class="hover:text-white transition">Corporate Health</a></li>
+          <li><a href="#who" class="hover:text-white transition">Clinical Trials</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="font-semibold text-white text-sm">Company</p>
+        <ul class="mt-3 space-y-2 text-sm">
+          <li><a href="#services" class="hover:text-white transition">Services</a></li>
+          <li><a href="#coverage" class="hover:text-white transition">Coverage</a></li>
+          <li><a href="#how" class="hover:text-white transition">How it works</a></li>
+          <li><a href="#why" class="hover:text-white transition">Why us</a></li>
+          <li><a href="#faq" class="hover:text-white transition">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="font-semibold text-white text-sm">Get in touch</p>
+        <ul class="mt-3 space-y-2 text-sm">
+          <li><a href="tel:1300000000" class="hover:text-white transition">1300 000 000</a></li>
+          <li><a href="mailto:partnerships@expresspathology.com.au" class="hover:text-white transition break-all">partnerships@expresspathology.com.au</a></li>
+          <li class="pt-2"><a href="#contact" class="inline-flex items-center gap-1.5 rounded-lg bg-white text-ink font-semibold px-4 py-2.5 hover:bg-accent2 hover:text-white transition">Partner with us</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+      <p>© <span id="year">2026</span> Express Pathology Pty Ltd · ABN 00 000 000 000. All rights reserved.</p>
+      <div class="flex items-center gap-5">
+        <a href="#" class="hover:text-white transition">Privacy Policy</a>
+        <a href="#" class="hover:text-white transition">Terms</a>
+        <a href="#" class="hover:text-white transition">Accessibility</a>
+      </div>
+    </div>
+    <p class="mt-6 text-[11px] text-white/40 leading-relaxed">Accreditation, registration and statistics shown are indicative placeholders for demonstration and must be confirmed against your organisation's actual credentials before publishing.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Sticky nav style on scroll
+  var navbar = document.getElementById('navbar');
+  function onScroll() {
+    if (window.scrollY > 16) {
+      navbar.classList.add('glass-light','shadow-card','border','border-line');
+    } else {
+      navbar.classList.remove('glass-light','shadow-card','border','border-line');
+    }
+  }
+  onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Mobile menu
+  var menuBtn = document.getElementById('menuBtn');
+  var mobileMenu = document.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', function () {
+    var open = mobileMenu.classList.toggle('hidden') === false;
+    menuBtn.setAttribute('aria-expanded', String(open));
+  });
+  mobileMenu.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () { mobileMenu.classList.add('hidden'); menuBtn.setAttribute('aria-expanded','false'); });
+  });
+
+  // Reveal on scroll
+  var revealEls = document.querySelectorAll('.reveal');
+  if (reduce || !('IntersectionObserver' in window)) {
+    revealEls.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(function (el) { io.observe(el); });
+  }
+
+  // Animated counters
+  function animateCount(el) {
+    var target = parseFloat(el.getAttribute('data-count')) || 0;
+    var prefix = (el.getAttribute('data-prefix') || '').replace('&lt;','<');
+    var suffix = el.getAttribute('data-suffix') || '';
+    if (reduce) { el.textContent = prefix + target.toLocaleString() + suffix; return; }
+    var dur = 1400, start = null;
+    function step(ts) {
+      if (!start) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = prefix + Math.floor(eased * target).toLocaleString() + suffix;
+      if (p < 1) requestAnimationFrame(step);
+      else el.textContent = prefix + target.toLocaleString() + suffix;
+    }
+    requestAnimationFrame(step);
+  }
+  var counters = document.querySelectorAll('[data-count]');
+  if (!('IntersectionObserver' in window)) {
+    counters.forEach(animateCount);
+  } else {
+    var cio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { animateCount(e.target); cio.unobserve(e.target); } });
+    }, { threshold: 0.6 });
+    counters.forEach(function (el) { cio.observe(el); });
+  }
+
+  // Form validation + submit simulation
+  var form = document.getElementById('leadForm');
+  function showError(input, show) {
+    var wrap = input.closest('div');
+    var err = wrap ? wrap.querySelector('.err') : null;
+    if (err) err.classList.toggle('hidden', !show);
+    input.classList.toggle('border-destructive', show);
+    input.classList.toggle('border-line', !show);
+  }
+  function validEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+  ['name','org','email','sector'].forEach(function (id) {
+    var el = document.getElementById(id);
+    el.addEventListener('blur', function () {
+      var bad = id === 'email' ? !validEmail(el.value) : !el.value.trim();
+      showError(el, bad);
+    });
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = document.getElementById('name');
+    var org = document.getElementById('org');
+    var email = document.getElementById('email');
+    var sector = document.getElementById('sector');
+    var consent = document.getElementById('consent');
+    var consentErr = document.getElementById('consentErr');
+
+    var errs = [];
+    if (!name.value.trim()) { showError(name, true); errs.push(name); }
+    if (!org.value.trim()) { showError(org, true); errs.push(org); }
+    if (!validEmail(email.value)) { showError(email, true); errs.push(email); }
+    if (!sector.value) { showError(sector, true); errs.push(sector); }
+    if (!consent.checked) { consentErr.classList.remove('hidden'); errs.push(consent); }
+    else consentErr.classList.add('hidden');
+
+    if (errs.length) { errs[0].focus(); return; }
+
+    // Simulate async submit (replace with real endpoint / Formspree / HubSpot etc.)
+    var btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.querySelector('.btn-label').textContent = 'Sending…';
+    btn.querySelector('.btn-spin').classList.remove('hidden');
+
+    setTimeout(function () {
+      document.getElementById('formBody').classList.add('hidden');
+      var ok = document.getElementById('formSuccess');
+      ok.classList.remove('hidden');
+      ok.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+    }, 1100);
+  });
+})();
+</script>
+</body>
+</html>
