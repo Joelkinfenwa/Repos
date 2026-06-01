@@ -50,14 +50,12 @@ Also worth checking:
 - The coverage chips in the hero (`Sydney`, `Melbourne`, `Brisbane`, `Perth`, `+ metro`)
   — edit to match where you actually operate.
 
-### Logo (done ✓)
+### Logo (done ✓ — embedded)
 
-Your logo is included at `assets/express-pathology-logo.png` and already shows in the
-header, footer and browser-tab icon. Just make sure you **upload the whole
-`express-clinical-services` folder** (so the `assets` folder goes up with `index.html`).
-
-If you ever want to swap it for a tightly-cropped/transparent or SVG version, replace that
-file (keep the same name) or see `assets/README.md`.
+Your logo is now **baked directly into `index.html`** (header, footer and browser-tab
+icon). It needs no separate file and works even if you open or upload only the single
+HTML file. The source artwork is also kept at `assets/express-pathology-logo.png` if you
+ever need it. To change the logo later, send me a new file and I'll re-embed it.
 
 ### Images (already done — optional: self-host them)
 
