@@ -19,18 +19,15 @@ in your Formspree account.
 
 ---
 
-## Step 2 — Update the placeholder details
+## Step 2 — Contact details & coverage (done ✓)
 
-Still in `index.html`, do a Find-and-Replace for these (they appear a few times):
+Real details are now in the site:
+- Phone: **02 9545 2940**
+- Email: **express@expresspathology.com.au**
+- Hero coverage: Sydney, Melbourne, Brisbane, Perth, Adelaide, Canberra, Gold Coast,
+  Sunshine Coast, Newcastle, Darwin
 
-| Find | Replace with |
-|------|--------------|
-| `1300000000` and `1300 000 000` | your real phone number |
-| `partners@expresspathology.com.au` | your real contact email |
-
-Also worth checking:
-- The coverage chips in the hero (`Sydney`, `Melbourne`, `Brisbane`, `Perth`, `+ metro`)
-  — edit to match where you actually operate.
+To change any of these later, just tell me, or find-and-replace them in `index.html`.
 
 ### Logo (done ✓ — embedded)
 
