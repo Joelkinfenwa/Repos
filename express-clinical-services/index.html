@@ -10,6 +10,7 @@
 <meta property="og:description" content="Reliable mobile pathology collection, managed for clinics, telehealth and health-tech companies across Australia." />
 <meta property="og:type" content="website" />
 
+<link rel="icon" type="image/png" href="assets/express-pathology-logo.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -87,12 +88,19 @@
 <header class="sticky top-0 z-50 bg-canvas/85 backdrop-blur border-b border-line">
   <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4" aria-label="Primary">
     <a href="#top" class="flex items-center gap-2.5 shrink-0" aria-label="Express Pathology home">
-      <span class="grid place-items-center h-9 w-9 rounded-lg bg-brand text-white">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l2 5 4-10 2 5h6"/></svg>
-      </span>
-      <span class="leading-none">
-        <span class="block font-display font-semibold text-[1.02rem] tracking-tight">Express Pathology</span>
-        <span class="block text-[11px] text-muted -mt-0.5">Collection infrastructure</span>
+      <!-- Official logo. Save your supplied artwork as assets/express-pathology-logo.png (or .svg) -->
+      <img src="assets/express-pathology-logo.png" alt="Express Pathology" width="190" height="44"
+           class="h-9 sm:h-10 w-auto"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+      <!-- Fallback shown only until the logo file is present -->
+      <span class="items-center gap-2.5" style="display:none">
+        <span class="grid place-items-center h-9 w-9 rounded-lg bg-brand text-white">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l2 5 4-10 2 5h6"/></svg>
+        </span>
+        <span class="leading-none">
+          <span class="block font-display font-semibold text-[1.02rem] tracking-tight">Express Pathology</span>
+          <span class="block text-[11px] text-muted -mt-0.5">Collection infrastructure</span>
+        </span>
       </span>
     </a>
 
@@ -670,8 +678,13 @@
     <div class="grid md:grid-cols-4 gap-10">
       <div>
         <div class="flex items-center gap-2.5">
-          <span class="grid place-items-center h-9 w-9 rounded-lg bg-brand text-white"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l2 5 4-10 2 5h6"/></svg></span>
-          <span class="font-display font-semibold">Express Pathology</span>
+          <img src="assets/express-pathology-logo.png" alt="Express Pathology" width="200" height="46"
+               class="h-10 w-auto"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <span class="items-center gap-2.5" style="display:none">
+            <span class="grid place-items-center h-9 w-9 rounded-lg bg-brand text-white"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l2 5 4-10 2 5h6"/></svg></span>
+            <span class="font-display font-semibold">Express Pathology</span>
+          </span>
         </div>
         <p class="mt-4 text-sm text-muted max-w-xs">Mobile blood collection infrastructure for Australian healthcare companies.</p>
       </div>
