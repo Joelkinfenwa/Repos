@@ -1,10 +1,10 @@
-# Express Clinical Services — B2B collection infrastructure website
+# Express Pathology — B2B collection infrastructure website
 
-A single-file, premium B2B website for **Express Clinical Services**, the B2B arm of
-Express Pathology / Express Health. It positions Express as **blood collection
-infrastructure** for Australian healthcare companies — nurse network, patient
-coordination, specimen logistics and quality control, delivered so partners don't
-have to build their own clinical operations.
+A single-file, premium B2B website for **Express Pathology** (part of the Express
+Health group). It positions Express as **blood collection infrastructure** for
+Australian healthcare companies — nurse network, patient coordination, specimen
+logistics and quality control, delivered so partners don't have to build their own
+clinical operations.
 
 ## Quick start
 
@@ -34,7 +34,7 @@ xdg-open express-clinical-services/index.html    # Linux
 
 Grounded in the `ui-ux-pro-max` skill's "Trust & Authority" pattern, then tuned to
 the brief's calm/premium-not-flashy direction. Deliberately **distinct** from the
-consumer-facing Express Pathology site (no animated mesh, no hype).
+consumer-facing lead-gen site in `../express-pathology/` (no animated mesh, no hype).
 
 | Token | Value | Use |
 |------|-------|-----|
@@ -71,7 +71,7 @@ consumer-facing Express Pathology site (no animated mesh, no hype).
    real form ID. Enquiries then land in your inbox. Until configured, the form runs in a
    harmless "demo" mode (shows success but doesn't send) and logs a console warning.
 2. **Details:** replace placeholder phone `1300 000 000` and email
-   `partners@expressclinical.com.au` with your real ones; check the coverage chips.
+   `partners@expresspathology.com.au` with your real ones; check the coverage chips.
 3. **Publish:** upload `index.html` to your host's web root (e.g. `public_html`). Since
    your domain points at your host, it's live immediately.
 

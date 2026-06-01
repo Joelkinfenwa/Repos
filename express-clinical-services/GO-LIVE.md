@@ -1,4 +1,4 @@
-# Go live — Express Clinical Services (plain-English guide)
+# Go live — Express Pathology (plain-English guide)
 
 You have **your own web host** and **your own domain**, and you want enquiries
 **emailed straight to you**. That makes this a 3-step launch. No coding required.
@@ -14,7 +14,7 @@ each submission). You just need to plug in your own ID.
 
 1. Go to **https://formspree.io** → **Sign up** (free plan is fine to start).
 2. Use the email address where you want enquiries to land (e.g. your work inbox).
-3. Click **+ New form**, name it `Express Clinical Services`, and set the destination
+3. Click **+ New form**, name it `Express Pathology`, and set the destination
    email to your inbox.
 4. Formspree gives you an endpoint that looks like:
    `https://formspree.io/f/abcdwxyz`  ← the part after `/f/` is **your form ID**.
@@ -44,7 +44,7 @@ Still in `index.html`, do a Find-and-Replace for these (they appear a few times)
 | Find | Replace with |
 |------|--------------|
 | `1300000000` and `1300 000 000` | your real phone number |
-| `partners@expressclinical.com.au` | your real contact email |
+| `partners@expresspathology.com.au` | your real contact email |
 
 Also worth checking:
 - The coverage chips in the hero (`Sydney`, `Melbourne`, `Brisbane`, `Perth`, `+ metro`)
