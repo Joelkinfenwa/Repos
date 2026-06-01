@@ -23,7 +23,7 @@ xdg-open express-clinical-services/index.html    # Linux
 3. **The problem** — dark band, 6 problem points.
 4. **The solution** — "Your collection layer, handled." 6 pillars.
 5. **How it works** — 5-step workflow diagram + white-label / partner-facing note.
-6. **Service models** — Mobile, Clinic, Corporate/Onsite.
+6. **Service models** — Mobile collections, Corporate/Onsite collections.
 7. **Why Express** — 8 reliability points.
 8. **Use cases** — 7 partner scenarios.
 9. **Partner experience** — "Protect your patient experience."
