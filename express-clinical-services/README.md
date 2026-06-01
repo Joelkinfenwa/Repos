@@ -62,14 +62,22 @@ consumer-facing Express Pathology site (no animated mesh, no hype).
   `aria-live` success state, semantic input types + autocomplete.
 - Responsive at 375 / 768 / 1024 / 1440; transform/opacity-only animation (no layout shift).
 
-## ⚠️ Before going live — replace placeholders
+## 🚀 Making it a usable, live site
 
+**See [`GO-LIVE.md`](./GO-LIVE.md) for the full plain-English launch guide.** Short version:
+
+1. **Form → email:** the form is wired for **Formspree**. Create a free form at
+   formspree.io and replace `YOUR_FORM_ID` in the `<form ... action="...">` tag with your
+   real form ID. Enquiries then land in your inbox. Until configured, the form runs in a
+   harmless "demo" mode (shows success but doesn't send) and logs a console warning.
+2. **Details:** replace placeholder phone `1300 000 000` and email
+   `partners@expressclinical.com.au` with your real ones; check the coverage chips.
+3. **Publish:** upload `index.html` to your host's web root (e.g. `public_html`). Since
+   your domain points at your host, it's live immediately.
+
+### Still worth doing
 - **Imagery:** two photo-ready frames (hero, partner experience) are intentional
-  placeholders. Drop in real nurse / collection photography (the brief specifically
-  wants real imagery, not fake dashboards).
-- **Contact:** phone `1300 000 000`, email `partners@expressclinical.com.au`.
-- **Form submission is simulated client-side.** Wire `<form id="leadForm">` to your CRM
-  / HubSpot / Formspree endpoint so partner enquiries are actually captured, and add a
-  conversion event.
-- Add real Privacy / Terms pages behind the footer links.
-- Confirm any coverage claims (city chips) reflect actual serviced areas.
+  placeholders — drop in real nurse / collection photography.
+- Add real Privacy / Terms pages behind the footer links; add analytics.
+- Optional production hardening: pre-compile the CSS so the file has zero external
+  dependencies (currently styles load from the Tailwind CDN — fine to launch).

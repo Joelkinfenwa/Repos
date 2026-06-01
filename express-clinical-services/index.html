@@ -430,7 +430,7 @@
 
     <!-- Partner inquiry form -->
     <div class="reveal" data-d="1">
-      <form id="leadForm" novalidate class="rounded-xl2 bg-paper text-ink p-6 sm:p-8 shadow-lift">
+      <form id="leadForm" method="POST" action="https://formspree.io/f/YOUR_FORM_ID" novalidate class="rounded-xl2 bg-paper text-ink p-6 sm:p-8 shadow-lift">
         <div id="formSuccess" class="hidden text-center py-10" role="status" aria-live="polite">
           <span class="mx-auto grid place-items-center h-16 w-16 rounded-full bg-brandSoft text-brand"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
           <h3 class="mt-5 font-display font-semibold text-2xl">Thanks — we've received your enquiry.</h3>
@@ -438,6 +438,10 @@
         </div>
 
         <div id="formBody">
+          <!-- Formspree: anti-spam honeypot (hidden from humans) -->
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+          <!-- Email subject line you'll see in your inbox -->
+          <input type="hidden" name="_subject" value="New partner enquiry — Express Clinical Services" />
           <h3 class="font-display font-semibold text-xl">Partner enquiry</h3>
           <p class="text-sm text-muted mt-1">Fields marked <span class="text-danger">*</span> are required.</p>
 
@@ -517,6 +521,12 @@
               <label for="notes" class="block text-sm font-semibold mb-1.5">Notes / workflow requirements</label>
               <textarea id="notes" name="notes" rows="3" class="w-full rounded-lg border border-line bg-canvas px-4 py-3 text-[15px] focus:outline-none focus:ring-4 focus:ring-brand/15 focus:border-brand transition" placeholder="Pathology provider, referral flow, timelines, anything else that helps us scope it."></textarea>
             </div>
+          </div>
+
+          <div id="formError" class="hidden mt-5 rounded-lg border border-danger/30 bg-danger/5 px-4 py-3 text-sm text-danger" role="alert" aria-live="assertive">
+            Sorry — something went wrong sending your enquiry. Please email
+            <a href="mailto:partners@expressclinical.com.au" class="font-semibold underline">partners@expressclinical.com.au</a>
+            or call <a href="tel:1300000000" class="font-semibold underline">1300&nbsp;000&nbsp;000</a>.
           </div>
 
           <button type="submit" id="submitBtn" class="mt-6 w-full inline-flex items-center justify-center gap-2 rounded-lg bg-brand text-white font-semibold px-6 py-3.5 hover:bg-brandDeep transition focus:outline-none focus:ring-4 focus:ring-brand/25">
@@ -652,16 +662,45 @@
     if (errs.length) { errs[0].focus(); return; }
 
     var btn = document.getElementById('submitBtn');
-    btn.disabled = true;
-    btn.querySelector('.btn-label').textContent = 'Sending…';
-    btn.querySelector('.btn-spin').classList.remove('hidden');
-
-    setTimeout(function () {
+    function setLoading(on) {
+      btn.disabled = on;
+      btn.querySelector('.btn-label').textContent = on ? 'Sending…' : 'Book a partner call';
+      btn.querySelector('.btn-spin').classList.toggle('hidden', !on);
+    }
+    function showSuccess() {
       document.getElementById('formBody').classList.add('hidden');
       var ok = document.getElementById('formSuccess');
       ok.classList.remove('hidden');
       ok.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
-    }, 1000);
+    }
+    function showSendError() {
+      setLoading(false);
+      var box = document.getElementById('formError');
+      box.classList.remove('hidden');
+      box.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+    }
+
+    setLoading(true);
+    document.getElementById('formError').classList.add('hidden');
+
+    var action = form.getAttribute('action') || '';
+
+    // Not configured yet → demo mode so the page still behaves while you set up Formspree.
+    if (action.indexOf('YOUR_FORM_ID') !== -1) {
+      console.warn('[Express] Form endpoint not configured. Replace YOUR_FORM_ID in the form action with your Formspree form ID to receive enquiries by email.');
+      setTimeout(function () { setLoading(false); showSuccess(); }, 800);
+      return;
+    }
+
+    // Real submission to Formspree (or any endpoint that accepts a POST + returns JSON).
+    fetch(action, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(form)
+    }).then(function (res) {
+      if (res.ok) { showSuccess(); }
+      else { res.json().then(function () { showSendError(); }).catch(showSendError); }
+    }).catch(showSendError);
   });
 })();
 </script>
