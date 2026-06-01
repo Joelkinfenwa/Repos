@@ -50,16 +50,14 @@ Also worth checking:
 - The coverage chips in the hero (`Sydney`, `Melbourne`, `Brisbane`, `Perth`, `+ metro`)
   — edit to match where you actually operate.
 
-### Logo (add your brand artwork)
+### Logo (done ✓)
 
-The header, footer and browser-tab icon are wired to use your logo. Just add the file:
+Your logo is included at `assets/express-pathology-logo.png` and already shows in the
+header, footer and browser-tab icon. Just make sure you **upload the whole
+`express-clinical-services` folder** (so the `assets` folder goes up with `index.html`).
 
-1. Save the Express Pathology logo as `express-pathology-logo.png` (transparent background
-   preferred) inside an `assets` folder next to `index.html`, i.e. `assets/express-pathology-logo.png`.
-2. Upload the `assets` folder alongside `index.html`.
-
-Until the file is present, the header/footer show a clean text version of the name, so the
-site never looks broken. (Prefer SVG? See `assets/README.md` for the one-line change.)
+If you ever want to swap it for a tightly-cropped/transparent or SVG version, replace that
+file (keep the same name) or see `assets/README.md`.
 
 ### Images (already done — optional: self-host them)
 
