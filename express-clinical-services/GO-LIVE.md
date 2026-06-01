@@ -7,33 +7,15 @@ Total time: ~20–30 minutes.
 
 ---
 
-## Step 1 — Turn the form into real email (Formspree)
+## Step 1 — Form email delivery (done ✓)
 
-The form is already wired to work with **Formspree** (a free service that emails you
-each submission). You just need to plug in your own ID.
+The enquiry form is wired to your Formspree endpoint
+(`https://formspree.io/f/mpqngrqj`), so submissions are emailed to the inbox configured
+in your Formspree account.
 
-1. Go to **https://formspree.io** → **Sign up** (free plan is fine to start).
-2. Use the email address where you want enquiries to land (e.g. your work inbox).
-3. Click **+ New form**, name it `Express Pathology`, and set the destination
-   email to your inbox.
-4. Formspree gives you an endpoint that looks like:
-   `https://formspree.io/f/abcdwxyz`  ← the part after `/f/` is **your form ID**.
-5. Open `index.html` in any text editor, press **Find** and search for:
-   `YOUR_FORM_ID`
-   You'll find it once, here:
-   ```html
-   <form id="leadForm" method="POST" action="https://formspree.io/f/YOUR_FORM_ID" ...>
-   ```
-   Replace `YOUR_FORM_ID` with your real ID, e.g.:
-   ```html
-   action="https://formspree.io/f/abcdwxyz"
-   ```
-6. Save the file.
-
-> The first time a real enquiry is submitted, Formspree emails you to confirm the
-> form once. After that, every submission lands in your inbox automatically.
-
-**Don't want to edit code?** Send me your Formspree form ID and I'll plug it in for you.
+> Formspree emails you to confirm the form on the **first** real submission. After that,
+> every enquiry lands in your inbox automatically. Send a test enquiry once it's live to
+> confirm, and check the destination email is set in your Formspree dashboard.
 
 ---
 
