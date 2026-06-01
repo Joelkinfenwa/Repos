@@ -76,8 +76,11 @@ consumer-facing Express Pathology site (no animated mesh, no hype).
    your domain points at your host, it's live immediately.
 
 ### Still worth doing
-- **Imagery:** two photo-ready frames (hero, partner experience) are intentional
-  placeholders — drop in real nurse / collection photography.
+- **Imagery:** the hero and "partner experience" photos are **real generated images**
+  and already display (served from an image CDN). Optionally self-host them for full
+  ownership — see the "Images" section in `GO-LIVE.md`. Each `<img>` has a comment above
+  it with the exact local path to switch to. A graceful fallback placeholder shows if an
+  image ever fails to load.
 - Add real Privacy / Terms pages behind the footer links; add analytics.
 - Optional production hardening: pre-compile the CSS so the file has zero external
   dependencies (currently styles load from the Tailwind CDN — fine to launch).

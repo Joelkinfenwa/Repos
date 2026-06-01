@@ -49,8 +49,27 @@ Still in `index.html`, do a Find-and-Replace for these (they appear a few times)
 Also worth checking:
 - The coverage chips in the hero (`Sydney`, `Melbourne`, `Brisbane`, `Perth`, `+ metro`)
   — edit to match where you actually operate.
-- The two image placeholders (hero + "partner experience" section) — ideally swap in real
-  nurse/collection photos later (see Step 4). The site looks complete without them for now.
+
+### Images (already done — optional: self-host them)
+
+The two photos (hero + "partner experience") are **real generated images** and already
+display on the site. They currently load from an image CDN. For full ownership and
+maximum reliability, host them on your own server:
+
+1. In your browser, open and save each image:
+   - Hero — nurse performing a collection:
+     `https://d8j0ntlcm91z4.cloudfront.net/user_3DvAn6uMIdEntCnt7P71oSjYfdu/hf_20260601_043526_5728976f-7a91-4dc1-a205-4e9424e528e9.png`
+   - Partner experience — nurse reassuring a patient:
+     `https://d8j0ntlcm91z4.cloudfront.net/user_3DvAn6uMIdEntCnt7P71oSjYfdu/hf_20260601_043532_d724e4a9-f8fa-49d6-93cc-65b5e7afce37.png`
+2. Create a folder named `images` next to `index.html`, and save them as
+   `images/nurse-collection.png` and `images/nurse-patient.png`.
+3. In `index.html`, change the two `<img src="https://d8j0ntlcm91z4...">` values to
+   `src="images/nurse-collection.png"` and `src="images/nurse-patient.png"`
+   (each `<img>` has a comment right above it showing exactly what to use).
+4. Upload the `images` folder alongside `index.html`.
+
+> If an image ever fails to load, the page automatically falls back to a clean styled
+> placeholder — it will never look broken.
 
 ---
 
