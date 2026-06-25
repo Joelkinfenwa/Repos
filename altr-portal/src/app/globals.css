@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+/* ============================================================
+   ALTR design tokens — strict warm black & white.
+   Ported verbatim from altr-brand-system.html / the portal
+   prototype. These values are LOCKED. Do not invent new colours.
+   Status colours (ok/warn/alert) are FUNCTIONAL indicators only.
+   ============================================================ */
+:root {
+  --bg: #121110;
+  --surface: #1a1917;
+  --surface-2: #211f1c;
+  --hairline: #2a2825;
+  --hairline-2: #363330;
+  --text: #f4f2ee;
+  --text-2: #a8a39a;
+  --text-3: #6e685e;
+  --emph: #f4f2ee; /* emphasis = white, not a colour */
+
+  /* status — functional UI only */
+  --ok: #6e8a5a;
+  --warn: #ce9a4f;
+  --alert: #bc5e48;
+
+  --radius: 10px;
+  --radius-sm: 8px;
+  --ease: cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+
+/* Expose the tokens to Tailwind's utility generator so we can write
+   bg-surface, text-text-2, border-hairline, text-ok, rounded-[var(--radius)], etc. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-hairline: var(--hairline);
+  --color-hairline-2: var(--hairline-2);
+  --color-text: var(--text);
+  --color-text-2: var(--text-2);
+  --color-text-3: var(--text-3);
+  --color-emph: var(--emph);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-alert: var(--alert);
+
+  --radius-DEFAULT: var(--radius);
+  --radius-sm: var(--radius-sm);
+
+  --font-sans: var(--font-hanken), system-ui, sans-serif;
+}
+
+html {
+  background: var(--bg);
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-hanken), system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* Accessibility floor (spec §1.6) */
+:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

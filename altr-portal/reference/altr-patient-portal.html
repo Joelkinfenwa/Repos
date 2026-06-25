@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home · ALTR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;450;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* strict warm black & white */
+    --bg:#121110;
+    --surface:#1A1917;
+    --surface-2:#211F1C;
+    --hairline:#2A2825;
+    --hairline-2:#363330;
+    --text:#F4F2EE;
+    --text-2:#A8A39A;
+    --text-3:#6E685E;
+    --emph:#F4F2EE;        /* emphasis = white, not a colour */
+    /* status: functional UI only */
+    --ok:#6E8A5A;
+    --warn:#CE9A4F;
+    --alert:#BC5E48;
+    --radius:10px;
+    --radius-sm:8px;
+    --ease:cubic-bezier(.2,.6,.2,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{background:var(--bg);color-scheme:dark;-webkit-text-size-adjust:100%}
+  body{font-family:'Hanken Grotesk',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh}
+  .bg{position:fixed;inset:0;background:var(--bg);z-index:-1}
+  .app{min-height:100vh;max-width:600px;margin:0 auto}
+
+  /* App bar */
+  .appbar{display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 20px;border-bottom:1px solid var(--hairline);position:sticky;top:0;background:rgba(18,17,16,.85);backdrop-filter:blur(12px);z-index:10}
+  .bar-left{display:flex;align-items:center;gap:12px}
+  .hamb{width:30px;height:30px;display:flex;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
+  .hamb span{display:block;height:1.5px;background:var(--text);border-radius:2px}
+  .hamb span:nth-child(1){width:18px}.hamb span:nth-child(2){width:14px}.hamb span:nth-child(3){width:18px}
+  .wordmark{font-weight:800;font-size:16px;letter-spacing:.06em}
+  .acct{width:30px;height:30px;border-radius:50%;border:1px solid var(--hairline-2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text-2);text-decoration:none}
+
+  /* Greeting header */
+  .head{padding:26px 20px 20px}
+  .greet-row{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:14px}
+  .head h1{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:6px}
+  .head h1 .dim{color:var(--text-3)}
+  .head p{font-size:15px;color:var(--text-2);max-width:46ch}
+
+  /* Primary status card — where am I / what next */
+  .nextcard{margin:6px 20px 0;border:1px solid var(--hairline-2);border-radius:var(--radius);overflow:hidden;background:var(--surface)}
+  .nextcard .nc-status{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--hairline);font-size:12.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ok)}
+  .nc-status .pulse{width:6px;height:6px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 rgba(110,138,90,.5);animation:pulse 2.4s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(110,138,90,.45)}70%{box-shadow:0 0 0 7px rgba(110,138,90,0)}100%{box-shadow:0 0 0 0 rgba(110,138,90,0)}}
+  .nc-body{padding:18px 16px 16px}
+  .nc-body .nl{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);margin-bottom:7px}
+  .nc-body h2{font-size:21px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
+  .nc-body p{font-size:14.5px;color:var(--text-2);margin-bottom:16px;max-width:44ch}
+  .cta{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;background:var(--text);color:var(--bg);font-weight:700;font-size:16px;padding:14px;border-radius:var(--radius);border:none;cursor:pointer;font-family:inherit;transition:transform .12s var(--ease),opacity .15s}
+  .cta:hover{opacity:.93}.cta:active{transform:scale(.985)}
+  .cta svg{width:17px;height:17px}
+
+  /* section label */
+  .label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);padding:0 20px;margin:30px 0 10px;display:flex;justify-content:space-between;align-items:baseline}
+  .label a{font-size:12px;font-weight:600;color:var(--text-2);text-decoration:none;letter-spacing:.02em;text-transform:none}
+  .label a:hover{color:var(--text)}
+
+  /* Journey — interactive editorial list */
+  .journey{border-top:1px solid var(--hairline)}
+  .jrow{display:grid;grid-template-columns:26px 1fr auto;gap:14px;align-items:center;padding:15px 20px;border-bottom:1px solid var(--hairline);width:100%;text-align:left;background:none;border-left:0;border-right:0;border-top:0;cursor:pointer;font-family:inherit;color:inherit;transition:background .15s var(--ease)}
+  .jrow:hover{background:var(--surface)}
+  .jrow .jdot{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--hairline-2);display:flex;align-items:center;justify-content:center}
+  .jrow.done .jdot{background:var(--ok);border-color:var(--ok)}
+  .jrow.done .jdot svg{width:10px;height:10px;color:var(--bg)}
+  .jrow.current .jdot{border-color:var(--text);background:transparent;position:relative}
+  .jrow.current .jdot::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--text)}
+  .jrow .jt{font-size:15.5px;font-weight:600;letter-spacing:-.01em}
+  .jrow.pending .jt{color:var(--text-2)}
+  .jrow .js{font-size:13px;color:var(--text-3);margin-top:1px}
+  .jrow.current .js{color:var(--text-2)}
+  .jrow .jstat{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
+  .jrow.done .jstat{color:var(--text-3)}
+  .jrow.current .jstat{color:var(--text)}
+  .jrow.pending .jstat{color:var(--text-3)}
+  .jrow .jchev{width:15px;height:15px;color:var(--text-3);transition:transform .2s var(--ease)}
+  .jrow[aria-expanded="true"] .jchev{transform:rotate(90deg)}
+  .jdetail{max-height:0;overflow:hidden;transition:max-height .3s var(--ease);border-bottom:1px solid var(--hairline);background:var(--surface)}
+  .jdetail.open{max-height:160px}
+  .jdetail .inner{padding:2px 20px 16px 60px;font-size:14px;color:var(--text-2)}
+
+  /* compact list rows */
+  .list{border-top:1px solid var(--hairline)}
+  .lrow{display:flex;align-items:center;gap:14px;padding:15px 20px;border-bottom:1px solid var(--hairline);text-decoration:none;color:var(--text);transition:background .15s var(--ease)}
+  .lrow:hover{background:var(--surface)}
+  .lrow .lmain{flex:1;min-width:0}
+  .lrow .lt{font-size:15.5px;font-weight:600}
+  .lrow .ls{font-size:13px;color:var(--text-3);margin-top:1px}
+  .lrow .lr{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);white-space:nowrap}
+  .lrow .lr.go{color:var(--text)}
+  .lrow .lr.ok{color:var(--ok)}
+  .lrow .chev{width:16px;height:16px;color:var(--text-3)}
+
+  /* care team — two compact rows */
+  .team{border-top:1px solid var(--hairline)}
+  .member{display:flex;align-items:center;gap:14px;padding:15px 20px;border-bottom:1px solid var(--hairline)}
+  .member .ph{width:42px;height:42px;border-radius:50%;background:var(--surface-2);border:1px solid var(--hairline-2);flex:none}
+  .member .mmain{flex:1;min-width:0}
+  .member .mn{font-size:15.5px;font-weight:600}
+  .member .mr{font-size:13px;color:var(--text-3)}
+  .member .macts{display:flex;gap:8px}
+  .ico-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--hairline-2);background:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-2);text-decoration:none;transition:border-color .15s,color .15s}
+  .ico-btn:hover{border-color:var(--text-3);color:var(--text)}
+  .ico-btn svg{width:17px;height:17px}
+
+  /* updates timeline */
+  .tl{display:flex;gap:14px;padding:13px 20px;border-bottom:1px solid var(--hairline);align-items:baseline}
+  .tl .td{width:7px;height:7px;border-radius:50%;background:var(--text-3);flex:none;align-self:center}
+  .tl .tt{font-size:14.5px;font-weight:500}
+  .tl .tw{margin-left:auto;font-size:12.5px;color:var(--text-3);white-space:nowrap}
+
+  footer{padding:28px 20px 48px;color:var(--text-3);font-size:12.5px;border-top:1px solid var(--hairline);margin-top:30px}
+
+  /* Full-screen menu */
+  .menu{position:fixed;inset:0;background:var(--bg);z-index:50;display:flex;flex-direction:column;transform:translateY(-100%);opacity:0;visibility:hidden;transition:transform .32s var(--ease),opacity .25s var(--ease),visibility .32s}
+  .menu.open{transform:translateY(0);opacity:1;visibility:visible}
+  .menu-bar{display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 20px;border-bottom:1px solid var(--hairline);flex:none}
+  .menu-bar .wordmark{font-weight:800;font-size:16px;letter-spacing:.06em}
+  .menu-close{width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;color:var(--text)}
+  .menu-close svg{width:20px;height:20px}
+  .menu-scroll{flex:1;overflow-y:auto;padding:8px 0 32px;max-width:600px;margin:0 auto;width:100%}
+  .menu-group{padding:14px 0}
+  .menu-group+.menu-group{border-top:1px solid var(--hairline)}
+  .menu-glabel{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);padding:6px 20px 8px}
+  .menu-item{display:flex;align-items:center;gap:14px;padding:13px 20px;text-decoration:none;color:var(--text);font-size:16px;font-weight:500;transition:background .14s var(--ease)}
+  .menu-item:hover{background:var(--surface)}
+  .menu-item .mi-ico{width:20px;height:20px;color:var(--text-2);flex:none}
+  .menu-item .mi-ico svg{width:100%;height:100%}
+  .menu-item .mi-main{flex:1}
+  .menu-item .mi-sub{font-size:13px;color:var(--text-3);font-weight:450;margin-top:1px}
+  .menu-item .mi-chev{width:16px;height:16px;color:var(--text-3)}
+  .menu-item.urgent .mi-ico{color:var(--warn)}
+  .menu-item.urgent .mi-main{color:var(--warn);font-weight:600}
+  .menu-foot{padding:18px 20px;border-top:1px solid var(--hairline);display:flex;gap:18px;flex-wrap:wrap}
+  .menu-foot a{font-size:13px;color:var(--text-3);text-decoration:none}
+  .menu-foot a:hover{color:var(--text-2)}
+  body.menu-locked{overflow:hidden}
+
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  :focus-visible{outline:2px solid var(--text);outline-offset:-2px}
+  .cta:focus-visible,.jrow:focus-visible{outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<!-- MENU -->
+<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="menu-bar"><div class="wordmark">ALTR</div><button class="menu-close" id="menuClose" aria-label="Close menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+  <div class="menu-scroll">
+    <div class="menu-group">
+      <div class="menu-glabel">Your journey</div>
+      <a class="menu-item" href="altr-patient-portal.html"><span class="mi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12 12 4l9 8"/><path d="M5 10v9h14v-9"/></svg></span><span class="mi-main">Home</span><svg class="mi-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a>
+      <a class="menu-item" href="#"><span class="mi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg></span><span class="mi-main">Results &amp; documents<span class="mi-sub">Forms, results, letters</span></span><svg class="mi-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a>
+      <a class="menu-item" href="#"><span class="mi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10h18M3 10l2-5h14l2 5M5 10v9h14v-9"/></svg></span><span class="mi-main">My program &amp; billing<span class="mi-sub">Plan, payments, invoices</span></span><svg class="mi-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a>
+      <a class="menu-item" href="#"><span class="mi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></span><span class="mi-main">Upcoming care</span><svg class="mi-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a>
+    </div>
+    <div class="menu-group">
+      <div class="menu-glabel">Help &amp; learning</div>
+      <a class="menu-item" href="#"><span class="mi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m10 8 6 4-6 4z"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg></span><span class="mi-main">How it works<span class="mi-sub">Short videos &amp; step-by-step guides</span></span><svg class="mi-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a>
+      <a class="menu-item" href="#"><span class="mi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 4.5 1.5c0 1.5-2 2-2 3"/><path d="M12 17h.01"/></svg></span><span class="mi-main">FAQs<span class="mi-sub">Fasting, costs, timing, privacy</span></span><svg class="mi-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a>
+    </div>
+    <div class="menu-group">
+      <div class="menu-glabel">Talk to us</div>
+      <a class="menu-item" href="#"><span class="mi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><span class="mi-main">Message Sarah<span class="mi-sub">Your care coordinator · replies within 30 min</span></span><svg class="mi-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a>
+      <a class="menu-item" href="tel:1300000000"><span class="mi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg></span><span class="mi-main">Call us<span class="mi-sub">Mon–Fri, 8am–6pm AEST</span></span><svg class="mi-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a>
+      <a class="menu-item urgent" href="tel:000"><span class="mi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></span><span class="mi-main">Need urgent help</span><svg class="mi-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a>
+    </div>
+    <div class="menu-group">
+      <div class="menu-glabel">Account</div>
+      <a class="menu-item" href="#"><span class="mi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></span><span class="mi-main">Profile &amp; details</span><svg class="mi-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a>
+      <a class="menu-item" href="#"><span class="mi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><span class="mi-main">Privacy &amp; security</span><svg class="mi-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a>
+      <a class="menu-item" href="#"><span class="mi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></svg></span><span class="mi-main">Log out</span></a>
+    </div>
+  </div>
+  <div class="menu-foot"><a href="#">Terms</a><a href="#">Privacy Policy</a><a href="#">ALTR · AHPRA-registered</a></div>
+</div>
+
+<div class="app">
+
+  <div class="appbar">
+    <div class="bar-left">
+      <button class="hamb" id="menuOpen" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+      <div class="wordmark">ALTR</div>
+    </div>
+    <a href="#" class="acct" aria-label="Account">J</a>
+  </div>
+
+  <!-- Greeting -->
+  <div class="head">
+    <div class="greet-row">Good afternoon, Joel</div>
+    <h1>Your results are in. <span class="dim">Your doctor's reviewed them.</span></h1>
+    <p>One thing left to do — book your consultation and you'll walk through everything together.</p>
+  </div>
+
+  <!-- What's next -->
+  <div class="nextcard">
+    <div class="nc-status"><span class="pulse"></span> On track</div>
+    <div class="nc-body">
+      <div class="nl">What happens next</div>
+      <h2>Book your doctor consultation</h2>
+      <p>A relaxed 20-minute video call. Pick a time that suits — usually available within 48 hours.</p>
+      <button class="cta">Book consultation <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    </div>
+  </div>
+
+  <!-- Journey -->
+  <div class="label">Your journey</div>
+  <div class="journey" id="journey">
+    <button class="jrow done" aria-expanded="false" data-d="d1"><span class="jdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span class="jmain"><span class="jt">Assessment</span><span class="js">2 June</span></span><span style="display:flex;align-items:center;gap:10px"><span class="jstat">Done</span><svg class="jchev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></span></button>
+    <div class="jdetail" id="d1"><div class="inner">Completed 2 June. Flagged low energy and disrupted sleep — the reasons your doctor ordered a full panel.</div></div>
+
+    <button class="jrow done" aria-expanded="false" data-d="d2"><span class="jdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span class="jmain"><span class="jt">Blood test</span><span class="js">9 June · North Lake Macquarie</span></span><span style="display:flex;align-items:center;gap:10px"><span class="jstat">Done</span><svg class="jchev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></span></button>
+    <div class="jdetail" id="d2"><div class="inner">Collected 9 June, fasting sample, processed by your local accredited lab.</div></div>
+
+    <button class="jrow done" aria-expanded="false" data-d="d3"><span class="jdot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span class="jmain"><span class="jt">Results reviewed</span><span class="js">14 June</span></span><span style="display:flex;align-items:center;gap:10px"><span class="jstat">Done</span><svg class="jchev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></span></button>
+    <div class="jdetail" id="d3"><div class="inner">Your doctor reviewed your results on 14 June and prepared notes to walk through on your call.</div></div>
+
+    <button class="jrow current" aria-expanded="true" data-d="d4"><span class="jdot"></span><span class="jmain"><span class="jt">Doctor consultation</span><span class="js">Ready to book</span></span><span style="display:flex;align-items:center;gap:10px"><span class="jstat">You're here</span><svg class="jchev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></span></button>
+    <div class="jdetail open" id="d4"><div class="inner">A 20-minute video call. Your doctor explains what your results mean and, if it's right for you, starts a plan.</div></div>
+
+    <button class="jrow pending" aria-expanded="false" data-d="d5"><span class="jdot"></span><span class="jmain"><span class="jt">Treatment plan</span><span class="js">After your consultation</span></span><span style="display:flex;align-items:center;gap:10px"><span class="jstat">To come</span><svg class="jchev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></span></button>
+    <div class="jdetail" id="d5"><div class="inner">Your doctor builds a plan around you. Any medication is delivered discreetly to your door.</div></div>
+
+    <button class="jrow pending" aria-expanded="false" data-d="d6"><span class="jdot"></span><span class="jmain"><span class="jt">Ongoing care</span><span class="js">Reviews &amp; repeat bloods</span></span><span style="display:flex;align-items:center;gap:10px"><span class="jstat">To come</span><svg class="jchev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></span></button>
+    <div class="jdetail" id="d6"><div class="inner">Regular check-ins and repeat bloods to track progress — so the plan keeps working.</div></div>
+  </div>
+
+  <!-- Care team -->
+  <div class="label">Your care team</div>
+  <div class="team">
+    <div class="member">
+      <div class="ph"></div>
+      <div class="mmain"><div class="mn">Sarah Whitlock</div><div class="mr">Care coordinator · replies within 30 min</div></div>
+      <div class="macts">
+        <a href="#" class="ico-btn" aria-label="Message Sarah"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></a>
+        <a href="tel:1300000000" class="ico-btn" aria-label="Call Sarah"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg></a>
+      </div>
+    </div>
+    <div class="member">
+      <div class="ph"></div>
+      <div class="mmain"><div class="mn">Dr James Smith</div><div class="mr">Your doctor · AHPRA-registered</div></div>
+      <div class="macts">
+        <a href="#" class="ico-btn" aria-label="Message doctor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results & documents -->
+  <div class="label">Results &amp; documents <a href="#">View all</a></div>
+  <div class="list">
+    <a href="#" class="lrow"><div class="lmain"><div class="lt">Latest blood results</div><div class="ls">PDF · 14 June</div></div><span class="lr go">Download</span></a>
+    <a href="#" class="lrow"><div class="lmain"><div class="lt">Doctor summary</div><div class="ls">PDF · 14 June</div></div><span class="lr go">Download</span></a>
+    <a href="#" class="lrow"><div class="lmain"><div class="lt">Pathology request form</div><div class="ls">PDF · 9 June</div></div><span class="lr go">Download</span></a>
+  </div>
+
+  <!-- My program -->
+  <div class="label">My program</div>
+  <div class="list">
+    <a href="#" class="lrow"><div class="lmain"><div class="lt">Hormone Health</div><div class="ls">$89 / week · next payment 30 June</div></div><span class="lr ok">Active</span></a>
+    <a href="#" class="lrow"><div class="lmain"><div class="lt">Payment method</div><div class="ls">Visa ending 4291</div></div><span class="lr go">Update</span></a>
+    <a href="#" class="lrow"><div class="lmain"><div class="lt">Invoices</div><div class="ls">View and download</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a>
+  </div>
+
+  <!-- Updates -->
+  <div class="label">Recent updates</div>
+  <div class="list">
+    <div class="tl"><span class="td"></span><span class="tt">Doctor reviewed your results</span><span class="tw">14 June</span></div>
+    <div class="tl"><span class="td"></span><span class="tt">Prescription approved</span><span class="tw">14 June</span></div>
+    <div class="tl"><span class="td"></span><span class="tt">Blood test completed</span><span class="tw">9 June</span></div>
+    <div class="tl"><span class="td"></span><span class="tt">Appointment confirmed</span><span class="tw">3 June</span></div>
+  </div>
+
+  <footer>ALTR · Doctor-led healthcare for Australian men. AHPRA-registered.</footer>
+
+</div>
+
+<script>
+  // journey expand
+  document.querySelectorAll('.jrow').forEach(function(r){
+    r.addEventListener('click',function(){
+      var d=document.getElementById(r.dataset.d);
+      var open=r.getAttribute('aria-expanded')==='true';
+      document.querySelectorAll('.jrow[aria-expanded="true"]').forEach(function(o){
+        o.setAttribute('aria-expanded','false');document.getElementById(o.dataset.d).classList.remove('open');
+      });
+      if(!open){r.setAttribute('aria-expanded','true');d.classList.add('open');}
+    });
+  });
+  // menu
+  var menu=document.getElementById('menu'),mO=document.getElementById('menuOpen'),mC=document.getElementById('menuClose');
+  mO.addEventListener('click',function(){menu.classList.add('open');mO.setAttribute('aria-expanded','true');document.body.classList.add('menu-locked');});
+  mC.addEventListener('click',function(){menu.classList.remove('open');mO.setAttribute('aria-expanded','false');document.body.classList.remove('menu-locked');});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&menu.classList.contains('open')){mC.click();}});
+</script>
+
+</body>
+</html>
